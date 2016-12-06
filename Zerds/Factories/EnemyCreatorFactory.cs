@@ -52,7 +52,7 @@ namespace Zerds.Factories
 
         public static void Update(GameTime gameTime)
         {
-            if (!Globals.GameState.Enemies.Any())
+            if (Globals.GameState.Enemies.Count() < 2)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());
         }
     }

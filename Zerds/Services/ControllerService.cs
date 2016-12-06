@@ -18,6 +18,8 @@ namespace Zerds.Services
         public List<Func<bool>> R2ButtonFunctions { get; set; }
         public Vector2 LeftStickDirection { get; set; }
         public Vector2 RightStickDirection { get; set; }
+        public float LeftTrigger { get; set; }
+        public float RightTrigger { get; set; }
         public PlayerIndex PlayerIndex { get; set; }
 
         private TimeSpan _remainingVibration = new TimeSpan();
@@ -108,6 +110,8 @@ namespace Zerds.Services
                     R2ButtonFunctions.ForEach(f => f());
                 LeftStickDirection = new Vector2(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
                 RightStickDirection = new Vector2(gamePadState.ThumbSticks.Right.X, gamePadState.ThumbSticks.Right.Y);
+                LeftTrigger = gamePadState.Triggers.Left;
+                RightTrigger = gamePadState.Triggers.Right;
             }
             _oldState = gamePadState;
         }
@@ -117,7 +121,7 @@ namespace Zerds.Services
             if (timeSpan > _remainingVibration)
             {
                 _remainingVibration = timeSpan;
-                GamePad.SetVibration(PlayerIndex, intensity, intensity);
+                //GamePad.SetVibration(PlayerIndex, intensity, intensity);
             }
         }
     }

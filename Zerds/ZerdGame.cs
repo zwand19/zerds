@@ -33,15 +33,6 @@ namespace Zerds
         {
             TextureCacheFactory.Initialize(GraphicsDevice);
 
-            _players = new List<Player>
-            {
-                new Player("Player One", true, PlayerIndex.One),
-                new Player("Player Two", false, PlayerIndex.Two),
-                new Player("Player Three", false, PlayerIndex.Three),
-                new Player("Player Four", false, PlayerIndex.Four)
-            };
-            Globals.GameState = new GameState(GraphicsDevice, MapTypes.Dungeon, Window.ClientBounds, _players);
-
             base.Initialize();
         }
 
@@ -53,6 +44,15 @@ namespace Zerds
         {
             Globals.SpriteDrawer = new SpriteBatch(GraphicsDevice);
             Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
+            _players = new List<Player>
+            {
+                new Player("Player One", true, PlayerIndex.One),
+                new Player("Player Two", false, PlayerIndex.Two),
+                new Player("Player Three", false, PlayerIndex.Three),
+                new Player("Player Four", false, PlayerIndex.Four)
+            };
+            Globals.GameState = new GameState(GraphicsDevice, MapTypes.Dungeon, Window.ClientBounds, _players);
+            HUD.Initialize(GraphicsDevice);
         }
 
         /// <summary>
@@ -86,6 +86,7 @@ namespace Zerds
             GraphicsDevice.Clear(Color.Black);
 
             Globals.GameState.Draw();
+            HUD.Draw();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Zerds.Graphics
 
         public void Add(Animation animation)
         {
+            if (Animations.Any(a => a.Name == animation.Name))
+                throw new System.Exception("Invalid animation - already added");
             Animations.Add(animation);
         }
 

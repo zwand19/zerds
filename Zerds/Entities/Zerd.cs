@@ -24,6 +24,10 @@ namespace Zerds.Entities
             PlayerIndex = playerIndex;
             X = 650;
             Y = 300;
+            Health = GameplayConstants.ZerdStartingHealth;
+            MaxHealth = Health;
+            Mana = GameplayConstants.ZerdStartingMana;
+            MaxMana = Mana;
             Width = 64;
             Height = 64;
             WandDamage = 10;
@@ -47,21 +51,25 @@ namespace Zerds.Entities
 
         public override Animation GetCurrentAnimation()
         {
-            return Knockback == null ? Animations.Get(AnimationTypes.Stand) : Animations.Get(AnimationTypes.Damaged);
+            if (Knockback != null)
+                return Animations.Get(AnimationTypes.Damaged);
+            if (_wanding)
+                return Animations.Get(AnimationTypes.Attack);
+            return Animations.Get(AnimationTypes.Stand);
         }
 
-        public void ControllerUpdate(Vector2 leftStickDirection, Vector2 rightStickDirection)
+        public void ControllerUpdate(float leftTrigger, float rightTrigger, Vector2 leftStickDirection, Vector2 rightStickDirection)
         {
             if (Stunned)
                 return;
 
-            if (rightStickDirection.Length() != 0)
-            {
-                Facing = rightStickDirection;
-            }
-            else if (leftStickDirection.Length() != 0)
+            if (leftStickDirection.Length() != 0)
             {
                 Facing = leftStickDirection;
+            }
+            if (leftTrigger > 0.25f)
+            {
+                Facing = Facing.Rotate(180);
             }
             Velocity = leftStickDirection;
             var angle = Velocity.AngleBetween(Facing);
@@ -70,15 +78,16 @@ namespace Zerds.Entities
 
         public bool WandAttack()
         {
+            if (WandCooldown > TimeSpan.Zero || (GetCurrentAnimation().Name != AnimationTypes.Move && GetCurrentAnimation().Name != AnimationTypes.Stand))
+                return false;
             _wanding = true;
             return true;
         }
 
         private bool WandAttacked()
         {
-            if (WandCooldown <= TimeSpan.Zero && GetCurrentAnimation().Name != AnimationTypes.Move && GetCurrentAnimation().Name != AnimationTypes.Stand)
-                return false;
-            WandCooldown = GameplayConstants.WandCooldown;
+            WandCooldown = AbilityConstants.WandCooldown;
+            _wanding = false;
             Globals.GameState.Missiles.Add(new WandMissile(this, new GameObjects.DamageInstance
             {
                 Creator = this,
@@ -117,8 +126,13 @@ namespace Zerds.Entities
 
         public override void Update(GameTime gameTime)
         {
+            if (Knockback != null)
+            {
+                _wanding = false;
+            }
             DashCooldown = Math.Max(0, DashCooldown - (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
             SprintCooldown = Math.Max(0, SprintCooldown - (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
+            WandCooldown -= gameTime.ElapsedGameTime;
             base.Update(gameTime);
         }
 

@@ -23,7 +23,7 @@ namespace Zerds.GameObjects
         public void Update(GameTime gameTime)
         {
             Controller.Update(gameTime);
-            Zerd.ControllerUpdate(Controller.LeftStickDirection, Controller.RightStickDirection);
+            Zerd.ControllerUpdate(Controller.LeftTrigger, Controller.RightTrigger, Controller.LeftStickDirection, Controller.RightStickDirection);
         }
 
         public void GameCreated(GameState game)
@@ -32,7 +32,7 @@ namespace Zerds.GameObjects
             {
                 Zerd = new Entities.Zerd(PlayerIndex);
                 game.Zerds.Add(Zerd);
-                Controller.OnL2Pressed(Zerd.Dashed);
+                Controller.OnR1Pressed(Zerd.Dashed);
                 Controller.OnR2Pressed(Zerd.Sprinted);
                 Controller.OnAPressed(Zerd.WandAttack);
             }

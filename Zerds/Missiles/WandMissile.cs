@@ -20,7 +20,10 @@ namespace Zerds.Missiles
             X = p.X;
             Y = p.Y;
             Creator = zerd;
+            Distance = AbilityConstants.WandDistance;
             Speed = AbilityConstants.WandSpeed;
+            Velocity = Creator.Facing.Normalized();
+
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);
             spawnAnimation.AddFrame(new Rectangle(32 * 3, 0, 32, 32), TimeSpan.FromSeconds(0.15));
@@ -64,8 +67,7 @@ namespace Zerds.Missiles
 
         public override void Draw()
         {
-            var animation = _spawned ? Animations.Get(AnimationTypes.Move) : Animations.Get(AnimationTypes.Spawn);
-            var rect = animation.CurrentRectangle;
+            var rect = GetCurrentAnimation().CurrentRectangle;
             Globals.SpriteDrawer.Draw(
                 texture: Texture,
                 sourceRectangle: rect,
@@ -81,7 +83,7 @@ namespace Zerds.Missiles
 
         public override Rectangle Hitbox()
         {
-            return new Rectangle((int)(X - Width * 0.3f), (int)(Y - Width * 0.3f), (int)(Width * 0.6f), (int)(Width * 0.6f));
+            return new Rectangle((int)(X - Width * 0.65f), (int)(Y - Width * 0.65f), (int)(Width * 1.3f), (int)(Width * 1.3f));
         }
     }
 }

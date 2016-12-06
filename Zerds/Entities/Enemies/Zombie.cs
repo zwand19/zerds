@@ -19,12 +19,13 @@ namespace Zerds.Entities.Enemies
         public override void InitializeEnemy()
         {
             BaseSpeed = 75f;
+            HitboxSize = 0.8f;
 
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 0, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.05), SpawnedFunc);
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.05), SpawnedFunc);
             Animations.Add(spawnAnimation);
 
             var walkAnimation = new Animation(AnimationTypes.Move);
@@ -39,11 +40,23 @@ namespace Zerds.Entities.Enemies
             attackAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4), AttackedFunc);
             attackAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DoneAttackingFunc);
             Animations.Add(attackAnimation);
+
+            var dieAnimation = new Animation(AnimationTypes.Death);
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DeathFunc);
+            Animations.Add(dieAnimation);
         }
 
         private bool SpawnedFunc()
         {
             Spawned = true;
+            return true;
+        }
+
+        private bool DeathFunc()
+        {
+            IsActive = false;
             return true;
         }
 
@@ -83,6 +96,8 @@ namespace Zerds.Entities.Enemies
 
         public override Animation GetCurrentAnimation()
         {
+            if (!IsAlive)
+                return Animations.Get(AnimationTypes.Death);
             if (!Spawned)
                 return Animations.Get(AnimationTypes.Spawn);
             return Animations.Get(_attacking ? AnimationTypes.Attack : AnimationTypes.Move);

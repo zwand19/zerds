@@ -9,6 +9,8 @@ namespace Zerds.Constants
         public const float MaxZerdSpeed = 200f;
         public const float ZerdFrontFacingAngle = 15f;
         public const double KnockbackDecay = 0.35;
-        public static TimeSpan WandCooldown = TimeSpan.FromMilliseconds(1250);
+
+        public const float ZerdStartingHealth = 100f;
+        public const float ZerdStartingMana = 100f;
     }
 }

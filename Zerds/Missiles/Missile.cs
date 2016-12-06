@@ -11,6 +11,11 @@ namespace Zerds.GameObjects
         public float Distance { get; set; }
         public Being Creator { get; set; }
 
+        public Missile()
+        {
+            IsActive = true;
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (Creator is Zerd)
@@ -25,6 +30,7 @@ namespace Zerds.GameObjects
                     }
                 }
             }
+            base.Update(gameTime);
         }
     }
 }
