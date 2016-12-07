@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Zerds.Entities;
 using Zerds.Factories;
 
@@ -10,6 +11,7 @@ namespace Zerds.GameObjects
         public Point Origin { get; set; }
         public float Distance { get; set; }
         public Being Creator { get; set; }
+        public abstract void OnHit(Being target);
 
         public Missile()
         {
@@ -22,11 +24,16 @@ namespace Zerds.GameObjects
             {
                 foreach (var enemy in Globals.GameState.Enemies)
                 {
-                    if (Hitbox().Intersects(enemy.Hitbox()))
+                    foreach (var hitbox in enemy.Hitbox())
                     {
-                        Damage.DamageBeing(enemy);
-                        IsActive = false;
-                        return;
+                        foreach (var hitbox2 in Hitbox())
+                        {
+                            if (hitbox.Intersects(hitbox2))
+                            {
+                                OnHit(enemy);
+                                return;
+                            }
+                        }
                     }
                 }
             }

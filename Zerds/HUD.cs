@@ -17,14 +17,13 @@ namespace Zerds
         private static int _playerImageHeight => PlayerHudHeight - Border * 2;
         private static int _playerHealthBarWidth => PlayerHudWidth - _playerImageHeight - Border * 3;
         private static int _playerHealthBarHeight => (_playerImageHeight - PlayerHudBarsSeparator) / 2;
-        private static Texture2D _whiteTexture;
         private static Texture2D _witchTexture;
+        private static Color _healthBarBackColor;
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
-            _whiteTexture = new Texture2D(graphicsDevice, 1, 1);
-            _whiteTexture.SetData(new Color[] { Color.White });
             _witchTexture = TextureCacheFactory.GetOnce("HUD/witch-icon.png");
+            _healthBarBackColor = new Color(0.55f, 0.55f, 0.55f);
         }
 
         public static void Draw()
@@ -54,7 +53,7 @@ namespace Zerds
                     break;
             }
             Globals.SpriteDrawer.Draw(
-                texture: _whiteTexture,
+                texture: Globals.WhiteTexture,
                 destinationRectangle: new Rectangle(position.X, position.Y, PlayerHudWidth, PlayerHudHeight),
                 color: Color.Black);
             Globals.SpriteDrawer.Draw(
@@ -62,19 +61,19 @@ namespace Zerds
                 destinationRectangle: new Rectangle(position.X + Border, position.Y + Border, _playerImageHeight, _playerImageHeight),
                 color: Color.White);
             Globals.SpriteDrawer.Draw(
-                texture: _whiteTexture,
-                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border, (int)(_playerHealthBarWidth * player.Zerd.HealthPercentage), _playerHealthBarHeight),
-                color: new Color(0.55f, 0.55f, 0.55f));
+                texture: Globals.WhiteTexture,
+                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border, _playerHealthBarWidth, _playerHealthBarHeight),
+                color: _healthBarBackColor);
             Globals.SpriteDrawer.Draw(
                 texture: player.Zerd.HealthTexture,
                 destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border, (int)(_playerHealthBarWidth * player.Zerd.HealthPercentage), _playerHealthBarHeight),
                 color: Color.White);
             Globals.SpriteDrawer.Draw(
-                texture: _whiteTexture,
+                texture: Globals.WhiteTexture,
                 destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border + _playerHealthBarHeight + PlayerHudBarsSeparator, _playerHealthBarWidth, _playerHealthBarHeight),
-                color: new Color(0.55f, 0.55f, 0.55f));
+                color: _healthBarBackColor);
             Globals.SpriteDrawer.Draw(
-                texture: _whiteTexture,
+                texture: Globals.WhiteTexture,
                 destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border + _playerHealthBarHeight + PlayerHudBarsSeparator, (int)(_playerHealthBarWidth * player.Zerd.ManaPercentage), _playerHealthBarHeight),
                 color: new Color(0.25f, 0.25f, 0.55f));
         }

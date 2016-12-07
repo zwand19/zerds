@@ -35,6 +35,7 @@ namespace Zerds.GameObjects
                 Controller.OnR1Pressed(Zerd.Dashed);
                 Controller.OnR2Pressed(Zerd.Sprinted);
                 Controller.OnAPressed(Zerd.WandAttack);
+                Controller.OnBPressed(Zerd.FrostAttack);
             }
         }
     }

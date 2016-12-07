@@ -20,5 +20,9 @@ namespace Zerds.Factories
             }
             throw new Exception("Unhandled buff");
         }
+        public static void AddBuff(this Being being, Buff buff)
+        {
+            being.Buffs.Add(buff);
+        }
     }
 }

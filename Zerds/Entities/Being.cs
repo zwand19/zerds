@@ -69,12 +69,17 @@ namespace Zerds.Entities
                 position: new Vector2(X, Y),
                 rotation: angle,
                 origin: new Vector2(rect.Width / 2f, rect.Height / 2f));
+            if (Globals.ShowHitboxes)
+            {
+                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
+            }
         }
 
-        public override Rectangle Hitbox()
+        public override List<Rectangle> Hitbox()
         {
-            var inflateSize = Width * (HitboxSize - 1f);
-            return Invulnerable ? Rectangle.Empty : new Rectangle((int)(X - Width / 2 + inflateSize / 2), (int)(Y - Width / 2 + inflateSize / 2), (int)(Width + inflateSize), (int)(Height + inflateSize));
+            var halfSize = Width * HitboxSize / 2;
+            var rect = Invulnerable ? Rectangle.Empty : new Rectangle((int)(X - halfSize), (int)(Y - halfSize), (int)(halfSize * 2), (int)(halfSize * 2));
+            return new List<Rectangle> { rect };
         }
 
         public override void Update(GameTime gameTime)
@@ -86,9 +91,14 @@ namespace Zerds.Entities
                 Buffs.ForEach(b => b.TimeRemaining -= gameTime.ElapsedGameTime);
                 Buffs = Buffs.Where(b => b.TimeRemaining > TimeSpan.Zero).ToList();
 
+                Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                 if (Knockback == null)
                 {
                     Buffs.Where(b => b.MovementSpeedFactor > 0).ToList().ForEach(b => Speed += b.MovementSpeedFactor);
+                    var angle = Velocity.AngleBetween(Facing);
+                    Speed *= angle < GameplayConstants.ZerdFrontFacingAngle ? 1 : angle > 180 - GameplayConstants.ZerdFrontFacingAngle ? GameplayConstants.BackpedalFactor : GameplayConstants.SideStepFactor;
                     X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
@@ -109,6 +119,8 @@ namespace Zerds.Entities
                     X = MathHelper.Clamp(X, 0, Globals.ViewportBounds.Width);
                     Y = MathHelper.Clamp(Y, 0, Globals.ViewportBounds.Height);
                 }
+                Health = MathHelper.Clamp(Health, 0, MaxHealth);
+                Mana = MathHelper.Clamp(Mana, 0, MaxMana);
             }
 
             GetCurrentAnimation().Update(gameTime);

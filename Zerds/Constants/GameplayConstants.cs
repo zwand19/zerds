@@ -12,5 +12,7 @@ namespace Zerds.Constants
 
         public const float ZerdStartingHealth = 100f;
         public const float ZerdStartingMana = 100f;
+        public const float ZerdStartingHealthRegen = 2f;
+        public const float ZerdStartingManaRegen = 15f;
     }
 }

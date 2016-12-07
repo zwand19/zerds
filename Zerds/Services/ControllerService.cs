@@ -108,6 +108,8 @@ namespace Zerds.Services
                     L2ButtonFunctions.ForEach(f => f());
                 if (gamePadState.Triggers.Right > 0.8f && _oldState.Triggers.Right < 0.8f)
                     R2ButtonFunctions.ForEach(f => f());
+                if (gamePadState.Buttons.LeftStick == ButtonState.Released && _oldState.Buttons.LeftStick == ButtonState.Pressed)
+                    Globals.ShowHitboxes = !Globals.ShowHitboxes;
                 LeftStickDirection = new Vector2(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
                 RightStickDirection = new Vector2(gamePadState.ThumbSticks.Right.X, gamePadState.ThumbSticks.Right.Y);
                 LeftTrigger = gamePadState.Triggers.Left;

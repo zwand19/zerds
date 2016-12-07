@@ -52,6 +52,7 @@ namespace Zerds
                 new Player("Player Four", false, PlayerIndex.Four)
             };
             Globals.GameState = new GameState(GraphicsDevice, MapTypes.Dungeon, Window.ClientBounds, _players);
+            Globals.Initialize();
             HUD.Initialize(GraphicsDevice);
         }
 

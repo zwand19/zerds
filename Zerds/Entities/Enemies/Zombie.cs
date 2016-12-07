@@ -20,6 +20,8 @@ namespace Zerds.Entities.Enemies
         {
             BaseSpeed = 75f;
             HitboxSize = 0.8f;
+            Width = 64;
+            Height = 64;
 
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);
@@ -66,26 +68,29 @@ namespace Zerds.Entities.Enemies
             var rect2 = new Rectangle((int)(X + Facing.X * AttackRange * 0.2f) - 14, (int)(Y - Facing.Y * AttackRange * 0.2f) - 14, 28, 28);
             foreach (var zerd in Globals.GameState.Zerds)
             {
-                var zerdBox = zerd.Hitbox();
-                if (zerdBox.Intersects(rect) || zerdBox.Intersects(rect2))
+                foreach (var hitbox in zerd.Hitbox())
                 {
-                    var damageInstance = new DamageInstance
+                    if (hitbox.Intersects(rect) || hitbox.Intersects(rect2))
                     {
-                        Creator = this,
-                        Damage = AttackDamage,
-                        Knockback = new Knockback(Facing, new TimeSpan(0, 0, 0, 0, 250), 250f),
-                        DamageType = DamageType.Physical,
-                        IsCritical = false
-                    };
-                    if (new Random().Next(100) < 8)
-                    {
-                        damageInstance.Damage *= 2;
-                        damageInstance.IsCritical = true;
+                        var damageInstance = new DamageInstance
+                        {
+                            Creator = this,
+                            Damage = AttackDamage,
+                            Knockback = new Knockback(Facing, new TimeSpan(0, 0, 0, 0, 250), 250f),
+                            DamageType = DamageType.Physical,
+                            IsCritical = false
+                        };
+                        if (new Random().Next(100) < 8)
+                        {
+                            damageInstance.Damage *= 2;
+                            damageInstance.IsCritical = true;
+                        }
+                        damageInstance.DamageBeing(zerd);
+                        return true;
                     }
-                    damageInstance.DamageBeing(zerd);
                 }
             }
-            return true;
+            return false;
         }
 
         private bool DoneAttackingFunc()

@@ -24,8 +24,7 @@ namespace Zerds.Constants
             {
                 MinHealth = 10,
                 HealthRegen = 0.2f,
-                MinSpeed = 2.0f
-                ,
+                MinSpeed = 2.0f,
                 MaxHealth = 15,
                 MaxSpeed = 3.0f
             };    

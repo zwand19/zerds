@@ -3,6 +3,7 @@
     public enum BuffTypes
     {
         Sprint,
-        Dash
+        Dash,
+        Cold
     }
 }

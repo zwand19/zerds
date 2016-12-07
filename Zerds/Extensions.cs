@@ -43,6 +43,14 @@ namespace Zerds
             return v.RotateRadians(degrees * DegToRad);
         }
 
+        public static Rectangle RotateAround(this Rectangle rect, Point p, float radians)
+        {
+            var center = new Vector2(rect.Center.X - p.X, rect.Center.Y - p.Y);
+            var newCenter = center.RotateRadians(radians);
+            rect.Offset(newCenter.X - center.X, newCenter.Y - center.Y);
+            return rect;
+        }
+
         public static Vector2 RotateRadians(this Vector2 v, float radians)
         {
             var ca = (float)Math.Cos(radians);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.Graphics;
@@ -23,7 +24,7 @@ namespace Zerds.Entities
         public AnimationList Animations { get; set; }
         public abstract void Draw();
         public abstract Tuple<string, bool> GetTextureInfo();
-        public abstract Rectangle Hitbox();
+        public abstract List<Rectangle> Hitbox();
 
         public Entity()
         {

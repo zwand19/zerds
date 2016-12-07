@@ -5,6 +5,8 @@ using Zerds.Entities;
 using Zerds.Graphics;
 using Zerds.Enums;
 using Zerds.Constants;
+using System.Collections.Generic;
+using Zerds.Factories;
 
 namespace Zerds.Missiles
 {
@@ -19,6 +21,7 @@ namespace Zerds.Missiles
             Height = 32;
             X = p.X;
             Y = p.Y;
+            Origin = p;
             Creator = zerd;
             Distance = AbilityConstants.WandDistance;
             Speed = AbilityConstants.WandSpeed;
@@ -81,9 +84,17 @@ namespace Zerds.Missiles
             return new Tuple<string, bool>("Missiles/orbs.png", true);
         }
 
-        public override Rectangle Hitbox()
+        public override List<Rectangle> Hitbox()
         {
-            return new Rectangle((int)(X - Width * 0.65f), (int)(Y - Width * 0.65f), (int)(Width * 1.3f), (int)(Width * 1.3f));
+            return new List<Rectangle> {
+                new Rectangle((int)(X - Width * 0.65f), (int)(Y - Width * 0.65f), (int)(Width * 1.3f), (int)(Width * 1.3f))
+            };
+        }
+
+        public override void OnHit(Being target)
+        {
+            Damage.DamageBeing(target);
+            IsActive = false;
         }
     }
 }

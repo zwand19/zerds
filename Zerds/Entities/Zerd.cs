@@ -14,9 +14,12 @@ namespace Zerds.Entities
         public float DashCooldown { get; set; }
         public float SprintCooldown { get; set; }
         public float WandDamage { get; set; }
+        public float FrostOrbDamage { get; set; }
         public TimeSpan WandCooldown { get; set; }
+        public TimeSpan FrostOrbCooldown { get; set; }
         public PlayerIndex PlayerIndex { get; private set; }
 
+        private bool _frosting = false;
         private bool _wanding = false;
 
         public Zerd(PlayerIndex playerIndex)
@@ -28,9 +31,12 @@ namespace Zerds.Entities
             MaxHealth = Health;
             Mana = GameplayConstants.ZerdStartingMana;
             MaxMana = Mana;
+            HealthRegen = GameplayConstants.ZerdStartingHealthRegen;
+            ManaRegen = GameplayConstants.ZerdStartingManaRegen;
             Width = 64;
             Height = 64;
             WandDamage = 10;
+            FrostOrbDamage = 11;
             HitboxSize = 0.7f;
             BaseSpeed = GameplayConstants.MaxZerdSpeed;
 
@@ -47,6 +53,11 @@ namespace Zerds.Entities
             wandAnimation.AddFrame(new Rectangle(64 * 1, 0, 64, 64), AbilityConstants.WandFollowThroughTime);
             wandAnimation.AddFrame(new Rectangle(64 * 1, 0, 64, 64), TimeSpan.FromSeconds(0.05), WandAttacked);
             Animations.Add(wandAnimation);
+            var frostAnimation = new Animation(AnimationTypes.FrostAttack);
+            frostAnimation.AddFrame(new Rectangle(64 * 5, 0, 64, 64), AbilityConstants.FrostOrbCastTime);
+            frostAnimation.AddFrame(new Rectangle(64 * 6, 0, 64, 64), AbilityConstants.FrostOrbFollowThroughTime);
+            frostAnimation.AddFrame(new Rectangle(64 * 6, 0, 64, 64), TimeSpan.FromSeconds(0.05), FrostOrbAttacked);
+            Animations.Add(frostAnimation);
         }
 
         public override Animation GetCurrentAnimation()
@@ -55,6 +66,8 @@ namespace Zerds.Entities
                 return Animations.Get(AnimationTypes.Damaged);
             if (_wanding)
                 return Animations.Get(AnimationTypes.Attack);
+            if (_frosting)
+                return Animations.Get(AnimationTypes.FrostAttack);
             return Animations.Get(AnimationTypes.Stand);
         }
 
@@ -72,8 +85,30 @@ namespace Zerds.Entities
                 Facing = Facing.Rotate(180);
             }
             Velocity = leftStickDirection;
-            var angle = Velocity.AngleBetween(Facing);
-            Speed *= angle < GameplayConstants.ZerdFrontFacingAngle ? 1 : angle > 180 - GameplayConstants.ZerdFrontFacingAngle ? GameplayConstants.BackpedalFactor : GameplayConstants.SideStepFactor;
+        }
+
+        public bool FrostAttack()
+        {
+            if (FrostOrbCooldown > TimeSpan.Zero || Mana < AbilityConstants.FrostOrbManaCost || (GetCurrentAnimation().Name != AnimationTypes.Move && GetCurrentAnimation().Name != AnimationTypes.Stand))
+                return false;
+            _frosting = true;
+            return true;
+        }
+
+        private bool FrostOrbAttacked()
+        {
+            Mana -= AbilityConstants.FrostOrbManaCost;
+            FrostOrbCooldown = AbilityConstants.FrostOrbCooldown;
+            _frosting = false;
+            Globals.GameState.Missiles.Add(new FrostOrbMissile(this, new GameObjects.DamageInstance
+            {
+                Creator = this,
+                Damage = FrostOrbDamage,
+                DamageType = DamageType.Frost,
+                IsCritical = false,
+                Knockback = new GameObjects.Knockback(Facing, TimeSpan.FromMilliseconds(250), AbilityConstants.FrostOrbKnockback)
+            }, Position));
+            return true;
         }
 
         public bool WandAttack()
@@ -129,10 +164,12 @@ namespace Zerds.Entities
             if (Knockback != null)
             {
                 _wanding = false;
+                _frosting = false;
             }
             DashCooldown = Math.Max(0, DashCooldown - (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
             SprintCooldown = Math.Max(0, SprintCooldown - (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
             WandCooldown -= gameTime.ElapsedGameTime;
+            FrostOrbCooldown -= gameTime.ElapsedGameTime;
             base.Update(gameTime);
         }
 
