@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Zerds.Constants
+﻿namespace Zerds.Constants
 {
     public static class EnemyConstants
     {
@@ -14,6 +12,7 @@ namespace Zerds.Constants
             public float ManaRegen { get; set; }
             public float MinSpeed { get; set; }
             public float MaxSpeed { get; set; }
+            public float CritChance { get; set; }
         }
 
         #region Zombie
@@ -22,12 +21,26 @@ namespace Zerds.Constants
         {
             return new EnemyProperties
             {
-                MinHealth = 10,
+                MinHealth = 15,
                 HealthRegen = 0.2f,
-                MinSpeed = 2.0f,
-                MaxHealth = 15,
-                MaxSpeed = 3.0f
+                MinSpeed = 80.0f,
+                MaxHealth = 21,
+                MaxSpeed = 120.0f,
+                CritChance = 0.06f
             };    
+        }
+
+        public static EnemyProperties GetDogProperties()
+        {
+            return new EnemyProperties
+            {
+                MinHealth = 6,
+                HealthRegen = 0.2f,
+                MinSpeed = 235.0f,
+                MaxHealth = 11,
+                MaxSpeed = 270.0f,
+                CritChance = 0.25f
+            };
         }
 
         #endregion

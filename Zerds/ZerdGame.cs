@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.UI.ViewManagement;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -14,12 +13,11 @@ namespace Zerds
     /// </summary>
     public class ZerdGame : Game
     {
-        private GraphicsDeviceManager _graphics;
         private List<Player> _players;
 
         public ZerdGame()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -42,17 +40,19 @@ namespace Zerds
         /// </summary>
         protected override void LoadContent()
         {
+            Globals.ContentManager = Content;
             Globals.SpriteDrawer = new SpriteBatch(GraphicsDevice);
             Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
             _players = new List<Player>
             {
-                new Player("Player One", true, PlayerIndex.One),
-                new Player("Player Two", false, PlayerIndex.Two),
-                new Player("Player Three", false, PlayerIndex.Three),
-                new Player("Player Four", false, PlayerIndex.Four)
+                new Player("Player One", PlayerIndex.One),
+                new Player("Player Two", PlayerIndex.Two),
+                new Player("Player Three", PlayerIndex.Three),
+                new Player("Player Four", PlayerIndex.Four)
             };
             Globals.GameState = new GameState(GraphicsDevice, MapTypes.Dungeon, Window.ClientBounds, _players);
             Globals.Initialize();
+            DamageText.LoadContent();
             HUD.Initialize(GraphicsDevice);
         }
 
@@ -72,7 +72,7 @@ namespace Zerds
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            _players.Where(p => p.IsPlaying).ToList().ForEach(p => p.Update(gameTime));
+            _players.ForEach(p => p.Update(gameTime));
             Globals.GameState.Update(gameTime);
             base.Update(gameTime);
         }

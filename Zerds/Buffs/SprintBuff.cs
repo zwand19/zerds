@@ -6,7 +6,7 @@ using Zerds.Entities;
 using Zerds.Factories;
 using Zerds.Graphics;
 
-namespace Zerds.GameObjects.Buffs
+namespace Zerds.Buffs
 {
     public class SprintBuff : Buff
     {

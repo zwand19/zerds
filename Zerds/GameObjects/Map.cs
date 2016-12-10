@@ -9,7 +9,7 @@ namespace Zerds.GameObjects
     public class Map
     {
         private Texture2D _texture;
-        private SpriteBatch _spriteBatch;
+        private readonly SpriteBatch _spriteBatch;
 
         public Map(GraphicsDevice graphicsDevice, MapTypes type, Rectangle clientBounds)
         {
@@ -19,8 +19,9 @@ namespace Zerds.GameObjects
                 case MapTypes.Dungeon:
                     InitializeMap(graphicsDevice, clientBounds);
                     return;
+                default:
+                    throw new ArgumentException("Map type not handled");
             }
-            throw new ArgumentException("Map type not handled");
         }
 
         public void InitializeMap(GraphicsDevice graphicsDevice, Rectangle clientBounds)

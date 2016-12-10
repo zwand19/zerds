@@ -6,6 +6,7 @@ using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
+using Zerds.Missiles;
 
 namespace Zerds
 {
@@ -16,13 +17,14 @@ namespace Zerds
         public List<Enemy> Enemies { get; set; }
         public List<InanimateObject> Objects { get; set; }
         public List<Missile> Missiles { get; set; }
-        public List<Being> Beings => Zerds.Select(z => (Being)z).Concat(Enemies).ToList();
+        public List<DamageText> DamageTexts { get; set; }
+        public Map Map { get; set; }
+        public List<Player> Players { get; set; }
+        public List<Being> Beings => Zerds.Select(z => (Being) z).Concat(Enemies).ToList();
         public List<Entity> Entities =>
             Beings.Select(b => (Entity)b)
                 .Concat(Objects.Select(o => (Entity)o))
                 .Concat(Missiles.Select(m => (Entity)m)).ToList();
-        public Map Map { get; set; }
-        public List<Player> Players { get; set; }
 
         public GameState(GraphicsDevice graphicsDevice, MapTypes mapType, Rectangle clientBounds, List<Player> players)
         {
@@ -32,8 +34,13 @@ namespace Zerds
             Enemies = new List<Enemy>();
             Objects = new List<InanimateObject>();
             Missiles = new List<Missile>();
+            DamageTexts = new List<DamageText>();
+            DamageFactory.AddText = text =>
+            {
+                DamageTexts.Add(text);
+                return true;
+            };
             Players = players;
-            Players.ForEach(p => p.GameCreated(this));
         }
 
         public void Draw()
@@ -41,16 +48,20 @@ namespace Zerds
             Map.Draw();
             Globals.SpriteDrawer.Begin();
             Entities.ForEach(b => b.Draw());
+            Enemies.ForEach(b => b.DrawHealthbar());
+            DamageTexts.ForEach(d => d.Draw());
             Globals.SpriteDrawer.End();
         }
 
         public void Update(GameTime gameTime)
         {
             Beings.ForEach(b => b.Update(gameTime));
-            Enemies.ForEach(e => e.RunAI());
             Enemies = Enemies.Where(e => e.IsActive).ToList();
-            Missiles.ForEach(m => m.Update(gameTime));
+            Enemies.ForEach(e => e.RunAI());
             Missiles = Missiles.Where(m => m.IsActive).ToList();
+            Missiles.ForEach(m => m.Update(gameTime));
+            DamageTexts = DamageTexts.Where(d => d.IsActive).ToList();
+            DamageTexts.ForEach(d => d.Update(gameTime));
             EnemyCreatorFactory.Update(gameTime);
         }
     }

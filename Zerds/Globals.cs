@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Zerds
@@ -10,11 +11,12 @@ namespace Zerds
         public static Rectangle ViewportBounds { get; set; }
         public static SpriteBatch SpriteDrawer { get; set; }
         public static GameState GameState { get; set; }
+        public static ContentManager ContentManager { get; internal set; }
 
         public static void Initialize()
         {
             WhiteTexture = new Texture2D(SpriteDrawer.GraphicsDevice, 1, 1);
-            WhiteTexture.SetData(new Color[] { Color.White });
+            WhiteTexture.SetData(new[] { Color.White });
         }
     }
 }

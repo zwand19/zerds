@@ -11,5 +11,10 @@
         public abstract void InitializeEnemy();
         public abstract void RunAI();
         public abstract void Spawn();
+
+        protected Enemy(string file) : base(file, true)
+        {
+            
+        }
     }
 }

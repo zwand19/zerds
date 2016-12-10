@@ -16,15 +16,16 @@ namespace Zerds.Services
         public List<Func<bool>> R1ButtonFunctions { get; set; }
         public List<Func<bool>> L2ButtonFunctions { get; set; }
         public List<Func<bool>> R2ButtonFunctions { get; set; }
+        public List<Func<bool>> StartButtonFunctions { get; set; }
         public Vector2 LeftStickDirection { get; set; }
         public Vector2 RightStickDirection { get; set; }
         public float LeftTrigger { get; set; }
         public float RightTrigger { get; set; }
         public PlayerIndex PlayerIndex { get; set; }
 
-        private TimeSpan _remainingVibration = new TimeSpan();
+        private TimeSpan _remainingVibration;
         private GamePadState _oldState;
-        private static List<ControllerService> _services = new List<ControllerService>();
+        private static readonly List<ControllerService> Services = new List<ControllerService>();
 
         public ControllerService(PlayerIndex playerIndex)
         {
@@ -36,15 +37,16 @@ namespace Zerds.Services
             R1ButtonFunctions = new List<Func<bool>>();
             L2ButtonFunctions = new List<Func<bool>>();
             R2ButtonFunctions = new List<Func<bool>>();
+            StartButtonFunctions = new List<Func<bool>>();
             LeftStickDirection = new Vector2(0, 0);
             RightStickDirection = new Vector2(0, 0);
             PlayerIndex = playerIndex;
-            _services.Add(this);
+            Services.Add(this);
         }
 
         public static ControllerService GetService(PlayerIndex index)
         {
-            return _services.First(s => s.PlayerIndex == index);
+            return Services.First(s => s.PlayerIndex == index);
         }
 
         public void OnAPressed(Func<bool> func)
@@ -65,6 +67,11 @@ namespace Zerds.Services
         public void OnYPressed(Func<bool> func)
         {
             YButtonFunctions.Add(func);
+        }
+
+        public void OnStartPressed(Func<bool> func)
+        {
+            StartButtonFunctions.Add(func);
         }
 
         public void OnL1Pressed(Func<bool> func)
@@ -89,21 +96,26 @@ namespace Zerds.Services
 
         public void Update(GameTime gameTime)
         {
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex);
+            var gamePadState = GamePad.GetState(PlayerIndex);
             _remainingVibration -= gameTime.ElapsedGameTime;
             if (_remainingVibration < new TimeSpan(0, 0, 0))
                 GamePad.SetVibration(PlayerIndex, 0, 0);
-            _oldState = _oldState == null ? gamePadState : _oldState;
             if (gamePadState.IsConnected)
             {
                 if (gamePadState.Buttons.A == ButtonState.Released && _oldState.Buttons.A == ButtonState.Pressed)
                     AButtonFunctions.ForEach(f => f());
                 if (gamePadState.Buttons.B == ButtonState.Released && _oldState.Buttons.B == ButtonState.Pressed)
                     BButtonFunctions.ForEach(f => f());
+                if (gamePadState.Buttons.Y == ButtonState.Released && _oldState.Buttons.Y == ButtonState.Pressed)
+                    YButtonFunctions.ForEach(f => f());
+                if (gamePadState.Buttons.X == ButtonState.Released && _oldState.Buttons.X == ButtonState.Pressed)
+                    XButtonFunctions.ForEach(f => f());
                 if (gamePadState.Buttons.LeftShoulder == ButtonState.Released && _oldState.Buttons.LeftShoulder == ButtonState.Pressed)
                     L1ButtonFunctions.ForEach(f => f());
                 if (gamePadState.Buttons.RightShoulder == ButtonState.Released && _oldState.Buttons.RightShoulder == ButtonState.Pressed)
                     R1ButtonFunctions.ForEach(f => f());
+                if (gamePadState.Buttons.Start == ButtonState.Released && _oldState.Buttons.Start == ButtonState.Pressed)
+                    StartButtonFunctions.ForEach(f => f());
                 if (gamePadState.Triggers.Left > 0.8f && _oldState.Triggers.Left < 0.8f)
                     L2ButtonFunctions.ForEach(f => f());
                 if (gamePadState.Triggers.Right > 0.8f && _oldState.Triggers.Right < 0.8f)

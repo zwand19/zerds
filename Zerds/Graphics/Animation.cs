@@ -7,20 +7,16 @@ namespace Zerds.Graphics
 {
     public class Animation
     {
-        List<AnimationFrame> frames = new List<AnimationFrame>();
-        TimeSpan timeIntoAnimation;
-        AnimationFrame lastFrame;
+        readonly List<AnimationFrame> _frames = new List<AnimationFrame>();
+        TimeSpan _timeIntoAnimation;
+        AnimationFrame _lastFrame;
         public string Name { get; set; }
 
-        TimeSpan Duration
+        private TimeSpan Duration
         {
             get
             {
-                double totalSeconds = 0;
-                foreach (var frame in frames)
-                {
-                    totalSeconds += frame.Duration.TotalSeconds;
-                }
+                var totalSeconds = _frames.Sum(frame => frame.Duration.TotalSeconds);
 
                 return TimeSpan.FromSeconds(totalSeconds);
             }
@@ -40,17 +36,17 @@ namespace Zerds.Graphics
                 StartFunc = func
             };
 
-            frames.Add(newFrame);
+            _frames.Add(newFrame);
         }
 
         public void Update(GameTime gameTime)
         {
             double secondsIntoAnimation =
-                timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
+                _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
 
             double remainder = secondsIntoAnimation % Duration.TotalSeconds;
 
-            timeIntoAnimation = TimeSpan.FromSeconds(remainder);
+            _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
         }
 
         public Rectangle CurrentRectangle
@@ -58,9 +54,9 @@ namespace Zerds.Graphics
             get
             {
                 var frame = GetCurrentAnimationFrame();
-                if (frame != lastFrame && frame?.StartFunc != null)
+                if (frame != _lastFrame && frame?.StartFunc != null)
                     frame.StartFunc();
-                lastFrame = frame;
+                _lastFrame = frame;
                 return frame.SourceRectangle;
             }
         }
@@ -69,23 +65,20 @@ namespace Zerds.Graphics
         {
             AnimationFrame currentFrame = null;
 
-            TimeSpan accumulatedTime;
-            foreach (var frame in frames)
+            var accumulatedTime = TimeSpan.Zero;
+            foreach (var frame in _frames)
             {
-                if (accumulatedTime + frame.Duration >= timeIntoAnimation)
+                if (accumulatedTime + frame.Duration >= _timeIntoAnimation)
                 {
                     currentFrame = frame;
                     break;
                 }
-                else
-                {
-                    accumulatedTime += frame.Duration;
-                }
+                accumulatedTime += frame.Duration;
             }
 
-            currentFrame = currentFrame ?? frames.LastOrDefault();
+            currentFrame = currentFrame ?? _frames.LastOrDefault();
 
-            return currentFrame != null ? currentFrame : new AnimationFrame { SourceRectangle = Rectangle.Empty };
+            return currentFrame ?? new AnimationFrame { SourceRectangle = Rectangle.Empty };
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Zerds.Services;
+using System.Linq;
+using Zerds.Enums;
 
 namespace Zerds.GameObjects
 {
@@ -12,31 +13,33 @@ namespace Zerds.GameObjects
         public ControllerService Controller { get; set; }
         public Entities.Zerd Zerd { get; set; }
 
-        public Player(string name, bool isPlaying, PlayerIndex playerIndex)
+        public Player(string name, PlayerIndex playerIndex)
         {
             Name = name;
-            IsPlaying = isPlaying;
             PlayerIndex = playerIndex;
             Controller = new ControllerService(PlayerIndex);
+            Controller.OnStartPressed(JoinGame);
         }
 
         public void Update(GameTime gameTime)
         {
             Controller.Update(gameTime);
-            Zerd.ControllerUpdate(Controller.LeftTrigger, Controller.RightTrigger, Controller.LeftStickDirection, Controller.RightStickDirection);
+            Zerd?.ControllerUpdate(Controller.LeftTrigger, Controller.RightTrigger, Controller.LeftStickDirection, Controller.RightStickDirection);
         }
 
-        public void GameCreated(GameState game)
+        private bool JoinGame()
         {
-            if (IsPlaying)
-            {
-                Zerd = new Entities.Zerd(PlayerIndex);
-                game.Zerds.Add(Zerd);
-                Controller.OnR1Pressed(Zerd.Dashed);
-                Controller.OnR2Pressed(Zerd.Sprinted);
-                Controller.OnAPressed(Zerd.WandAttack);
-                Controller.OnBPressed(Zerd.FrostAttack);
-            }
+            if (Zerd != null) return false;
+
+            IsPlaying = true;
+            Zerd = new Entities.Zerd(PlayerIndex);
+            Globals.GameState.Zerds.Add(Zerd);
+            Controller.OnR1Pressed(() => { return Zerd.Abilities.First(a => a.Type == AbilityTypes.Dash).Cast(); });
+            Controller.OnR2Pressed(() => { return Zerd.Abilities.First(a => a.Type == AbilityTypes.Sprint).Cast(); });
+            Controller.OnAPressed(() => { return Zerd.Abilities.First(a => a.Type == AbilityTypes.Wand).Cast(); });
+            Controller.OnBPressed(() => { return Zerd.Abilities.First(a => a.Type == AbilityTypes.Iceball).Cast(); });
+            Controller.OnYPressed(() => { return Zerd.Abilities.First(a => a.Type == AbilityTypes.Fireball).Cast(); });
+            return true;
         }
     }
 }

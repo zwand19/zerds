@@ -2,6 +2,7 @@
 {
     public enum EnemyTypes
     {
-        Zombie
+        Zombie,
+        Dog
     }
 }

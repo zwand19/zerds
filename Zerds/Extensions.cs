@@ -7,20 +7,12 @@ namespace Zerds
     public static class Extensions
     {
         private const float DegToRad = (float)Math.PI / 180f;
-
-        /// <summary>
-        /// Returns the absolute value of the angle between two vectors in degrees
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
+        
         public static float AngleBetween(this Vector2 a, Vector2 b)
         {
-            var v1 = new Vector2(a.X, a.Y);
-            var v2 = new Vector2(b.X, b.Y);
-            a.Normalize();
-            b.Normalize();
-            return Math.Abs((float)Math.Acos(Vector2.Dot(a, b)) * 180f / (float)Math.PI);
+            var v1 = new Vector2(a.X, a.Y).Normalized();
+            var v2 = new Vector2(b.X, b.Y).Normalized();
+            return Math.Abs((float)Math.Acos(Vector2.Dot(v1, v2)) * 180f / (float)Math.PI);
         }
 
         public static float DistanceBetween(this Vector2 a, Vector2 b)

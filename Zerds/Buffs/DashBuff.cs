@@ -5,7 +5,7 @@ using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Graphics;
 
-namespace Zerds.GameObjects.Buffs
+namespace Zerds.Buffs
 {
     public class DashBuff : Buff
     {

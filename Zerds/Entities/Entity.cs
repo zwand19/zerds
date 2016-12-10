@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Zerds.Enums;
 using Zerds.Factories;
@@ -23,13 +22,11 @@ namespace Zerds.Entities
         public Vector2 Facing { get; set; }
         public AnimationList Animations { get; set; }
         public abstract void Draw();
-        public abstract Tuple<string, bool> GetTextureInfo();
         public abstract List<Rectangle> Hitbox();
 
-        public Entity()
+        protected Entity(string file, bool cache)
         {
-            var info = GetTextureInfo();
-            Texture = info.Item2 ? TextureCacheFactory.Get(info.Item1) : TextureCacheFactory.GetOnce(info.Item1);
+            Texture = cache ? TextureCacheFactory.Get(file) : TextureCacheFactory.GetOnce(file);
         }
 
         public virtual Animation GetCurrentAnimation()

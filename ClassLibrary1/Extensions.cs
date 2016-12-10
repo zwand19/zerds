@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Linq;
-using Zerds.Constants;
 using Zerds.Entities;
 
 namespace Zerds.AI
@@ -10,9 +9,8 @@ namespace Zerds.AI
     {
         public static Zerd GetNearestZerd(this Being being)
         {
-            if (!Globals.GameState.Zerds.Any()) return null;
             var distance = Globals.GameState.Zerds.Select(z => z.DistanceBetween(being)).Min();
-            return Globals.GameState.Zerds.First(z => Math.Abs(z.DistanceBetween(being) - distance) < CodingConstants.Tolerance);
+            return Globals.GameState.Zerds.First(z => z.DistanceBetween(being) == distance);
         }
 
         public static void Face(this Being being, Being target)

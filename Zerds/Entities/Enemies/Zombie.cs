@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Zerds.Graphics;
 using Microsoft.Xna.Framework;
 using Zerds.Enums;
 using Zerds.AI;
-using System.Collections.Generic;
 using Zerds.Factories;
 using Zerds.GameObjects;
 
@@ -14,7 +14,12 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private const int AttackRange = 50;
         private const int AttackDamage = 8;
-        private bool _attacking = false;
+        private bool _attacking;
+
+        public Zombie() : base("Entities/Zombie.png")
+        {
+            
+        }
 
         public override void InitializeEnemy()
         {
@@ -25,28 +30,33 @@ namespace Zerds.Entities.Enemies
 
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            spawnAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.05), SpawnedFunc);
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 13, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 14, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            spawnAnimation.AddFrame(new Rectangle(TextureSize * 14, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.05), SpawnedFunc);
             Animations.Add(spawnAnimation);
 
             var walkAnimation = new Animation(AnimationTypes.Move);
-            walkAnimation.AddFrame(new Rectangle(TextureSize * 2, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
-            walkAnimation.AddFrame(new Rectangle(TextureSize * 3, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
-            walkAnimation.AddFrame(new Rectangle(TextureSize * 4, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
-            walkAnimation.AddFrame(new Rectangle(TextureSize * 5, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
+            walkAnimation.AddFrame(new Rectangle(TextureSize * 9, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
+            walkAnimation.AddFrame(new Rectangle(TextureSize * 10, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
+            walkAnimation.AddFrame(new Rectangle(TextureSize * 11, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
+            walkAnimation.AddFrame(new Rectangle(TextureSize * 12, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4));
             Animations.Add(walkAnimation);
 
             var attackAnimation = new Animation(AnimationTypes.Attack);
-            attackAnimation.AddFrame(new Rectangle(TextureSize * 0, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            attackAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4), AttackedFunc);
-            attackAnimation.AddFrame(new Rectangle(TextureSize * 1, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DoneAttackingFunc);
+            attackAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            attackAnimation.AddFrame(new Rectangle(TextureSize * 8, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4), AttackedFunc);
+            attackAnimation.AddFrame(new Rectangle(TextureSize * 8, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DoneAttackingFunc);
             Animations.Add(attackAnimation);
 
             var dieAnimation = new Animation(AnimationTypes.Death);
-            dieAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
-            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DeathFunc);
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 1, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 2, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 3, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 4, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 5, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 6, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 6, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DeathFunc);
             Animations.Add(dieAnimation);
         }
 
@@ -68,27 +78,22 @@ namespace Zerds.Entities.Enemies
             var rect2 = new Rectangle((int)(X + Facing.X * AttackRange * 0.2f) - 14, (int)(Y - Facing.Y * AttackRange * 0.2f) - 14, 28, 28);
             foreach (var zerd in Globals.GameState.Zerds)
             {
-                foreach (var hitbox in zerd.Hitbox())
+                if (!zerd.Hitbox().Any(hitbox => hitbox.Intersects(rect) || hitbox.Intersects(rect2))) continue;
+                var damageInstance = new DamageInstance
                 {
-                    if (hitbox.Intersects(rect) || hitbox.Intersects(rect2))
-                    {
-                        var damageInstance = new DamageInstance
-                        {
-                            Creator = this,
-                            Damage = AttackDamage,
-                            Knockback = new Knockback(Facing, new TimeSpan(0, 0, 0, 0, 250), 250f),
-                            DamageType = DamageType.Physical,
-                            IsCritical = false
-                        };
-                        if (new Random().Next(100) < 8)
-                        {
-                            damageInstance.Damage *= 2;
-                            damageInstance.IsCritical = true;
-                        }
-                        damageInstance.DamageBeing(zerd);
-                        return true;
-                    }
+                    Creator = this,
+                    Damage = AttackDamage,
+                    Knockback = new Knockback(Facing, new TimeSpan(0, 0, 0, 0, 250), 250f),
+                    DamageType = DamageTypes.Physical,
+                    IsCritical = false
+                };
+                if (new Random().Next(100) < 8)
+                {
+                    damageInstance.Damage *= 2;
+                    damageInstance.IsCritical = true;
                 }
+                damageInstance.DamageBeing(zerd);
+                return true;
             }
             return false;
         }
@@ -103,14 +108,9 @@ namespace Zerds.Entities.Enemies
         {
             if (!IsAlive)
                 return Animations.Get(AnimationTypes.Death);
-            if (!Spawned)
-                return Animations.Get(AnimationTypes.Spawn);
-            return Animations.Get(_attacking ? AnimationTypes.Attack : AnimationTypes.Move);
-        }
-
-        public override Tuple<string, bool> GetTextureInfo()
-        {
-            return new Tuple<string, bool>("Entities/Zombie.png", false);
+            return !Spawned
+                ? Animations.Get(AnimationTypes.Spawn)
+                : Animations.Get(_attacking ? AnimationTypes.Attack : AnimationTypes.Move);
         }
 
         public override void RunAI()
@@ -118,6 +118,12 @@ namespace Zerds.Entities.Enemies
             if (_attacking || Stunned)
                 return;
             var target = this.GetNearestZerd();
+            if (target == null)
+            {
+                Velocity = Vector2.Zero;
+                _attacking = false;
+                return;
+            }
             if (GetCurrentAnimation().Name == AnimationTypes.Move)
             {
                 this.Face(target);

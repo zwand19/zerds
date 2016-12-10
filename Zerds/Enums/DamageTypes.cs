@@ -1,6 +1,6 @@
 ﻿namespace Zerds.Enums
 {
-    public enum DamageType
+    public enum DamageTypes
     {
         Magic,
         Frost,

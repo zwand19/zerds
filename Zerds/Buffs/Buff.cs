@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Zerds.Entities;
 using Zerds.Graphics;
 
-namespace Zerds.GameObjects.Buffs
+namespace Zerds.Buffs
 {
     public abstract class Buff
     {
@@ -13,6 +13,7 @@ namespace Zerds.GameObjects.Buffs
         public float MovementSpeedFactor { get; set; }
         public float CooldownReductionFactor { get; set; }
         public float HealthRegenFactor { get; set; }
+        public float DamagePerSecond { get; set; }
         public bool IsPositive { get; set; }
         public bool IsStunned { get; set; }
         public Animation Animation { get; set; }
@@ -21,17 +22,29 @@ namespace Zerds.GameObjects.Buffs
         public Texture2D Texture { get; set; }
         public bool GrantsInvulnerability { get; internal set; }
 
-        public abstract void Draw();
-
-        public Buff(Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0)
+        public Buff(Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0)
         {
             Length = length;
             MovementSpeedFactor = movementSpeedFactor;
             CooldownReductionFactor = cooldownReductionFactor;
             HealthRegenFactor = healthRegenFactor;
+            DamagePerSecond = damagePerSecond;
             IsPositive = isPositive;
             TimeRemaining = length;
             Being = being;
+        }
+
+        public virtual void Draw()
+        {
+            if (Texture == null)
+                return;
+
+            Globals.SpriteDrawer.Draw(
+                texture: Texture,
+                sourceRectangle: Animation.CurrentRectangle,
+                color: Color.White,
+                destinationRectangle: new Rectangle((int)Being.X, (int)Being.Y, (int)Being.Width, (int)Being.Height),
+                origin: new Vector2(Texture.Width / 2, Texture.Height / 2));
         }
 
         public void Update(GameTime gameTime)

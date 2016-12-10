@@ -1,7 +1,7 @@
 ﻿using System;
 using Zerds.Entities;
 using Zerds.Enums;
-using Zerds.GameObjects.Buffs;
+using Zerds.Buffs;
 
 namespace Zerds.Factories
 {

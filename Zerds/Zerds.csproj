@@ -97,17 +97,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\Dash.cs" />
+    <Compile Include="Abilities\Fireball.cs" />
+    <Compile Include="Abilities\Icicle.cs" />
+    <Compile Include="Abilities\Sprint.cs" />
+    <Compile Include="Abilities\Wand.cs" />
     <Compile Include="AI\Extensions.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
+    <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
+    <Compile Include="Constants\DisplayConstants.cs" />
     <Compile Include="Constants\EnemyConstants.cs" />
     <Compile Include="Constants\GameplayConstants.cs" />
+    <Compile Include="Entities\Enemies\Dog.cs" />
     <Compile Include="Entities\Enemies\Zombie.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\InanimateObject.cs" />
+    <Compile Include="Enums\AbilityTypes.cs" />
     <Compile Include="Enums\AnimationTypes.cs" />
     <Compile Include="Enums\BuffTypes.cs" />
-    <Compile Include="Enums\DamageType.cs" />
+    <Compile Include="Enums\DamageTypes.cs" />
     <Compile Include="Enums\Difficulty.cs" />
     <Compile Include="Enums\BeingTypes.cs" />
     <Compile Include="Enums\EnemyTypes.cs" />
@@ -117,14 +126,18 @@
     <Compile Include="Factories\DamageFactory.cs" />
     <Compile Include="Factories\EnemyCreatorFactory.cs" />
     <Compile Include="Factories\TextureCacheFactory.cs" />
-    <Compile Include="GameObjects\Buffs\Buff.cs" />
-    <Compile Include="GameObjects\Buffs\ColdBuff.cs" />
-    <Compile Include="GameObjects\Buffs\DashBuff.cs" />
-    <Compile Include="GameObjects\Buffs\SprintBuff.cs" />
+    <Compile Include="Buffs\Buff.cs" />
+    <Compile Include="Buffs\BurnBuff.cs" />
+    <Compile Include="Buffs\ColdBuff.cs" />
+    <Compile Include="Buffs\DashBuff.cs" />
+    <Compile Include="Buffs\SprintBuff.cs" />
+    <Compile Include="Abilities\Ability.cs" />
     <Compile Include="GameObjects\DamageInstance.cs" />
+    <Compile Include="GameObjects\DamageText.cs" />
     <Compile Include="GameObjects\Knockback.cs" />
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="Missiles\FireballMissile.cs" />
     <Compile Include="Missiles\FrostOrbMissile.cs" />
     <Compile Include="Missiles\Missile.cs" />
     <Compile Include="GameObjects\Player.cs" />
@@ -149,6 +162,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\CriticalDamageText.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\DamageText.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\CriticalDamageText.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\DamageText.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -158,10 +183,16 @@
     <None Include="Zerds_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Buffs\burn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Buffs\cold.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Buffs\dash.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Dog.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\Zerd.png">
@@ -174,6 +205,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Maps\DungeonTile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Missiles\fireball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Missiles\iceball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\icicle.png">

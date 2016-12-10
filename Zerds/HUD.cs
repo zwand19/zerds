@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
-using Zerds.Constants;
 using Zerds.Factories;
 using Zerds.GameObjects;
 
@@ -14,9 +13,9 @@ namespace Zerds
         private const int PlayerHudPadding = 50;
         private const int Border = 6;
         private const int PlayerHudBarsSeparator = 4;
-        private static int _playerImageHeight => PlayerHudHeight - Border * 2;
-        private static int _playerHealthBarWidth => PlayerHudWidth - _playerImageHeight - Border * 3;
-        private static int _playerHealthBarHeight => (_playerImageHeight - PlayerHudBarsSeparator) / 2;
+        private static int PlayerImageHeight => PlayerHudHeight - Border * 2;
+        private static int PlayerHealthBarWidth => PlayerHudWidth - PlayerImageHeight - Border * 3;
+        private static int PlayerHealthBarHeight => (PlayerImageHeight - PlayerHudBarsSeparator) / 2;
         private static Texture2D _witchTexture;
         private static Color _healthBarBackColor;
 
@@ -58,23 +57,23 @@ namespace Zerds
                 color: Color.Black);
             Globals.SpriteDrawer.Draw(
                 texture: _witchTexture,
-                destinationRectangle: new Rectangle(position.X + Border, position.Y + Border, _playerImageHeight, _playerImageHeight),
+                destinationRectangle: new Rectangle(position.X + Border, position.Y + Border, PlayerImageHeight, PlayerImageHeight),
                 color: Color.White);
             Globals.SpriteDrawer.Draw(
                 texture: Globals.WhiteTexture,
-                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border, _playerHealthBarWidth, _playerHealthBarHeight),
-                color: _healthBarBackColor);
-            Globals.SpriteDrawer.Draw(
-                texture: player.Zerd.HealthTexture,
-                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border, (int)(_playerHealthBarWidth * player.Zerd.HealthPercentage), _playerHealthBarHeight),
-                color: Color.White);
-            Globals.SpriteDrawer.Draw(
-                texture: Globals.WhiteTexture,
-                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border + _playerHealthBarHeight + PlayerHudBarsSeparator, _playerHealthBarWidth, _playerHealthBarHeight),
+                destinationRectangle: new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border, PlayerHealthBarWidth, PlayerHealthBarHeight),
                 color: _healthBarBackColor);
             Globals.SpriteDrawer.Draw(
                 texture: Globals.WhiteTexture,
-                destinationRectangle: new Rectangle(position.X + _playerImageHeight + Border * 2, position.Y + Border + _playerHealthBarHeight + PlayerHudBarsSeparator, (int)(_playerHealthBarWidth * player.Zerd.ManaPercentage), _playerHealthBarHeight),
+                destinationRectangle: new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border, (int)(PlayerHealthBarWidth * player.Zerd.HealthPercentage), PlayerHealthBarHeight),
+                color: player.Zerd.HealthColor);
+            Globals.SpriteDrawer.Draw(
+                texture: Globals.WhiteTexture,
+                destinationRectangle: new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator, PlayerHealthBarWidth, PlayerHealthBarHeight),
+                color: _healthBarBackColor);
+            Globals.SpriteDrawer.Draw(
+                texture: Globals.WhiteTexture,
+                destinationRectangle: new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator, (int)(PlayerHealthBarWidth * player.Zerd.ManaPercentage), PlayerHealthBarHeight),
                 color: new Color(0.25f, 0.25f, 0.55f));
         }
     }

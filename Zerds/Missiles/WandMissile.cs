@@ -12,9 +12,9 @@ namespace Zerds.Missiles
 {
     public class WandMissile : Missile
     {
-        private bool _spawned = false;
+        private bool _spawned;
 
-        public WandMissile(Zerd zerd, DamageInstance damageInstance, Point p)
+        public WandMissile(Being being, DamageInstance damageInstance, Point p) : base("Missiles/orbs.png")
         {
             Damage = damageInstance;
             Width = 32;
@@ -22,7 +22,7 @@ namespace Zerds.Missiles
             X = p.X;
             Y = p.Y;
             Origin = p;
-            Creator = zerd;
+            Creator = being;
             Distance = AbilityConstants.WandDistance;
             Speed = AbilityConstants.WandSpeed;
             Velocity = Creator.Facing.Normalized();
@@ -49,12 +49,6 @@ namespace Zerds.Missiles
             Animations.Add(dieAnimation);
         }
 
-        private bool DeathFunc()
-        {
-            IsActive = false;
-            return true;
-        }
-
         private bool SpawnedFunc()
         {
             _spawned = true;
@@ -66,22 +60,6 @@ namespace Zerds.Missiles
             if (!_spawned)
                 return Animations.Get(AnimationTypes.Spawn);
             return Animations.Get(Origin.DistanceBetween(Position) > Distance ? AnimationTypes.Death : AnimationTypes.Move);
-        }
-
-        public override void Draw()
-        {
-            var rect = GetCurrentAnimation().CurrentRectangle;
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
-                sourceRectangle: rect,
-                color: Color.White,
-                position: new Vector2(X, Y),
-                origin: new Vector2(rect.Width / 2f, rect.Height / 2f));
-        }
-
-        public override Tuple<string, bool> GetTextureInfo()
-        {
-            return new Tuple<string, bool>("Missiles/orbs.png", true);
         }
 
         public override List<Rectangle> Hitbox()

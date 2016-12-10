@@ -20,16 +20,19 @@ namespace Zerds.Factories
             {
                 case EnemyTypes.Zombie:
                     return InitializeEnemy(new Zombie(), EnemyConstants.GetZombieProperties());
+                case EnemyTypes.Dog:
+                    return InitializeEnemy(new Dog(), EnemyConstants.GetDogProperties());
             }
             throw new ArgumentException("Unknown Enemy Type");
         }
 
         public static List<Enemy> CreateEnemyBatch()
         {
+            var rand = new Random().NextDouble();
             switch (Globals.GameState.Level)
             {
                 case 1:
-                    return new List<Enemy> { CreateEnemy(EnemyTypes.Zombie) };
+                    return new List<Enemy> { CreateEnemy(rand < 0.9 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
             }
             return new List<Enemy>();
         }
@@ -44,7 +47,7 @@ namespace Zerds.Factories
             speed *= DifficultyConstants.SpeedFactor;
             properties.HealthRegen *= DifficultyConstants.HealthFactor;
             properties.ManaRegen *= DifficultyConstants.ManaFactor;
-            enemy.Initialize(health, mana, properties.HealthRegen, properties.ManaRegen, speed);
+            enemy.Initialize(health, mana, properties.HealthRegen, properties.ManaRegen, speed, properties.CritChance);
             enemy.InitializeEnemy();
             enemy.Spawn();
             return enemy;
