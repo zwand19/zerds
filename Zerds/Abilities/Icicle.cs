@@ -12,7 +12,7 @@ namespace Zerds.Abilities
     {
         public float IceballDamage { get; set; }
 
-        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, 0f)
+        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, 0f, "ice-bolt.png")
         {
             IceballDamage = 10;
 
@@ -23,9 +23,9 @@ namespace Zerds.Abilities
             being.Animations.Add(iceballAnimation);
         }
 
-        public override bool Cast()
+        public override void Cast()
         {
-            return BasicMissileCast();
+            BasicMissileCast();
         }
 
         private bool Casted()
@@ -35,14 +35,8 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            Globals.GameState.Missiles.Add(new IceballMissile(Being, new GameObjects.DamageInstance
-            {
-                Creator = Being,
-                Damage = IceballDamage,
-                DamageType = DamageTypes.Frost,
-                IsCritical = false,
-                Knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback)
-            }, Being.Position));
+            var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
+            Globals.GameState.Missiles.Add(new IceballMissile(Being, new GameObjects.DamageInstance(knockback, IceballDamage, DamageTypes.Frost, Being), Being.Position));
             return base.Execute();
         }
     }

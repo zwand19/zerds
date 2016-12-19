@@ -12,7 +12,7 @@ namespace Zerds.Abilities
     {
         public float WandDamage { get; set; }
 
-        public Wand(Being being) : base(AbilityTypes.Wand, being, AbilityConstants.WandCooldown, 0f)
+        public Wand(Being being) : base(AbilityTypes.Wand, being, AbilityConstants.WandCooldown, 0f, "fairy-wand.png")
         {
             WandDamage = 10;
 
@@ -23,9 +23,9 @@ namespace Zerds.Abilities
             being.Animations.Add(wandAnimation);
         }
 
-        public override bool Cast()
+        public override void Cast()
         {
-            return BasicMissileCast();
+            BasicMissileCast();
         }
 
         private bool Casted()
@@ -35,14 +35,8 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            Globals.GameState.Missiles.Add(new WandMissile(Being, new GameObjects.DamageInstance
-            {
-                Creator = Being,
-                Damage = WandDamage,
-                DamageType = DamageTypes.Magic,
-                IsCritical = false,
-                Knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.WandKnockbackLength, AbilityConstants.WandKnockback)
-            }, Being.Position));
+            var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.WandKnockbackLength, AbilityConstants.WandKnockback);
+            Globals.GameState.Missiles.Add(new WandMissile(Being, new GameObjects.DamageInstance(knockback, WandDamage, DamageTypes.Magic, Being), Being.Position));
             return base.Execute();
         }
     }

@@ -13,16 +13,23 @@ namespace Zerds.GameObjects
         public DamageTypes DamageType { get; set; }
         public Being Creator { get; set; }
 
-        public void TryCritical()
+        public DamageInstance(Knockback knockback, float damage, DamageTypes type, Being creator)
         {
+            Knockback = knockback;
+            Damage = damage * (1 + GameplayConstants.DamageFactorPerLevel * Globals.GameState.Level);
+            DamageType = type;
+            Creator = creator;
             var variance = (float)new Random().NextDouble() * GameplayConstants.DamageVariance + 1.0f - GameplayConstants.DamageVariance / 2;
             Damage *= variance;
             if (Creator.IsCritical(DamageType))
             {
                 IsCritical = true;
                 Damage *= GameplayConstants.CriticalDamageBonus;
-                Knockback.Duration = TimeSpan.FromMilliseconds((float)Knockback.Duration.TotalMilliseconds * GameplayConstants.CriticalDamageKnockbackDurationBonus);
-                Knockback.Speed *= GameplayConstants.CriticalDamageKnockbackSpeedBonus;
+                if (Knockback != null)
+                {
+                    Knockback.Duration = TimeSpan.FromMilliseconds((float) Knockback.Duration.TotalMilliseconds * GameplayConstants.CriticalDamageKnockbackDurationBonus);
+                    Knockback.Speed *= GameplayConstants.CriticalDamageKnockbackSpeedBonus;
+                }
             }
         }
     }

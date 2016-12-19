@@ -29,24 +29,26 @@ namespace Zerds.Graphics
 
         public void AddFrame(Rectangle rectangle, TimeSpan duration, Func<bool> func = null)
         {
-            AnimationFrame newFrame = new AnimationFrame
+            _frames.Add(new AnimationFrame
             {
                 SourceRectangle = rectangle,
                 Duration = duration,
                 StartFunc = func
-            };
-
-            _frames.Add(newFrame);
+            });
         }
 
         public void Update(GameTime gameTime)
         {
-            double secondsIntoAnimation =
-                _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
+            var secondsIntoAnimation = _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
 
-            double remainder = secondsIntoAnimation % Duration.TotalSeconds;
+            var remainder = secondsIntoAnimation % Duration.TotalSeconds;
 
             _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
+        }
+
+        public void ResetAnimation()
+        {
+            _timeIntoAnimation = TimeSpan.Zero;
         }
 
         public Rectangle CurrentRectangle
@@ -54,8 +56,8 @@ namespace Zerds.Graphics
             get
             {
                 var frame = GetCurrentAnimationFrame();
-                if (frame != _lastFrame && frame?.StartFunc != null)
-                    frame.StartFunc();
+                if (frame != _lastFrame)
+                    frame?.StartFunc?.Invoke();
                 _lastFrame = frame;
                 return frame.SourceRectangle;
             }

@@ -20,7 +20,6 @@ namespace Zerds.Missiles
 
         protected Missile(string file) : base(file, true)
         {
-            IsActive = true;
             IsAlive = true;
             Opacity = 1;
         }
@@ -43,6 +42,17 @@ namespace Zerds.Missiles
                     }
                 }
             }
+            else if (IsAlive)
+            {
+                foreach (var zerd in Globals.GameState.Zerds.Where(e => e.IsAlive))
+                {
+                    if (zerd.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
+                    {
+                        OnHit(zerd);
+                        return;
+                    }
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -54,7 +64,7 @@ namespace Zerds.Missiles
                 texture: Texture,
                 sourceRectangle: rect,
                 color: Color.White * Opacity,
-                position: new Vector2(X, Y),
+                destinationRectangle: Helpers.CreateRect(X, Y, Width, Height),
                 rotation: angle,
                 origin: new Vector2(rect.Width / 2f, rect.Height / 2f));
             if (Globals.ShowHitboxes)

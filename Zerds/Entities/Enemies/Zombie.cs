@@ -1,32 +1,26 @@
 ﻿using System;
-using System.Linq;
 using Zerds.Graphics;
 using Microsoft.Xna.Framework;
+using Zerds.Abilities;
 using Zerds.Enums;
 using Zerds.AI;
-using Zerds.Factories;
-using Zerds.GameObjects;
+using Zerds.Constants;
 
 namespace Zerds.Entities.Enemies
 {
     public class Zombie : Enemy
     {
         private const int TextureSize = 64;
-        private const int AttackRange = 50;
-        private const int AttackDamage = 8;
-        private bool _attacking;
+        private MeleeAI _ai;
 
-        public Zombie() : base("Entities/Zombie.png")
+        public Zombie() : base(EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", true)
         {
+            _ai = new MeleeAI(this, new Melee(this, 8, 12));
             
-        }
-
-        public override void InitializeEnemy()
-        {
-            BaseSpeed = 75f;
             HitboxSize = 0.8f;
             Width = 64;
             Height = 64;
+            AttackRange = 64;
 
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);
@@ -43,22 +37,24 @@ namespace Zerds.Entities.Enemies
             Animations.Add(walkAnimation);
 
             var attackAnimation = new Animation(AnimationTypes.Attack);
-            attackAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.5));
+            attackAnimation.AddFrame(new Rectangle(TextureSize * 7, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.35));
             attackAnimation.AddFrame(new Rectangle(TextureSize * 8, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.4), AttackedFunc);
             attackAnimation.AddFrame(new Rectangle(TextureSize * 8, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DoneAttackingFunc);
             Animations.Add(attackAnimation);
 
             var dieAnimation = new Animation(AnimationTypes.Death);
-            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 0, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), OnDeath);
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 1, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 2, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 3, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 4, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 5, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
             dieAnimation.AddFrame(new Rectangle(TextureSize * 0, 6, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1));
-            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 6, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), DeathFunc);
+            dieAnimation.AddFrame(new Rectangle(TextureSize * 6, 6, TextureSize, TextureSize), TimeSpan.FromSeconds(0.1), OnDeathFinished);
             Animations.Add(dieAnimation);
         }
+
+        public override AI.AI GetAI() => _ai;
 
         private bool SpawnedFunc()
         {
@@ -66,81 +62,14 @@ namespace Zerds.Entities.Enemies
             return true;
         }
 
-        private bool DeathFunc()
-        {
-            IsActive = false;
-            return true;
-        }
-
         private bool AttackedFunc()
         {
-            var rect = new Rectangle((int)(X + Facing.X * AttackRange * 0.8f) - 10, (int)(Y - Facing.Y * AttackRange * 0.8f) - 10, 20, 20);
-            var rect2 = new Rectangle((int)(X + Facing.X * AttackRange * 0.2f) - 14, (int)(Y - Facing.Y * AttackRange * 0.2f) - 14, 28, 28);
-            foreach (var zerd in Globals.GameState.Zerds)
-            {
-                if (!zerd.Hitbox().Any(hitbox => hitbox.Intersects(rect) || hitbox.Intersects(rect2))) continue;
-                var damageInstance = new DamageInstance
-                {
-                    Creator = this,
-                    Damage = AttackDamage,
-                    Knockback = new Knockback(Facing, new TimeSpan(0, 0, 0, 0, 250), 250f),
-                    DamageType = DamageTypes.Physical,
-                    IsCritical = false
-                };
-                if (new Random().Next(100) < 8)
-                {
-                    damageInstance.Damage *= 2;
-                    damageInstance.IsCritical = true;
-                }
-                damageInstance.DamageBeing(zerd);
-                return true;
-            }
-            return false;
+            return _ai.Attacked();
         }
 
         private bool DoneAttackingFunc()
         {
-            _attacking = false;
-            return true;
-        }
-
-        public override Animation GetCurrentAnimation()
-        {
-            if (!IsAlive)
-                return Animations.Get(AnimationTypes.Death);
-            return !Spawned
-                ? Animations.Get(AnimationTypes.Spawn)
-                : Animations.Get(_attacking ? AnimationTypes.Attack : AnimationTypes.Move);
-        }
-
-        public override void RunAI()
-        {
-            if (_attacking || Stunned)
-                return;
-            var target = this.GetNearestZerd();
-            if (target == null)
-            {
-                Velocity = Vector2.Zero;
-                _attacking = false;
-                return;
-            }
-            if (GetCurrentAnimation().Name == AnimationTypes.Move)
-            {
-                this.Face(target);
-                Velocity = Facing.Normalized();
-            }
-            if (this.DistanceBetween(target) < AttackRange)
-            {
-                Velocity = Vector2.Zero;
-                _attacking = true;
-            }
-        }
-
-        public override void Spawn()
-        {
-            var random = new Random();
-            X = random.Next(Globals.ViewportBounds.Width);
-            Y = random.Next(Globals.ViewportBounds.Height);
+            return _ai.FinishedAttacking();
         }
 
         public override float SpriteRotation()

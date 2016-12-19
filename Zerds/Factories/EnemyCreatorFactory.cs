@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Entities.Enemies;
 using Zerds.Enums;
-using Zerds.Graphics;
 
 namespace Zerds.Factories
 {
@@ -19,9 +15,13 @@ namespace Zerds.Factories
             switch (type)
             {
                 case EnemyTypes.Zombie:
-                    return InitializeEnemy(new Zombie(), EnemyConstants.GetZombieProperties());
+                    return new Zombie();
                 case EnemyTypes.Dog:
-                    return InitializeEnemy(new Dog(), EnemyConstants.GetDogProperties());
+                    return new Dog();
+                case EnemyTypes.Demon:
+                    return new Demon();
+                case EnemyTypes.FrostDemon:
+                    return new FrostDemon();
             }
             throw new ArgumentException("Unknown Enemy Type");
         }
@@ -33,29 +33,36 @@ namespace Zerds.Factories
             {
                 case 1:
                     return new List<Enemy> { CreateEnemy(rand < 0.9 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
+                case 2:
+                    return new List<Enemy> { CreateEnemy(rand < 0.82 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
+                case 3:
+                    return new List<Enemy> {CreateEnemy(rand < 0.5 ? EnemyTypes.Zombie : rand < 0.9 ? EnemyTypes.Dog : rand < 0.95 ? EnemyTypes.Demon : EnemyTypes.FrostDemon)};
+                case 4:
+                    return new List<Enemy> { CreateEnemy(rand < 0.25 ? EnemyTypes.Zombie : rand < 0.5 ? EnemyTypes.Dog : rand < 0.75 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
+                case 5:
+                    return new List<Enemy> { CreateEnemy(rand < 0.15 ? EnemyTypes.Zombie : rand < 0.4 ? EnemyTypes.Dog : rand < 0.7 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
+                case 6:
+                    return new List<Enemy> { CreateEnemy(rand < 0.1 ? EnemyTypes.Zombie : rand < 0.25 ? EnemyTypes.Dog : rand < 0.6 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
             }
             return new List<Enemy>();
         }
 
-        public static Enemy InitializeEnemy(Enemy enemy, EnemyConstants.EnemyProperties properties)
-        {
-            float health = new Random().Next(properties.MaxHealth - properties.MinHealth) + properties.MinHealth;
-            float mana = new Random().Next(properties.MaxMana- properties.MinMana) + properties.MinMana;
-            float speed = (float)new Random().NextDouble() * (properties.MaxSpeed - properties.MinSpeed) + properties.MinSpeed;
-            health *= DifficultyConstants.HealthFactor;
-            mana *= DifficultyConstants.ManaFactor;
-            speed *= DifficultyConstants.SpeedFactor;
-            properties.HealthRegen *= DifficultyConstants.HealthFactor;
-            properties.ManaRegen *= DifficultyConstants.ManaFactor;
-            enemy.Initialize(health, mana, properties.HealthRegen, properties.ManaRegen, speed, properties.CritChance);
-            enemy.InitializeEnemy();
-            enemy.Spawn();
-            return enemy;
-        }
-
         public static void Update(GameTime gameTime)
         {
-            if (Globals.GameState.Enemies.Count() < 2)
+            var enemyDifficulty = Globals.GameState.Enemies.Sum(e =>
+            {
+                if (e is Zombie)
+                    return 5;
+                if (e is Dog)
+                    return 7;
+                if (e is Demon)
+                    return 17;
+                if (e is FrostDemon)
+                    return 17;
+                return 0;
+            });
+            var targetDifficulty = Globals.GameState.Level * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
+            if (enemyDifficulty < targetDifficulty && Globals.GameState.LevelTimeRemaining > TimeSpan.Zero)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());
         }
     }

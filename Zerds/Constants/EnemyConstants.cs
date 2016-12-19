@@ -14,9 +14,7 @@
             public float MaxSpeed { get; set; }
             public float CritChance { get; set; }
         }
-
-        #region Zombie
-
+        
         public static EnemyProperties GetZombieProperties()
         {
             return new EnemyProperties
@@ -43,6 +41,30 @@
             };
         }
 
-        #endregion
+        public static EnemyProperties GetDemonProperties()
+        {
+            return new EnemyProperties
+            {
+                MinHealth = 26,
+                HealthRegen = 1f,
+                MinSpeed = 155.0f,
+                MaxHealth = 32,
+                MaxSpeed = 200.0f,
+                CritChance = 0.12f
+            };
+        }
+
+        public static EnemyProperties GetFrostDemonProperties()
+        {
+            return new EnemyProperties
+            {
+                MinHealth = 26,
+                HealthRegen = 1f,
+                MinSpeed = 170.0f,
+                MaxHealth = 32,
+                MaxSpeed = 210.0f,
+                CritChance = 0.06f
+            };
+        }
     }
 }

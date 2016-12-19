@@ -14,7 +14,7 @@ namespace Zerds.GameObjects
         {
             Direction = direction;
             Duration = duration;
-            MaxDuration = new TimeSpan(0, 0, 0, 0, (int)duration.TotalMilliseconds);
+            MaxDuration = TimeSpan.FromMilliseconds(duration.TotalMilliseconds);
             Speed = speed;
         }
     }

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Zerds.Entities;
 using Zerds.GameObjects;
-using Zerds.Services;
+using Zerds.Input;
 
 namespace Zerds.Factories
 {
@@ -12,11 +11,12 @@ namespace Zerds.Factories
 
         public static void DamageBeing(this DamageInstance damageInstance, Being target)
         {
-            damageInstance.TryCritical();
             target.Health -= damageInstance.Damage;
-            target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(), new System.TimeSpan(0, 0, 1), 250);
+            if (damageInstance.Knockback != null)
+                target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(),
+                    damageInstance.Knockback.MaxDuration, damageInstance.Knockback.Speed);
             if (target is Zerd)
-                ControllerService.GetService(((Zerd)target).PlayerIndex).VibrateController(new System.TimeSpan(0, 0, 0, 0, 250), 1f);
+                ControllerService.Controllers[((Zerd) target).PlayerIndex].VibrateController(TimeSpan.FromMilliseconds(250), 1f);
             AddText(new DamageText(damageInstance, target));
         }
     }

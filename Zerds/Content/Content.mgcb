@@ -13,15 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin DamageText.spritefont
+#begin Pericles.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
-/build:DamageText.spritefont
-
-#begin CriticalDamageText.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:CriticalDamageText.spritefont
+/build:Pericles.spritefont
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zerds.Constants;
 using Zerds.Entities;
+using Zerds.Enums;
 
 namespace Zerds.GameObjects
 {
@@ -13,8 +14,6 @@ namespace Zerds.GameObjects
         public TimeSpan Duration { get; set; }
         public bool IsActive => Duration > TimeSpan.Zero;
         private readonly Color _color;
-        private static SpriteFont _font;
-        private static SpriteFont _criticalFont;
 
         public DamageText(DamageInstance damageInstance, Being target)
         {
@@ -41,12 +40,6 @@ namespace Zerds.GameObjects
             }
         }
 
-        public static void LoadContent()
-        {
-            _font = Globals.ContentManager.Load<SpriteFont>("DamageText");
-            _criticalFont = Globals.ContentManager.Load<SpriteFont>("CriticalDamageText");
-        }
-
         public void Update(GameTime gameTime)
         {
             Duration -= gameTime.ElapsedGameTime;
@@ -55,7 +48,7 @@ namespace Zerds.GameObjects
 
         public void Draw()
         {
-            Globals.SpriteDrawer.DrawString(DamageInstance.IsCritical ? _criticalFont : _font, ((int)DamageInstance.Damage).ToString(), Position, _color);
+            Globals.SpriteDrawer.DrawText(((int) DamageInstance.Damage).ToString(), Position, DamageInstance.IsCritical ? 20f : 14f, color: _color);
         }
     }
 }

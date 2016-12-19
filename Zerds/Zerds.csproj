@@ -100,16 +100,24 @@
     <Compile Include="Abilities\Dash.cs" />
     <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Icicle.cs" />
+    <Compile Include="Abilities\Melee.cs" />
+    <Compile Include="Abilities\RangeAttack.cs" />
     <Compile Include="Abilities\Sprint.cs" />
     <Compile Include="Abilities\Wand.cs" />
+    <Compile Include="AI\AI.cs" />
     <Compile Include="AI\Extensions.cs" />
+    <Compile Include="AI\MeleeAI.cs" />
+    <Compile Include="AI\RangeAI.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
     <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
     <Compile Include="Constants\DisplayConstants.cs" />
     <Compile Include="Constants\EnemyConstants.cs" />
+    <Compile Include="Constants\GameConstants.cs" />
     <Compile Include="Constants\GameplayConstants.cs" />
+    <Compile Include="Entities\Enemies\Demon.cs" />
     <Compile Include="Entities\Enemies\Dog.cs" />
+    <Compile Include="Entities\Enemies\FrostDemon.cs" />
     <Compile Include="Entities\Enemies\Zombie.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\InanimateObject.cs" />
@@ -119,8 +127,11 @@
     <Compile Include="Enums\DamageTypes.cs" />
     <Compile Include="Enums\Difficulty.cs" />
     <Compile Include="Enums\BeingTypes.cs" />
+    <Compile Include="Enums\EnemyStates.cs" />
     <Compile Include="Enums\EnemyTypes.cs" />
+    <Compile Include="Enums\FontTypes.cs" />
     <Compile Include="Enums\MapTypes.cs" />
+    <Compile Include="Enums\MissileTypes.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Factories\BuffFactory.cs" />
     <Compile Include="Factories\DamageFactory.cs" />
@@ -136,9 +147,22 @@
     <Compile Include="GameObjects\DamageText.cs" />
     <Compile Include="GameObjects\Knockback.cs" />
     <Compile Include="GameObjects\Map.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Input\Controller.cs" />
+    <Compile Include="IntermissionScreen.cs" />
+    <Compile Include="Items\HealthPotion.cs" />
+    <Compile Include="Items\ManaPotion.cs" />
+    <Compile Include="Items\PickupItem.cs" />
+    <Compile Include="Items\Potion.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="Menus\GameSetup.cs" />
+    <Compile Include="Menus\MainMenu.cs" />
+    <Compile Include="Menus\MenuList.cs" />
+    <Compile Include="Menus\MenuListItem.cs" />
+    <Compile Include="Missiles\DemonMissile.cs" />
     <Compile Include="Missiles\FireballMissile.cs" />
-    <Compile Include="Missiles\FrostOrbMissile.cs" />
+    <Compile Include="Missiles\FrostDemonMissile.cs" />
+    <Compile Include="Missiles\IceballMissile.cs" />
     <Compile Include="Missiles\Missile.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameSettings.cs" />
@@ -157,21 +181,16 @@
     </Compile>
     <Compile Include="Graphics\AnimationList.cs" />
     <Compile Include="Missiles\WandMissile.cs" />
-    <Compile Include="Services\ControllerService.cs" />
+    <Compile Include="Input\ControllerService.cs" />
     <Compile Include="ZerdGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\CriticalDamageText.spritefont">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\DamageText.spritefont">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\CriticalDamageText.xnb">
+    <None Include="Content\Pericles.spritefont">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Content\DamageText.xnb">
+    <Compile Include="Enums\GameStates.cs" />
+    <None Include="Content\Pericles.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="project.json" />
@@ -192,9 +211,11 @@
     <Content Include="Content\Buffs\dash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Entities\Demon.png" />
     <Content Include="Content\Entities\Dog.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Entities\FrostDemon.png" />
     <Content Include="Content\Entities\Zerd.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -204,6 +225,25 @@
     <Content Include="Content\HUD\Witch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\charging-bull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\fairy-wand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\fire-zone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\ice-bolt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\sprint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\magic-books.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\potions.png" />
     <Content Include="Content\Maps\DungeonTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

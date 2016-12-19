@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 using Zerds.Entities;
 using Zerds.Graphics;
 
@@ -22,7 +21,7 @@ namespace Zerds.Buffs
         public Texture2D Texture { get; set; }
         public bool GrantsInvulnerability { get; internal set; }
 
-        public Buff(Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0)
+        protected Buff(Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0)
         {
             Length = length;
             MovementSpeedFactor = movementSpeedFactor;
@@ -44,7 +43,7 @@ namespace Zerds.Buffs
                 sourceRectangle: Animation.CurrentRectangle,
                 color: Color.White,
                 destinationRectangle: new Rectangle((int)Being.X, (int)Being.Y, (int)Being.Width, (int)Being.Height),
-                origin: new Vector2(Texture.Width / 2, Texture.Height / 2));
+                origin: new Vector2(Texture.Width / 2.0f, Texture.Height / 2.0f));
         }
 
         public void Update(GameTime gameTime)

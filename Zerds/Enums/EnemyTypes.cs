@@ -3,6 +3,8 @@
     public enum EnemyTypes
     {
         Zombie,
-        Dog
+        Dog,
+        Demon,
+        FrostDemon
     }
 }

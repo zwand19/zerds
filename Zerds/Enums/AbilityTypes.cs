@@ -6,6 +6,7 @@
         Sprint,
         Fireball,
         Iceball,
-        Wand
+        Wand,
+        Melee
     }
 }

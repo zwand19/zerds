@@ -15,9 +15,9 @@ with.
 
     <!--
     Size is a float value, measured in points. Modify this value to change
-    the size of the font.
+    the size of the font.C:\Users\zwand\Documents\Visual Studio 2015\Projects\Zerds\Zerds\Content\Pericles.spritefont
     -->
-    <Size>14</Size>
+    <Size>50</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change

@@ -23,5 +23,10 @@ namespace Zerds.Graphics
         {
             return Animations.First(a => a.Name == name);
         }
+
+        public void ResetAll()
+        {
+            Animations.ForEach(a => a.ResetAnimation());
+        }
     }
 }

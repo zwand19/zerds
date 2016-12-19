@@ -7,7 +7,7 @@ namespace Zerds.Abilities
 {
     public class Dash : Ability
     {
-        public Dash(Being being) : base(AbilityTypes.Dash, being, AbilityConstants.DashCooldown, 0f)
+        public Dash(Being being) : base(AbilityTypes.Dash, being, AbilityConstants.DashCooldown, 0f, "charging-bull.png")
         {
 
         }

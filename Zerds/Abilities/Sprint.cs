@@ -7,7 +7,7 @@ namespace Zerds.Abilities
 {
     public class Sprint : Ability
     {
-        public Sprint(Being being) : base(AbilityTypes.Sprint, being, AbilityConstants.SprintCooldown, 0f)
+        public Sprint(Being being) : base(AbilityTypes.Sprint, being, AbilityConstants.SprintCooldown, 0f, "sprint.png")
         {
 
         }

@@ -12,7 +12,7 @@ namespace Zerds.Abilities
     {
         public float FireballDamage { get; set; }
 
-        public Fireball(Being being) : base(AbilityTypes.Fireball, being, AbilityConstants.FireballCooldown, 0f)
+        public Fireball(Being being) : base(AbilityTypes.Fireball, being, AbilityConstants.FireballCooldown, 0f, "fire-zone.png")
         {
             FireballDamage = 10;
 
@@ -23,9 +23,9 @@ namespace Zerds.Abilities
             being.Animations.Add(fireballAnimation);
         }
 
-        public override bool Cast()
+        public override void Cast()
         {
-            return BasicMissileCast();
+            BasicMissileCast();
         }
 
         private bool Casted()
@@ -35,14 +35,8 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            Globals.GameState.Missiles.Add(new FireballMissile(Being, new GameObjects.DamageInstance
-            {
-                Creator = Being,
-                Damage = FireballDamage,
-                DamageType = DamageTypes.Fire,
-                IsCritical = false,
-                Knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.FireballKnockbackLength, AbilityConstants.FireballKnockback)
-            }, Being.Position));
+            var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.FireballKnockbackLength, AbilityConstants.FireballKnockback);
+            Globals.GameState.Missiles.Add(new FireballMissile(Being, new GameObjects.DamageInstance(knockback, FireballDamage, DamageTypes.Fire, Being), Being.Position));
             return base.Execute();
         }
     }

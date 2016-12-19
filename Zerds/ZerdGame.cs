@@ -1,10 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
+using Zerds.Input;
+using Zerds.Menus;
 
 namespace Zerds
 {
@@ -14,9 +17,15 @@ namespace Zerds
     public class ZerdGame : Game
     {
         private List<Player> _players;
+        private GameStates _state;
+        private MainMenu _mainMenu;
+        private GameSetup _gameSetup;
+        private IntermissionScreen _intermissionScreen;
 
         public ZerdGame()
         {
+            _state = GameStates.MainMenu;
+            // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -30,6 +39,10 @@ namespace Zerds
         protected override void Initialize()
         {
             TextureCacheFactory.Initialize(GraphicsDevice);
+            ControllerService.Initialize();
+
+            Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);
+            _mainMenu = new MainMenu(SetupGameFunc);
 
             base.Initialize();
         }
@@ -50,10 +63,28 @@ namespace Zerds
                 new Player("Player Three", PlayerIndex.Three),
                 new Player("Player Four", PlayerIndex.Four)
             };
-            Globals.GameState = new GameState(GraphicsDevice, MapTypes.Dungeon, Window.ClientBounds, _players);
+            Globals.GameState = new GameState(_players);
             Globals.Initialize();
-            DamageText.LoadContent();
+            Globals.LoadFont("Pericles", FontTypes.Pericles);
             HUD.Initialize(GraphicsDevice);
+        }
+        
+        private bool SetupGameFunc()
+        {
+            _state = GameStates.GameSetup;
+            _mainMenu = null;
+            _gameSetup = new GameSetup(PlayGameFunc);
+            return true;
+        }
+
+        private bool PlayGameFunc(List<bool> players)
+        {
+            _gameSetup = null;
+            _state = GameStates.Game;
+            for (var i=0; i < players.Count; i++)
+                if (players[i]) _players[i].JoinGame();
+
+            return true;
         }
 
         /// <summary>
@@ -72,8 +103,34 @@ namespace Zerds
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            _players.ForEach(p => p.Update(gameTime));
-            Globals.GameState.Update(gameTime);
+            ControllerService.Update(gameTime);
+            switch (_state)
+            {
+                case GameStates.MainMenu:
+                    _mainMenu.Update();
+                    break;
+                case GameStates.GameSetup:
+                    _gameSetup.Update();
+                    break;
+                case GameStates.Game:
+                    _players.ForEach(p => p.Update(gameTime));
+                    Globals.GameState.Update(gameTime);
+                    if (Globals.GameState.LevelTimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
+                    {
+                        _state = GameStates.Intermission;
+                        _intermissionScreen = new IntermissionScreen();
+                    }
+                    break;
+                case GameStates.Intermission:
+                    _intermissionScreen.Update();
+                    if (_intermissionScreen.Ready)
+                    {
+                        _intermissionScreen = null;
+                        _state = GameStates.Game; 
+                        Globals.GameState.StartLevel();
+                    }
+                    return;
+            }
             base.Update(gameTime);
         }
 
@@ -86,8 +143,23 @@ namespace Zerds
             Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
             GraphicsDevice.Clear(Color.Black);
 
-            Globals.GameState.Draw();
-            HUD.Draw();
+            switch (_state)
+            {
+                case GameStates.MainMenu:
+                    _mainMenu.Draw();
+                    break;
+                case GameStates.GameSetup:
+                    _gameSetup.Draw();
+                    break;
+                case GameStates.Game:
+                    Globals.GameState.Draw();
+                    HUD.Draw();
+                    break;
+                case GameStates.Intermission:
+                    Globals.GameState.Draw();
+                    _intermissionScreen.Draw();
+                    break;
+            }
         }
     }
 }

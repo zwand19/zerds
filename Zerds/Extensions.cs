@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using Zerds.Entities;
+using Zerds.Enums;
 
 namespace Zerds
 {
@@ -35,6 +38,11 @@ namespace Zerds
             return v.RotateRadians(degrees * DegToRad);
         }
 
+        public static Vector2 Move(this Vector2 v, float x = 0f, float y = 0f)
+        {
+            return new Vector2(v.X + x, v.Y + y);
+        }
+
         public static Rectangle RotateAround(this Rectangle rect, Point p, float radians)
         {
             var center = new Vector2(rect.Center.X - p.X, rect.Center.Y - p.Y);
@@ -54,6 +62,45 @@ namespace Zerds
         {
             v.Normalize();
             return v;
+        }
+
+        public static Rectangle BasicHitbox(this Entity r)
+        {
+            return new Rectangle((int) (r.X - r.Width*r.HitboxSize/2), (int) (r.Y - r.Width*r.HitboxSize/2), (int) (r.Width*r.HitboxSize),
+                (int) (r.Width*r.HitboxSize));
+        }
+
+        public static Rectangle Scale(this Rectangle r, float scale)
+        {
+            return Helpers.CreateRect(r.X + r.Width * (1 - scale) / 2, r.Y + r.Height * (1 - scale) / 2, r.Width * scale, r.Height * scale);
+        }
+
+        public static bool Intersects(this Entity r1, Entity r2)
+        {
+            return r1.Hitbox().Any(hitbox => r2.Hitbox().Any(hitbox.Intersects));
+        }
+
+        public static void DrawTextLeftAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize,
+            FontTypes type = FontTypes.Pericles, Color? color = null)
+        {
+            var font = Globals.Fonts[type];
+            var scale = fontSize / 50f;
+            var fontColor = color ?? Color.Black;
+            Globals.SpriteDrawer.DrawString(font, text, position, fontColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        }
+
+        public static void DrawText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        {
+            var font = Globals.Fonts[type];
+            var size = font.MeasureString(text);
+            spriteBatch.DrawTextLeftAlign(text, position - fontSize * size / 100f, fontSize, type, color);
+        }
+
+        public static void DrawRect(this SpriteBatch spriteBatch, Rectangle rect, Color? color = null)
+        {
+            var colorVal = color ?? Color.Black;
+            spriteBatch.Draw(Globals.WhiteTexture, rect, colorVal);
+
         }
     }
 }

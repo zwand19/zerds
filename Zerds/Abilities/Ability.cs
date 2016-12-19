@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 using Zerds.Entities;
 using Zerds.Enums;
+using Zerds.Factories;
 
 namespace Zerds.Abilities
 {
@@ -14,25 +16,29 @@ namespace Zerds.Abilities
         public Func<bool> Callback { get; set; }
         public bool Active { get; set; }
         public float ManaCost { get; set; }
+        public float Range { get; set; }
+        public Texture2D Texture { get; set; }
 
-        protected Ability(AbilityTypes type, Being being, TimeSpan cooldown, float manaCost)
+        protected Ability(AbilityTypes type, Being being, TimeSpan cooldown, float manaCost, string iconFile)
         {
             Type = type;
             Being = being;
             FullCooldown = cooldown;
             ManaCost = manaCost;
+            Texture = iconFile == "" ? null : TextureCacheFactory.GetOnce($"Icons/{iconFile}");
         }
 
-        public bool BasicMissileCast()
+        public void BasicMissileCast()
         {
-            if (Cooldown > TimeSpan.Zero) return false;
-            if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return false;
-            return Active = true;
+            if (Cooldown > TimeSpan.Zero) return;
+            if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
+            Active = true;
         }
 
-        public virtual bool Cast()
+        public virtual void Cast()
         {
-            return Cooldown <= TimeSpan.Zero && Execute();
+            Being.Animations.ResetAll();
+            if (Cooldown <= TimeSpan.Zero) Execute();
         }
 
         protected virtual bool Execute()

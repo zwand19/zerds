@@ -12,7 +12,7 @@ namespace Zerds.Constants
         public static TimeSpan SprintCooldown = TimeSpan.FromSeconds(10);
         public static TimeSpan SprintLength => new TimeSpan(0, 0, 2);
 
-        public static float ColdSpeedFactor = 0.6f;
+        public static float ColdSpeedFactor = -150f;
 
         public const float WandKnockback = 200f;
         public const float WandSpeed = 600f;
@@ -26,7 +26,7 @@ namespace Zerds.Constants
         public const float IceballSpeed = 720f;
         public const float IceballDistance = 650f;
         public const float IceballManaCost = 50f;
-        public static float IceballColdLength = 1500;
+        public static TimeSpan IceballColdLength => TimeSpan.FromMilliseconds(5000);
         public static TimeSpan IceballKnockbackLength => TimeSpan.Zero;
         public static TimeSpan IceballCastTime => TimeSpan.FromMilliseconds(450);
         public static TimeSpan IceballFollowThroughTime => TimeSpan.FromMilliseconds(200);
@@ -42,5 +42,18 @@ namespace Zerds.Constants
         public static TimeSpan FireballCastTime => TimeSpan.FromMilliseconds(550);
         public static TimeSpan FireballFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan FireballCooldown = TimeSpan.FromMilliseconds(2500);
+        
+        public const float DemonMissileKnockback = 350f;
+        public const float DemonMissileSpeed = 550f;
+        public const float DemonMissileDistance = 750f;
+        public const float DemonMissileBurnDamagePercentage = 0.2f;
+        public static TimeSpan DemonMissileBurnLength => TimeSpan.FromMilliseconds(1500);
+        public static TimeSpan DemonMissileKnockbackLength => TimeSpan.FromMilliseconds(315);
+        public static TimeSpan DemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
+        
+        public const float FrostDemonMissileSpeed = 550f;
+        public const float FrostDemonMissileLength = 700f;
+        public static TimeSpan FrostDemonColdLength => TimeSpan.FromMilliseconds(2200);
+        public static TimeSpan FrostDemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
     }
 }

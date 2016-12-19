@@ -21,7 +21,6 @@ namespace Zerds.Entities
         public float CriticalChance { get; set; }
         public Knockback Knockback { get; set; }
         public List<Buff> Buffs { get; set; }
-        public float HitboxSize = 1f;
         public Vector2 CastPoint { get; set; }
 
         public bool IsAlive => Health > 0;
@@ -34,19 +33,6 @@ namespace Zerds.Entities
         protected Being(string file, bool cache) : base(file, cache)
         {
             Buffs = new List<Buff>();
-            IsActive = true;
-        }
-
-        public void Initialize(float health, float mana, float healthRegen, float manaRegen, float speed, float critChance)
-        {
-            Health = health;
-            MaxHealth = health;
-            Mana = mana;
-            MaxMana = mana;
-            HealthRegen = healthRegen;
-            ManaRegen = manaRegen;
-            BaseSpeed = speed;
-            CriticalChance = critChance;
         }
 
         public bool IsCritical(DamageTypes type)
@@ -74,9 +60,7 @@ namespace Zerds.Entities
 
         public override List<Rectangle> Hitbox()
         {
-            var halfSize = Width * HitboxSize / 2;
-            var rect = Invulnerable ? Rectangle.Empty : new Rectangle((int)(X - halfSize), (int)(Y - halfSize), (int)(halfSize * 2), (int)(halfSize * 2));
-            return new List<Rectangle> { rect };
+            return new List<Rectangle> {this.BasicHitbox()};
         }
 
         public virtual void DrawHealthbar()
@@ -95,6 +79,8 @@ namespace Zerds.Entities
             if (!IsAlive)
             {
                 Velocity = Vector2.Zero;
+                Speed = 0;
+                Knockback = null;
             }
             else
             {
@@ -106,6 +92,9 @@ namespace Zerds.Entities
                     Health -= b.DamagePerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     b.TimeRemaining -= gameTime.ElapsedGameTime;
                 });
+
+                Speed = MathHelper.Clamp(Speed, GameplayConstants.MinSpeed, GameplayConstants.MaxSpeed);
+
                 Buffs = Buffs.Where(b => b.TimeRemaining > TimeSpan.Zero).ToList();
 
                 Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -120,12 +109,15 @@ namespace Zerds.Entities
                 }
                 else
                 {
-                    X += (int)(Knockback.Direction.X * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
-                            (float)Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
-                    Y += (int)(Knockback.Direction.Y * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
-                            (float)Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
+                    if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero)
+                    {
+                        X += (int) (Knockback.Direction.X * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
+                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
+                        Y += (int) (Knockback.Direction.Y * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
+                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
+                    }
                     Knockback.Duration -= gameTime.ElapsedGameTime;
-                    Facing = Knockback.Direction.Rotate(180);
+                    Facing = Knockback.Direction;
                     if (Knockback.Duration < TimeSpan.Zero)
                         Knockback = null;
                 }
@@ -134,6 +126,11 @@ namespace Zerds.Entities
                 {
                     X = MathHelper.Clamp(X, 32, Globals.ViewportBounds.Width - 32);
                     Y = MathHelper.Clamp(Y, 32, Globals.ViewportBounds.Height - 32);
+                }
+                else
+                {
+                    X = MathHelper.Clamp(X, - 150, Globals.ViewportBounds.Width + 300);
+                    Y = MathHelper.Clamp(Y, - 150, Globals.ViewportBounds.Height + 300);
                 }
                 Health = MathHelper.Clamp(Health, 0, MaxHealth);
                 Mana = MathHelper.Clamp(Mana, 0, MaxMana);
