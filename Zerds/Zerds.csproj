@@ -115,6 +115,7 @@
     <Compile Include="Constants\EnemyConstants.cs" />
     <Compile Include="Constants\GameConstants.cs" />
     <Compile Include="Constants\GameplayConstants.cs" />
+    <Compile Include="Constants\SkillConstants.cs" />
     <Compile Include="Entities\Enemies\Demon.cs" />
     <Compile Include="Entities\Enemies\Dog.cs" />
     <Compile Include="Entities\Enemies\FrostDemon.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="GameObjects\DamageText.cs" />
     <Compile Include="GameObjects\Knockback.cs" />
     <Compile Include="GameObjects\Map.cs" />
+    <Compile Include="GameObjects\PlayerSkills.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Input\Controller.cs" />
     <Compile Include="IntermissionScreen.cs" />
@@ -159,6 +161,8 @@
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="Menus\MenuList.cs" />
     <Compile Include="Menus\MenuListItem.cs" />
+    <Compile Include="Menus\SkillTree.cs" />
+    <Compile Include="Menus\SkillTreeItem.cs" />
     <Compile Include="Missiles\DemonMissile.cs" />
     <Compile Include="Missiles\FireballMissile.cs" />
     <Compile Include="Missiles\FrostDemonMissile.cs" />
@@ -257,6 +261,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\orbs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\devastation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\fire_mastery.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\improved_fireball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\improved_iceball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\improved_wand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\walking-boot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />

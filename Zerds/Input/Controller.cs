@@ -23,6 +23,8 @@ namespace Zerds.Input
             RightStickDirection = new Vector2(0, 0);
             PlayerIndex = index;
         }
+
+        public bool IsPressed(Buttons button) => ButtonsPressed.Contains(button);
         
         public void Update(GameTime gameTime)
         {

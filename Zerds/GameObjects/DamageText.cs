@@ -42,8 +42,8 @@ namespace Zerds.GameObjects
 
         public void Update(GameTime gameTime)
         {
-            Duration -= gameTime.ElapsedGameTime;
-            Position = new Vector2(Position.X, Position.Y - DisplayConstants.DamageTextSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+            Duration = Duration.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
+            Position = new Vector2(Position.X, Position.Y - DisplayConstants.DamageTextSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed);
         }
 
         public void Draw()

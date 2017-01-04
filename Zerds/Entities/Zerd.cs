@@ -37,7 +37,6 @@ namespace Zerds.Entities
             Abilities = new List<Ability>
             {
                 new Dash(this),
-                new Sprint(this),
                 new Fireball(this),
                 new Wand(this),
                 new Iceball(this)

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 
@@ -100,7 +102,65 @@ namespace Zerds
         {
             var colorVal = color ?? Color.Black;
             spriteBatch.Draw(Globals.WhiteTexture, rect, colorVal);
+        }
 
+        public static TimeSpan SubtractWithGameSpeed(this TimeSpan t1, TimeSpan t2)
+        {
+            return t1.Subtract(TimeSpan.FromMilliseconds(t2.TotalMilliseconds * Globals.GameState.GameSpeed));
+        }
+
+        public static TimeSpan AddWithGameSpeed(this TimeSpan t1, TimeSpan t2)
+        {
+            return t1.Add(TimeSpan.FromMilliseconds(t2.TotalMilliseconds * Globals.GameState.GameSpeed));
+        }
+
+        public static void DrawLine(this SpriteBatch sb, Vector2 start, Vector2 end, int width = 1, Color? color = null)
+        {
+            var colorVal = color ?? Color.Black; 
+            var edge = end - start;
+            // calculate angle to rotate line
+            var angle = (float)Math.Atan2(edge.Y, edge.X);
+            
+            sb.Draw(Globals.WhiteTexture,
+                new Rectangle(// rectangle defines shape of line and position of start of line
+                    (int)start.X,
+                    (int)start.Y,
+                    (int)edge.Length(), //sb will strech the texture to fill this rectangle
+                    width), //width of line, change this to make thicker line
+                null,
+                colorVal, //colour of line
+                angle,     //angle of line (calulated above)
+                new Vector2(0, 0), // point in line about which to rotate
+                SpriteEffects.None,
+                0);
+
+        }
+
+        public static string Wrap(this string text, float maxLineWidth, float fontSize, FontTypes fontType = FontTypes.Pericles)
+        {
+            var font = Globals.Fonts[fontType];
+            var words = text.Split(' ');
+            var sb = new StringBuilder();
+            var lineWidth = 0f;
+            var spaceWidth = font.MeasureString(" ").X;
+
+            foreach (var word in words)
+            {
+                var size = font.MeasureString(word) * fontSize / CodingConstants.FontSize;
+
+                if (lineWidth + size.X < maxLineWidth)
+                {
+                    sb.Append(word + " ");
+                    lineWidth += size.X + spaceWidth;
+                }
+                else
+                {
+                    sb.Append("\n" + word + " ");
+                    lineWidth = size.X + spaceWidth;
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

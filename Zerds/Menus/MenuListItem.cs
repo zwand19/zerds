@@ -5,7 +5,7 @@ namespace Zerds.Menus
     public class MenuListItem
     {
         public Func<bool> Callback { get; }
-        public string Text { get; }
+        public string Text { get; set; }
 
         public MenuListItem(string text, Func<bool> callback)
         {

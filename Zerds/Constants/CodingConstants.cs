@@ -6,5 +6,6 @@
         public const float JoystickTolerance = 0.15f;
         public const float TriggerPress = 0.25f;
         public const float JoystickPress = 0.35f;
+        public const float FontSize = 50f;
     }
 }

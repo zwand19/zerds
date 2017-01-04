@@ -14,6 +14,7 @@ namespace Zerds
     public class GameState
     {
         public int Level { get; set; }
+        public float GameSpeed { get; set; }
         public TimeSpan LevelTimeRemaining { get; set; }
         public TimeSpan TimeIntoLevel => GameplayConstants.LevelLength - LevelTimeRemaining;
         public List<Zerd> Zerds { get; set; }
@@ -38,6 +39,7 @@ namespace Zerds
             Missiles = new List<Missile>();
             DamageTexts = new List<DamageText>();
             Items = new List<PickupItem>();
+            GameSpeed = 0.9f;
             DamageFactory.AddText = text =>
             {
                 DamageTexts.Add(text);
@@ -51,6 +53,13 @@ namespace Zerds
         {
             Level++;
             LevelTimeRemaining = GameplayConstants.LevelLength;
+            Players.ForEach(p =>
+            {
+                p.FloatingSkillPoints += GameplayConstants.FloatingPointsPerLevel;
+                p.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                p.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                p.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+            });
         }
 
         public void Draw()

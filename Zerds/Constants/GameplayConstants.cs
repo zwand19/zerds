@@ -4,9 +4,12 @@ namespace Zerds.Constants
 {
     public static class GameplayConstants
     {
-        public static TimeSpan LevelLength = TimeSpan.FromSeconds(20);
+        public static TimeSpan LevelLength = TimeSpan.FromSeconds(2);
         public static float HealthFactorPerLevel = 0.3f;
         public static float DamageFactorPerLevel = 0.12f;
+
+        public const int FloatingPointsPerLevel = 3;
+        public const int SkillPointsPerLevel = 3;
 
         public const float BackpedalFactor = 0.35f;
         public const float SideStepFactor = 0.65f;

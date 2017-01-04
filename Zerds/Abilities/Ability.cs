@@ -49,7 +49,7 @@ namespace Zerds.Abilities
 
         public void Update(GameTime gameTime)
         {
-            Cooldown -= gameTime.ElapsedGameTime;
+            Cooldown = Cooldown.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
             if (Cooldown < TimeSpan.Zero)
                 Cooldown = TimeSpan.Zero;
         }

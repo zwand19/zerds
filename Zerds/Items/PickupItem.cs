@@ -25,8 +25,8 @@ namespace Zerds.Items
 
         public override void Update(GameTime gameTime)
         {
-            Duration += gameTime.ElapsedGameTime;
-            Speed -= GameplayConstants.PickupItemSpeedDecay * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            Duration.AddWithGameSpeed(gameTime.ElapsedGameTime);
+            Speed -= GameplayConstants.PickupItemSpeedDecay * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
             if (Duration > GameplayConstants.PickupItemLength)
                 IsActive = false;
             Globals.GameState.Zerds.ForEach(z =>

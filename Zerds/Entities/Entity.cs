@@ -45,8 +45,8 @@ namespace Zerds.Entities
         public virtual void Update(GameTime gameTime)
         {
             if (Speed < 0) Speed = 0;
-            X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+            Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
 
             GetCurrentAnimation().Update(gameTime);
         }

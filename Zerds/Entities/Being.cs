@@ -90,33 +90,35 @@ namespace Zerds.Entities
                 {
                     Speed += b.MovementSpeedFactor;
                     Health -= b.DamagePerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    b.TimeRemaining -= gameTime.ElapsedGameTime;
+                    b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                 });
 
                 Speed = MathHelper.Clamp(Speed, GameplayConstants.MinSpeed, GameplayConstants.MaxSpeed);
 
                 Buffs = Buffs.Where(b => b.TimeRemaining > TimeSpan.Zero).ToList();
 
-                Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
 
                 if (Knockback == null)
                 {
                     var angle = Velocity.AngleBetween(Facing);
                     Speed *= angle < GameplayConstants.ZerdFrontFacingAngle ? 1 : angle > 180 - GameplayConstants.ZerdFrontFacingAngle ? GameplayConstants.BackpedalFactor : GameplayConstants.SideStepFactor;
-                    X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                    Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
                 }
                 else
                 {
                     if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero)
                     {
                         X += (int) (Knockback.Direction.X * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
-                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
+                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
+                             Globals.GameState.GameSpeed;
                         Y += (int) (Knockback.Direction.Y * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
-                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay));
+                                    (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
+                             Globals.GameState.GameSpeed;
                     }
-                    Knockback.Duration -= gameTime.ElapsedGameTime;
+                    Knockback.Duration = Knockback.Duration.Subtract(gameTime.ElapsedGameTime);
                     Facing = Knockback.Direction;
                     if (Knockback.Duration < TimeSpan.Zero)
                         Knockback = null;

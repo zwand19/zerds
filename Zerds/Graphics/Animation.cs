@@ -39,7 +39,7 @@ namespace Zerds.Graphics
 
         public void Update(GameTime gameTime)
         {
-            var secondsIntoAnimation = _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
+            var secondsIntoAnimation = _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
 
             var remainder = secondsIntoAnimation % Duration.TotalSeconds;
 

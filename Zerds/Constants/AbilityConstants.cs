@@ -8,9 +8,10 @@ namespace Zerds.Constants
         public static TimeSpan DashCooldown = TimeSpan.FromSeconds(10);
         public static TimeSpan DashLength => new TimeSpan(0, 0, 0, 0, 300);
         
-        public const float SprintBonus = 120f;
+        public const float SprintBonus = 175f;
         public static TimeSpan SprintCooldown = TimeSpan.FromSeconds(10);
         public static TimeSpan SprintLength => new TimeSpan(0, 0, 2);
+        public const float SprintManaPerSecond = 15f;
 
         public static float ColdSpeedFactor = -150f;
 
