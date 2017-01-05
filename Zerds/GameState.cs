@@ -56,9 +56,9 @@ namespace Zerds
             Players.ForEach(p =>
             {
                 p.FloatingSkillPoints += GameplayConstants.FloatingPointsPerLevel;
-                p.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                p.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                p.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                p.Skills.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                p.Skills.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                p.Skills.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
             });
         }
 

@@ -36,7 +36,8 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.WandKnockbackLength, AbilityConstants.WandKnockback);
-            Globals.GameState.Missiles.Add(new WandMissile(Being, new GameObjects.DamageInstance(knockback, WandDamage, DamageTypes.Magic, Being), Being.Position));
+            var damage = WandDamage * (1 + Helpers.GetPlayer(Being as Zerd).Skills.ImprovedWand * SkillConstants.ImprovedWandStat / 100);
+            Globals.GameState.Missiles.Add(new WandMissile(Being, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Magic, Being), Being.Position));
             return base.Execute();
         }
     }

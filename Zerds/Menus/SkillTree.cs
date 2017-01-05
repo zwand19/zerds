@@ -44,11 +44,14 @@ namespace Zerds.Menus
 
             if (ControllerService.Controllers[_playerIndex].IsPressed(Buttons.A))
             {
-                if (PointsAvailable > 0 && Selected.PointsSpent < Selected.MaxPoints && PointsSpent >= Selected.Row * 5 &&
+                if ((PointsAvailable > 0 || Globals.GameState.Players.First(p => p.PlayerIndex == _playerIndex).FloatingSkillPoints > 0) && Selected.PointsSpent < Selected.MaxPoints && PointsSpent >= Selected.Row * 5 &&
                     (Selected.Parent == null || Selected.Parent.PointsSpent == Selected.MaxPoints))
                 {
                     Selected.PointsSpent++;
-                    PointsAvailable--;
+                    if (PointsAvailable > 0)
+                        PointsAvailable--;
+                    else
+                        Globals.GameState.Players.First(p => p.PlayerIndex == _playerIndex).FloatingSkillPoints--;
                 }
             }
 

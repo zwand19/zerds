@@ -81,7 +81,8 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new ColdBuff(target, AbilityConstants.IceballColdLength));
+            var slowLevel = AbilityConstants.ColdSpeedFactor * (1 + Helpers.GetPlayer(Creator as Zerd).Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+            target.AddBuff(new ColdBuff(target, AbilityConstants.IceballColdLength, slowLevel));
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Zerds.Entities
             Buffs = new List<Buff>();
         }
 
-        public bool IsCritical(DamageTypes type)
+        public virtual bool IsCritical(DamageTypes type)
         {
             return new Random().NextDouble() < CriticalChance;
         }
@@ -85,7 +85,10 @@ namespace Zerds.Entities
             else
             {
                 Speed = BaseSpeed;
-                
+
+                if (this is Zerd)
+                    Speed *= 1 + Helpers.GetPlayer(this as Zerd).Skills.Swift * SkillConstants.SwiftStat / 100;
+
                 Buffs.ForEach(b =>
                 {
                     Speed += b.MovementSpeedFactor;

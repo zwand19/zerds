@@ -16,7 +16,7 @@ namespace Zerds.Entities
         public PlayerIndex PlayerIndex { get; private set; }
         
 
-        public Zerd(PlayerIndex playerIndex) : base("Entities/Zerd.png", false)
+        public Zerd(PlayerIndex playerIndex, string zerdFile) : base(zerdFile, false)
         {
             PlayerIndex = playerIndex;
             X = 650;
@@ -68,6 +68,14 @@ namespace Zerds.Entities
             if (Velocity.Length() > Vector2.Zero.Length())
                 return Animations.Get(AnimationTypes.Move);
             return Animations.Get(AnimationTypes.Stand);
+        }
+
+        public override bool IsCritical(DamageTypes type)
+        {
+            var chance = CriticalChance;
+            if (type == DamageTypes.Fire)
+                chance += Helpers.GetPlayer(this).Skills.Devastation * SkillConstants.DevastationStat / 100;
+            return new Random().NextDouble() < chance;
         }
 
         public void ControllerUpdate(float leftTrigger, float rightTrigger, Vector2 leftStickDirection, Vector2 rightStickDirection)

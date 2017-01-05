@@ -1,4 +1,5 @@
-﻿using Zerds.Constants;
+﻿using System;
+using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
@@ -15,7 +16,8 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             Being.AddBuff(BuffTypes.Dash);
-            return base.Execute();
+            Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds - Helpers.GetPlayer(Being as Zerd).Skills.Dancer * SkillConstants.DancerStat);
+            return true;
         }
     }
 }

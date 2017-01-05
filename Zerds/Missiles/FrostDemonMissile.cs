@@ -91,7 +91,7 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new ColdBuff(target, AbilityConstants.FrostDemonColdLength));
+            target.AddBuff(new ColdBuff(target, AbilityConstants.FrostDemonColdLength, AbilityConstants.FrostDemonSlowAmount));
         }
     }
 }

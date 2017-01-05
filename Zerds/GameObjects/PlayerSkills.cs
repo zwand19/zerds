@@ -11,8 +11,7 @@ namespace Zerds.GameObjects
         public SkillTree FireSkillTree { get; set; }
         public SkillTree ArcaneSkillTree { get; set; }
         public SkillTree FrostSkillTree { get; set; }
-
-
+        
         public PlayerSkills(PlayerIndex playerIndex)
         {
             FireSkillTree = new SkillTree("Fire", playerIndex);

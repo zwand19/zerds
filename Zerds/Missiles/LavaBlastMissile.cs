@@ -11,9 +11,9 @@ using Zerds.Buffs;
 
 namespace Zerds.Missiles
 {
-    public class FireballMissile : Missile
+    public class LavaBlastMissile : Missile
     {
-        public FireballMissile(Zerd zerd, DamageInstance damageInstance, Point p) : base("Missiles/fireball.png")
+        public LavaBlastMissile(Zerd zerd, DamageInstance damageInstance, Point p) : base("Missiles/fireball.png")
         {
             Damage = damageInstance;
             var size = 64f * (1 + Helpers.GetPlayer(zerd).Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100);
@@ -29,12 +29,12 @@ namespace Zerds.Missiles
 
             Animations = new AnimationList();
             var moveAnimation = new Animation(AnimationTypes.Move);
-            moveAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.1));
-            moveAnimation.AddFrame(new Rectangle(64 * 1, 0, 64, 64), TimeSpan.FromSeconds(0.1));
-            moveAnimation.AddFrame(new Rectangle(64 * 2, 0, 64, 64), TimeSpan.FromSeconds(0.1));
-            moveAnimation.AddFrame(new Rectangle(64 * 3, 0, 64, 64), TimeSpan.FromSeconds(0.1));
-            moveAnimation.AddFrame(new Rectangle(64 * 4, 0, 64, 64), TimeSpan.FromSeconds(0.1));
-            moveAnimation.AddFrame(new Rectangle(64 * 5, 0, 64, 64), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 0, 0, 120, 120), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 1, 0, 120, 120), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 2, 0, 120, 120), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 3, 0, 120, 120), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 4, 0, 120, 120), TimeSpan.FromSeconds(0.1));
+            moveAnimation.AddFrame(new Rectangle(64 * 5, 0, 120, 120), TimeSpan.FromSeconds(0.1));
             Animations.Add(moveAnimation);
 
             var deathAnimation = new Animation(AnimationTypes.Death);

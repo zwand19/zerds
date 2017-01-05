@@ -99,7 +99,7 @@
   <ItemGroup>
     <Compile Include="Abilities\Dash.cs" />
     <Compile Include="Abilities\Fireball.cs" />
-    <Compile Include="Abilities\Icicle.cs" />
+    <Compile Include="Abilities\Iceball.cs" />
     <Compile Include="Abilities\Melee.cs" />
     <Compile Include="Abilities\RangeAttack.cs" />
     <Compile Include="Abilities\Sprint.cs" />
@@ -133,6 +133,7 @@
     <Compile Include="Enums\FontTypes.cs" />
     <Compile Include="Enums\MapTypes.cs" />
     <Compile Include="Enums\MissileTypes.cs" />
+    <Compile Include="Enums\ZerdTypes.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Factories\BuffFactory.cs" />
     <Compile Include="Factories\DamageFactory.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Menus\SkillTree.cs" />
     <Compile Include="Menus\SkillTreeItem.cs" />
     <Compile Include="Missiles\DemonMissile.cs" />
+    <Compile Include="Missiles\LavaBlastMissile.cs" />
     <Compile Include="Missiles\FireballMissile.cs" />
     <Compile Include="Missiles\FrostDemonMissile.cs" />
     <Compile Include="Missiles\IceballMissile.cs" />
@@ -220,7 +222,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\FrostDemon.png" />
-    <Content Include="Content\Entities\Zerd.png">
+    <Content Include="Content\Entities\Zerd-Blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Zerd-Brown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Zerd-Cyan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Zerd-Red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Zerd-Black.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\Zombie.png">
@@ -244,6 +258,11 @@
     <Content Include="Content\Icons\sprint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\zerd-black.png" />
+    <Content Include="Content\Icons\zerd-blue.png" />
+    <Content Include="Content\Icons\zerd-brown.png" />
+    <Content Include="Content\Icons\zerd-cyan.png" />
+    <Content Include="Content\Icons\zerd-red.png" />
     <Content Include="Content\Items\magic-books.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -260,7 +279,13 @@
     <Content Include="Content\Missiles\icicle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Missiles\lava_blast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Missiles\orbs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Skills\charging-bull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Skills\devastation.png">
@@ -278,6 +303,7 @@
     <Content Include="Content\Skills\improved_wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Skills\potion-ball.png" />
     <Content Include="Content\Skills\walking-boot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Zerds.Buffs;
@@ -27,8 +28,6 @@ namespace Zerds.GameObjects
 
         public void Update(GameTime gameTime)
         {
-            if (ControllerService.ButtonPressed(PlayerIndex, Buttons.Start))
-                JoinGame();
             if (Zerd == null) return;
             var controller = ControllerService.Controllers[PlayerIndex];
             Zerd.ControllerUpdate(controller.LeftTrigger, controller.RightTrigger, controller.LeftStickDirection, controller.RightStickDirection);
@@ -54,12 +53,33 @@ namespace Zerds.GameObjects
             }
         }
 
-        public void JoinGame()
+        public void JoinGame(ZerdTypes zerdType)
         {
             if (Zerd != null) return;
 
             IsPlaying = true;
-            Zerd = new Entities.Zerd(PlayerIndex);
+            string zerdFile;
+            switch (zerdType)
+            {
+                case ZerdTypes.Black:
+                    zerdFile = "Entities/Zerd-Black.png";
+                    break;
+                case ZerdTypes.Blue:
+                    zerdFile = "Entities/Zerd-Blue.png";
+                    break;
+                case ZerdTypes.Brown:
+                    zerdFile = "Entities/Zerd-Brown.png";
+                    break;
+                case ZerdTypes.Cyan:
+                    zerdFile = "Entities/Zerd-Cyan.png";
+                    break;
+                case ZerdTypes.Red:
+                    zerdFile = "Entities/Zerd-Red.png";
+                    break;
+                default:
+                    throw new Exception("Unknown Zerd Type");
+            }
+            Zerd = new Entities.Zerd(PlayerIndex, zerdFile);
             Globals.GameState.Zerds.Add(Zerd);
         }
     }

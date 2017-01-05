@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using Zerds.Entities;
+using Zerds.GameObjects;
 
 namespace Zerds
 {
@@ -21,5 +24,8 @@ namespace Zerds
         {
             return (float)Random.NextDouble() * (max - min) + min;
         }
+
+        public static Player GetPlayer(PlayerIndex index) => Globals.GameState.Players.First(p => p.PlayerIndex == index);
+        public static Player GetPlayer(Zerd zerd) => Globals.GameState.Players.First(p => p.PlayerIndex == zerd.PlayerIndex);
     }
 }

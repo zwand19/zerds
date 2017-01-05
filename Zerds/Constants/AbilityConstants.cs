@@ -54,6 +54,7 @@ namespace Zerds.Constants
         
         public const float FrostDemonMissileSpeed = 550f;
         public const float FrostDemonMissileLength = 700f;
+        public const float FrostDemonSlowAmount = -100f;
         public static TimeSpan FrostDemonColdLength => TimeSpan.FromMilliseconds(2200);
         public static TimeSpan FrostDemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
     }

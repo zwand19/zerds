@@ -95,20 +95,20 @@ namespace Zerds
                 switch (_menu)
                 {
                     case 0:
-                        _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.FireSkillTree.PointsAvailable})";
-                        _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.FrostSkillTree.PointsAvailable})";
-                        _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.ArcaneSkillTree.PointsAvailable})";
+                        _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.Skills.FireSkillTree.PointsAvailable})";
+                        _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.Skills.FrostSkillTree.PointsAvailable})";
+                        _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.Skills.ArcaneSkillTree.PointsAvailable})";
                         Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.X + _bounds.Width / 2, _bounds.Bottom - 50), 20f, Color.White);
                         _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 20), 20f, 50f, Color.White, new Color(200, 200, 200));
                         return;
                     case 1:
-                        _player.FireSkillTree.Draw(_bounds);
+                        _player.Skills.FireSkillTree.Draw(_bounds);
                         return;
                     case 2:
-                        _player.FrostSkillTree.Draw(_bounds);
+                        _player.Skills.FrostSkillTree.Draw(_bounds);
                         return;
                     case 3:
-                        _player.ArcaneSkillTree.Draw(_bounds);
+                        _player.Skills.ArcaneSkillTree.Draw(_bounds);
                         return;
                 }
                 Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 30f), 20f, Color.White);
@@ -126,13 +126,13 @@ namespace Zerds
                         _mainMenu.Update();
                         return;
                     case 1:
-                        _player.FireSkillTree.Update();
+                        _player.Skills.FireSkillTree.Update();
                         return;
                     case 2:
-                        _player.FrostSkillTree.Update();
+                        _player.Skills.FrostSkillTree.Update();
                         return;
                     case 3:
-                        _player.ArcaneSkillTree.Update();
+                        _player.Skills.ArcaneSkillTree.Update();
                         return;
                 }
             }

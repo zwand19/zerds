@@ -36,7 +36,8 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
-            Globals.GameState.Missiles.Add(new IceballMissile(Being, new GameObjects.DamageInstance(knockback, IceballDamage, DamageTypes.Frost, Being), Being.Position));
+            var damage = IceballDamage * (1 + Helpers.GetPlayer(Being as Zerd).Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+            Globals.GameState.Missiles.Add(new IceballMissile(Being, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Frost, Being), Being.Position));
             return base.Execute();
         }
     }
