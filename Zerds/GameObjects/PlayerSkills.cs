@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Zerds.Constants;
+using Zerds.Enums;
 using Zerds.Menus;
 
 namespace Zerds.GameObjects
@@ -21,8 +22,8 @@ namespace Zerds.GameObjects
             FireSkillTree.Items.Add(fireMastery);
             var devastationSkill = new SkillTreeItem(SkillConstants.DevastationName, $"Increase critical hit chance of fire spells by {StatStr(SkillConstants.DevastationStat, 5, 1)}%.", 5, 0, 4, "Skills/devastation.png");
             FireSkillTree.Items.Add(devastationSkill);
-            //var lavaBlastSkill = new SkillTreeItem("Lava Blast", "Fuel up a large ", 5, 0, 4, "Skills/devastation.png");
-            //FireSkillTree.Items.Add(lavaBlastSkill);
+            var lavaBlastSkill = new SkillTreeItem("Lava Blast", "Fuel up a large ball of lava that can blast through multiple enemies. Not learned until all 5 skill points are spent.", 5, 1, 2, "Skills/lava_blast.png", null, AbilityTypes.LavaBlast);
+            FireSkillTree.Items.Add(lavaBlastSkill);
 
             FrostSkillTree = new SkillTree("Frost", playerIndex);
             var improvedIceball = new SkillTreeItem(SkillConstants.ImprovedIceballName, $"Increase damage and slow effect of iceball by {StatStr(SkillConstants.ImprovedIceballStat, 5, 0)}%.", 5, 0, 0, "Skills/improved_iceball.png");

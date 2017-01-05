@@ -2,11 +2,13 @@
 {
     public enum AbilityTypes
     {
+        None,
         Dash,
         Sprint,
         Fireball,
         Iceball,
         Wand,
-        Melee
+        Melee,
+        LavaBlast
     }
 }

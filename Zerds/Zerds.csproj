@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\Dash.cs" />
+    <Compile Include="Abilities\LavaBlast.cs" />
     <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Iceball.cs" />
     <Compile Include="Abilities\Melee.cs" />
@@ -258,6 +259,9 @@
     <Content Include="Content\Icons\sprint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\volcano.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\zerd-black.png" />
     <Content Include="Content\Icons\zerd-blue.png" />
     <Content Include="Content\Icons\zerd-brown.png" />
@@ -304,6 +308,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Skills\potion-ball.png" />
+    <Content Include="Content\Skills\lava_blast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Skills\walking-boot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

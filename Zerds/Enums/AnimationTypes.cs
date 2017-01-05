@@ -10,5 +10,6 @@
         public static string Damaged => "damaged";
         public static string Death => "death";
         public static string FireAttack => "fire attack";
+        public static string LavaBlastAttack => "lava blast";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Enums;
 using Zerds.Factories;
 
 namespace Zerds.Menus
@@ -16,6 +17,7 @@ namespace Zerds.Menus
         public Texture2D Texture { get; set; }
         public int Row { get; set; }
         public int Col { get; set; }
+        public AbilityTypes Ability { get; set; }
 
         private const int Padding = 22;
         private const int NumRows = 6;
@@ -25,7 +27,7 @@ namespace Zerds.Menus
         private const int LineWidth = 5;
         private const int InfoHeight = 320;
 
-        public SkillTreeItem(string title, string description, int points, int row, int col, string file, SkillTreeItem parent = null)
+        public SkillTreeItem(string title, string description, int points, int row, int col, string file, SkillTreeItem parent = null, AbilityTypes ability = AbilityTypes.None)
         {
             Row = row;
             Col = col;
@@ -36,6 +38,7 @@ namespace Zerds.Menus
             Children = new List<SkillTreeItem>();
             Parent = parent;
             parent?.Children.Add(this);
+            Ability = ability;
         }
 
         public void DrawDependencies(Rectangle bounds)

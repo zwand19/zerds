@@ -31,7 +31,7 @@ namespace Zerds.Constants
         public static TimeSpan IceballKnockbackLength => TimeSpan.Zero;
         public static TimeSpan IceballCastTime => TimeSpan.FromMilliseconds(450);
         public static TimeSpan IceballFollowThroughTime => TimeSpan.FromMilliseconds(200);
-        public static TimeSpan IceballCooldown = TimeSpan.FromMilliseconds(2325);
+        public static TimeSpan IceballCooldown = TimeSpan.FromMilliseconds(3050);
 
         public const float FireballKnockback = 350f;
         public const float FireballSpeed = 550f;
@@ -42,8 +42,19 @@ namespace Zerds.Constants
         public static TimeSpan FireballKnockbackLength => TimeSpan.FromMilliseconds(315);
         public static TimeSpan FireballCastTime => TimeSpan.FromMilliseconds(550);
         public static TimeSpan FireballFollowThroughTime => TimeSpan.FromMilliseconds(200);
-        public static TimeSpan FireballCooldown = TimeSpan.FromMilliseconds(2500);
-        
+        public static TimeSpan FireballCooldown = TimeSpan.FromMilliseconds(3250);
+
+        public const float LavaBlastKnockback = 420f;
+        public const float LavaBlastSpeed = 325f;
+        public const float LavaBlastDistance = 450f;
+        public const float LavaBlastManaCost = 80f;
+        public const float LavaBlastBurnLength = 3000f;
+        public const float LavaBlastBurnDamagePercentage = 0.1f;
+        public static TimeSpan LavaBlastKnockbackLength => TimeSpan.FromMilliseconds(400);
+        public static TimeSpan LavaBlastCastTime => TimeSpan.FromMilliseconds(1250);
+        public static TimeSpan LavaBlastFollowThroughTime => TimeSpan.FromMilliseconds(200);
+        public static TimeSpan LavaBlastCooldown = TimeSpan.FromMilliseconds(10000);
+
         public const float DemonMissileKnockback = 350f;
         public const float DemonMissileSpeed = 550f;
         public const float DemonMissileDistance = 750f;

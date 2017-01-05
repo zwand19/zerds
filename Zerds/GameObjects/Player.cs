@@ -32,7 +32,7 @@ namespace Zerds.GameObjects
             var controller = ControllerService.Controllers[PlayerIndex];
             Zerd.ControllerUpdate(controller.LeftTrigger, controller.RightTrigger, controller.LeftStickDirection, controller.RightStickDirection);
             var buttonsPressed = ControllerService.Controllers[PlayerIndex].ButtonsPressed;
-            if (buttonsPressed.Contains(Buttons.RightTrigger))
+            if (buttonsPressed.Contains(Buttons.RightShoulder))
                 Zerd.Abilities.First(a => a.Type == AbilityTypes.Dash).Cast();
             if (buttonsPressed.Contains(Buttons.A))
                 Zerd.Abilities.First(a => a.Type == AbilityTypes.Wand).Cast();
@@ -40,6 +40,8 @@ namespace Zerds.GameObjects
                 Zerd.Abilities.First(a => a.Type == AbilityTypes.Iceball).Cast();
             if (buttonsPressed.Contains(Buttons.Y))
                 Zerd.Abilities.First(a => a.Type == AbilityTypes.Fireball).Cast();
+            if (buttonsPressed.Contains(Buttons.X))
+                Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Cast();
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
                 Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;

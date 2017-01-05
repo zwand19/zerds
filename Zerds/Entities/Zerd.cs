@@ -65,6 +65,8 @@ namespace Zerds.Entities
                 return Animations.Get(AnimationTypes.FrostAttack);
             if (Abilities.First(a => a.Type == AbilityTypes.Fireball).Active)
                 return Animations.Get(AnimationTypes.FireAttack);
+            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Active == true)
+                return Animations.Get(AnimationTypes.LavaBlastAttack);
             if (Velocity.Length() > Vector2.Zero.Length())
                 return Animations.Get(AnimationTypes.Move);
             return Animations.Get(AnimationTypes.Stand);
