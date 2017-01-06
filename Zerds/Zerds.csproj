@@ -244,24 +244,38 @@
     <Content Include="Content\HUD\Witch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\chained-heart.png" />
     <Content Include="Content\Icons\charging-bull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\devastation.png" />
     <Content Include="Content\Icons\fairy-wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\fire-bottle.png" />
+    <Content Include="Content\Icons\fire-breath.png" />
+    <Content Include="Content\Icons\fire-dash.png" />
     <Content Include="Content\Icons\fire-zone.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\fireball.png" />
+    <Content Include="Content\Icons\fire_mastery.png" />
     <Content Include="Content\Icons\ice-bolt.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\improved_fireball.png" />
+    <Content Include="Content\Icons\improved_iceball.png" />
+    <Content Include="Content\Icons\improved_wand.png" />
+    <Content Include="Content\Icons\lava_blast.png" />
+    <Content Include="Content\Icons\magic-portal.png" />
+    <Content Include="Content\Icons\potion-ball.png" />
     <Content Include="Content\Icons\sprint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\volcano.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\walking-boot.png" />
     <Content Include="Content\Icons\zerd-black.png" />
     <Content Include="Content\Icons\zerd-blue.png" />
     <Content Include="Content\Icons\zerd-brown.png" />
@@ -287,31 +301,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\orbs.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\charging-bull.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\devastation.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\fire_mastery.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\improved_fireball.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\improved_iceball.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\improved_wand.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\potion-ball.png" />
-    <Content Include="Content\Skills\lava_blast.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Skills\walking-boot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />

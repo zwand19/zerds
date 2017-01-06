@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Zerds.Buffs;
 using Zerds.Constants;
+using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Input;
 using Zerds.Menus;
@@ -44,7 +45,7 @@ namespace Zerds.GameObjects
                 Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Cast();
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
-                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds * (1 - Skills.FireMastery * SkillConstants.SprintStat / 100);
                 if (!Zerd.Buffs.Any(b => b is SprintBuff))
                     Zerd.Buffs.Add(new SprintBuff(Zerd));
             }
