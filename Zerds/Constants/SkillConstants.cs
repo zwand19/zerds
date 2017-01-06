@@ -28,5 +28,8 @@
 
         public const string ReplenishName = "Replenish";
         public const float ReplenishStat = 0.5f;
+
+        public const string SprinterName = "Sprinter";
+        public const float SprintStat = 5f;
     }
 }
