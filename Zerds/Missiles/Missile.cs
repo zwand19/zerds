@@ -37,6 +37,7 @@ namespace Zerds.Missiles
                 {
                     if (enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
                     {
+                        ((Zerd) Creator).Combo++;
                         OnHit(enemy);
                         return;
                     }
@@ -52,6 +53,12 @@ namespace Zerds.Missiles
                         return;
                     }
                 }
+            }
+            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
+            {
+                Speed *= 0.75f;
+                IsAlive = false;
+                ((Zerd) Creator).Combo = 0;
             }
             base.Update(gameTime);
         }

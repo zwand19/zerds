@@ -64,16 +64,6 @@ namespace Zerds.Missiles
                 : Animations.Get(Origin.DistanceBetween(Position) > Distance || !IsAlive ? AnimationTypes.Death : AnimationTypes.Move);
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
-            {
-                Speed *= 0.75f;
-                IsAlive = false;
-            }
-            base.Update(gameTime);
-        }
-
         public override float SpriteRotation()
         {
             return (float)Math.PI / 2;

@@ -69,11 +69,6 @@ namespace Zerds.Missiles
 
         public override void Update(GameTime gameTime)
         {
-            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
-            {
-                Speed *= 0.75f;
-                IsAlive = false;
-            }
             if (IsAlive)
             {
                 foreach (var enemy in Globals.GameState.Enemies.Where(e => e.IsAlive && !TargetsHit.Contains(e)))
@@ -83,6 +78,13 @@ namespace Zerds.Missiles
                         OnHit(enemy);
                     }
                 }
+            }
+            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
+            {
+                Speed *= 0.75f;
+                IsAlive = false;
+                if (!TargetsHit.Any())
+                    ((Zerd) Creator).Combo = 0;
             }
             base.Update(gameTime);
         }
@@ -101,6 +103,10 @@ namespace Zerds.Missiles
 
         public override void OnHit(Being target)
         {
+            if (TargetsHit.Contains(target))
+                return;
+            if (!TargetsHit.Any())
+                ((Zerd)Creator).Combo++;
             TargetsHit.Add(target);
             Damage.DamageBeing(target);
             Speed *= 0.9f;

@@ -7,7 +7,6 @@ using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Input;
-using Zerds.Menus;
 
 namespace Zerds.GameObjects
 {
@@ -19,12 +18,14 @@ namespace Zerds.GameObjects
         public Entities.Zerd Zerd { get; set; }
         public int FloatingSkillPoints { get; set; }
         public PlayerSkills Skills { get; set; }
+        public int Gold { get; set; }
 
         public Player(string name, PlayerIndex playerIndex)
         {
             Name = name;
             PlayerIndex = playerIndex;
             Skills = new PlayerSkills(playerIndex);
+            Gold = GameplayConstants.StartingGold;
         }
 
         public void Update(GameTime gameTime)

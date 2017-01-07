@@ -7,6 +7,7 @@ namespace Zerds.Constants
         public static TimeSpan LevelLength = TimeSpan.FromSeconds(2);
         public static float HealthFactorPerLevel = 0.3f;
         public static float DamageFactorPerLevel = 0.12f;
+        public static int StartingGold = 100;
 
         public const int FloatingPointsPerLevel = 3;
         public const int SkillPointsPerLevel = 3;

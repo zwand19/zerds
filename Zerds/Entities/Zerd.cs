@@ -14,7 +14,7 @@ namespace Zerds.Entities
         public string Name { get; set; }
         public List<Ability> Abilities { get; set; }
         public PlayerIndex PlayerIndex { get; private set; }
-        
+        public int Combo { get; set; }
 
         public Zerd(PlayerIndex playerIndex, string zerdFile) : base(zerdFile, false)
         {

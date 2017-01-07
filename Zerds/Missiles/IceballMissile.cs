@@ -56,11 +56,6 @@ namespace Zerds.Missiles
         public override void Update(GameTime gameTime)
         {
             _rotation += (float)Math.PI * 2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
-            {
-                Speed *= 0.75f;
-                IsAlive = false;
-            }
             base.Update(gameTime);
         }
 
