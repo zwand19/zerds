@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
-using Zerds.Abilities;
 using Zerds.Constants;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -52,7 +50,7 @@ namespace Zerds
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 4.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 2.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + 3 * width / 4.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
-            Globals.SpriteDrawer.DrawText($"LEVEL {Globals.GameState.Level}", new Vector2((float) Globals.ViewportBounds.Width / 2, top + height / 2.0f), 16f, color: Color.White);
+            Globals.SpriteDrawer.DrawText($"LEVEL {Level.CurrentLevel}", new Vector2((float) Globals.ViewportBounds.Width / 2, top + height / 2.0f), 16f, color: Color.White);
         }
 
         private static void DrawLevelText()
@@ -61,7 +59,7 @@ namespace Zerds
             if (opacity > 0f)
             {
                 var position = Globals.ViewportBounds.Center.ToVector2() + new Vector2(0, (opacity - 1f) * 80);
-                Globals.SpriteDrawer.DrawText($"- Level {Globals.GameState.Level} -", position, 32f, color: new Color(Color.Black, opacity));
+                Globals.SpriteDrawer.DrawText($"- Level {Level.CurrentLevel} -", position, 32f, color: new Color(Color.Black, opacity));
             }
         }
 

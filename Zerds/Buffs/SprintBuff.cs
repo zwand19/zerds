@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zerds.Constants;
 using Zerds.Entities;
@@ -12,7 +11,7 @@ namespace Zerds.Buffs
     {
         private const int TextureSize = 36;
 
-        public SprintBuff(Being being) : base(being, AbilityConstants.SprintLength, true, movementSpeedFactor: AbilityConstants.SprintBonus)
+        public SprintBuff(Being being) : base(null, being, AbilityConstants.SprintLength, true, movementSpeedFactor: AbilityConstants.SprintBonus)
         {
             Texture = TextureCacheFactory.Get("Buffs/dash.png");
             Animation = new Animation("sprint");    

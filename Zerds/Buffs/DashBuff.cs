@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zerds.Constants;
 using Zerds.Entities;
@@ -12,7 +11,7 @@ namespace Zerds.Buffs
         private const int TextureSize = 64;
         private Vector2 _initialPosition;
 
-        public DashBuff(Being being) : base(being, AbilityConstants.DashLength, true, movementSpeedFactor: AbilityConstants.DashBonus)
+        public DashBuff(Being being, float factor) : base(null, being, AbilityConstants.DashLength, true, movementSpeedFactor: factor)
         {
             Texture = being.Texture;
             IsStunned = true;

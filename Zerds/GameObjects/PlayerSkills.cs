@@ -13,9 +13,9 @@ namespace Zerds.GameObjects
         public SkillTree ArcaneSkillTree { get; set; }
         public SkillTree FrostSkillTree { get; set; }
         
-        public PlayerSkills(PlayerIndex playerIndex)
+        public PlayerSkills(Player player)
         {
-            FireSkillTree = new SkillTree("Fire", playerIndex);
+            FireSkillTree = new SkillTree("Fire", player);
             var improvedFireball = new SkillTreeItem(SkillConstants.ImprovedFireballName, $"Increase damage and size of fireball by {StatStr(SkillConstants.ImprovedFireballStat, 5, 0)}%.", 5, 0, 0, "Icons/improved_fireball.png");
             FireSkillTree.Items.Add(improvedFireball);
             var fireMastery = new SkillTreeItem(SkillConstants.FireMasteryName, $"Increase all fire damage done by {StatStr(SkillConstants.FireMasteryStat, 5, 0)}%.", 5, 0, 2, "Icons/fire_mastery.png");
@@ -25,11 +25,11 @@ namespace Zerds.GameObjects
             var lavaBlastSkill = new SkillTreeItem("Lava Blast", "Fuel up a large ball of lava that can blast through multiple enemies. Not learned until all 5 skill points are spent.", 5, 1, 2, "Icons/lava_blast.png", null, AbilityTypes.LavaBlast);
             FireSkillTree.Items.Add(lavaBlastSkill);
 
-            FrostSkillTree = new SkillTree("Frost", playerIndex);
-            var improvedIceball = new SkillTreeItem(SkillConstants.ImprovedIceballName, $"Increase damage and slow effect of iceball by {StatStr(SkillConstants.ImprovedIceballStat, 5, 0)}%.", 5, 0, 0, "Icons/improved_iceball.png");
+            FrostSkillTree = new SkillTree("Frost", player);
+            var improvedIceball = new SkillTreeItem(SkillConstants.ImprovedIceballName, $"Increase damage and slow effect of iceball by {StatStr(SkillConstants.ImprovedIceballStat, 5, 0)}%.", 5, 0, 0, "Icons/ice-bolt.png");
             FrostSkillTree.Items.Add(improvedIceball);
 
-            ArcaneSkillTree = new SkillTree("Arcane", playerIndex);
+            ArcaneSkillTree = new SkillTree("Arcane", player);
             var improvedWand = new SkillTreeItem(SkillConstants.ImprovedWandName, $"Increase damage and range of wand attacks by {StatStr(SkillConstants.ImprovedWandStat, 5, 0)}%.", 5, 0, 0, "Icons/improved_wand.png");
             ArcaneSkillTree.Items.Add(improvedWand);
             var dancer = new SkillTreeItem(SkillConstants.DancerName, $"Reduces cooldown of dash by {StatStr(SkillConstants.DancerStat, 5, 1)} seconds.", 5, 0, 2, "Icons/charging-bull.png");

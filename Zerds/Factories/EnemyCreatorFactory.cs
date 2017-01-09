@@ -5,6 +5,7 @@ using System.Linq;
 using Zerds.Entities;
 using Zerds.Entities.Enemies;
 using Zerds.Enums;
+using Zerds.GameObjects;
 
 namespace Zerds.Factories
 {
@@ -29,7 +30,7 @@ namespace Zerds.Factories
         public static List<Enemy> CreateEnemyBatch()
         {
             var rand = new Random().NextDouble();
-            switch (Globals.GameState.Level)
+            switch (Level.CurrentLevel)
             {
                 case 1:
                     return new List<Enemy> { CreateEnemy(rand < 0.9 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
@@ -61,7 +62,7 @@ namespace Zerds.Factories
                     return 17;
                 return 0;
             });
-            var targetDifficulty = Globals.GameState.Level * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
+            var targetDifficulty = Level.CurrentLevel * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
             if (enemyDifficulty < targetDifficulty && Globals.GameState.LevelTimeRemaining > TimeSpan.Zero)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());
         }

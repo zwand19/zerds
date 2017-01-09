@@ -13,7 +13,6 @@ namespace Zerds
 {
     public class GameState
     {
-        public int Level { get; set; }
         public float GameSpeed { get; set; }
         public TimeSpan LevelTimeRemaining { get; set; }
         public TimeSpan TimeIntoLevel => GameplayConstants.LevelLength - LevelTimeRemaining;
@@ -46,12 +45,11 @@ namespace Zerds
                 return true;
             };
             Players = players;
-            StartLevel();
+            Level.Initialize(players);
         }
 
         public void StartLevel()
         {
-            Level++;
             LevelTimeRemaining = GameplayConstants.LevelLength;
             Players.ForEach(p =>
             {
@@ -59,6 +57,8 @@ namespace Zerds
                 p.Skills.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
                 p.Skills.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
                 p.Skills.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
+                if (p.Zerd != null) p.Zerd.LevelEnemiesKilled = 0;
+                if (p.Zerd != null) p.Zerd.MaxLevelCombo = 0;
             });
         }
 

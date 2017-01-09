@@ -28,9 +28,9 @@ namespace Zerds.Abilities
             {
                 case MissileTypes.DemonMissile:
                     var knockback = new Knockback(Being.Facing, AbilityConstants.DemonMissileKnockbackLength, AbilityConstants.DemonMissileKnockback);
-                    return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Fire, Being);
+                    return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Fire, Being, AbilityTypes.Range);
                 case MissileTypes.FrostDemonMissile:
-                    return new DamageInstance(null, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Frost, Being);
+                    return new DamageInstance(null, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Frost, Being, AbilityTypes.Range);
             }
             throw new Exception("Unknown missile type");
         }

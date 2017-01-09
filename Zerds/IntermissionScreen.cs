@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Zerds.Constants;
 using Zerds.GameObjects;
 using Zerds.Input;
 using Zerds.Menus;
@@ -11,6 +13,17 @@ namespace Zerds
     public class IntermissionScreen
     {
         private readonly List<Quadrant> _quadrants;
+
+        private enum Screen
+        {
+            LevelRecap,
+            Skills,
+            FireSkills,
+            FrostSkills,
+            ArcaneSkills,
+            AbilityUpgrade,
+            Potion
+        }
 
         public IntermissionScreen()
         {
@@ -29,8 +42,9 @@ namespace Zerds
             private readonly Rectangle _bounds;
             private readonly PlayerIndex _index;
             public bool Ready { get; private set; }
-            private int _menu;
+            private Screen _screen;
             private readonly MenuList _mainMenu;
+            private MenuList _abilityUpgradeMenu;
 
             private const int MenuSidePadding = 100;
             private const int QuadrantPadding = 20;
@@ -48,19 +62,21 @@ namespace Zerds
                 {
                     new MenuListItem("Fire", () =>
                     {
-                        _menu = 1;
+                        _screen = Screen.FireSkills;
                         return true;
                     }),
                     new MenuListItem("Frost", () =>
                     {
-                        _menu = 2;
+                        _screen = Screen.FrostSkills;
                         return true;
                     }),
                     new MenuListItem("Arcane", () =>
                     {
-                        _menu = 3;
+                        _screen = Screen.ArcaneSkills;
                         return true;
-                    })
+                    }),
+                    new MenuListItem($"Ability Upgrade ({GameplayConstants.AbilityUpgradeCost} gold)", BuyAbilityUpgrade),
+                    new MenuListItem($"Buy Skill Point ({GameplayConstants.FloatingSkillPointCost} gold)", BuyFloatingSkillPoint)
                 });
                 switch (_index)
                 {
@@ -75,6 +91,27 @@ namespace Zerds
                         break;
                 }
                 Ready = !_player.IsPlaying;
+            }
+
+            private bool BuyFloatingSkillPoint()
+            {
+                if (_player.Gold < GameplayConstants.FloatingSkillPointCost)
+                    return false;
+                _player.Gold -= GameplayConstants.FloatingSkillPointCost;
+                _player.FloatingSkillPoints++;
+                return true;
+            }
+
+            private bool BuyAbilityUpgrade()
+            {
+                if (_player.Gold < GameplayConstants.AbilityUpgradeCost)
+                    return false;
+                _player.Gold -= GameplayConstants.AbilityUpgradeCost;
+                Level.AbilityUpgrades[_player] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(),
+                    AbilityUpgradeHelper.GetRandomUpgrade(),
+                    AbilityUpgradeHelper.GetRandomUpgrade());
+                _screen = Screen.AbilityUpgrade;
+                return true;
             }
 
             public void Draw()
@@ -92,49 +129,110 @@ namespace Zerds
                     Globals.SpriteDrawer.DrawText("Ready!", _bounds.Center.ToVector2(), 20f, Color.White);
                     return;
                 }
-                switch (_menu)
+                switch (_screen)
                 {
-                    case 0:
+                    case Screen.LevelRecap:
+                        Globals.SpriteDrawer.DrawText($"Enemies Killed: {_player.Zerd.LevelEnemiesKilled} ({Level.EnemiesKilledGold(_player)} Gold)",
+                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 40f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.MaxCombo} ({Level.ComboGold(_player)})",
+                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 100f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 160f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Total Level Gold: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 220f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 20f, Color.White);
+                        return;
+                    case Screen.Skills:
+                        Globals.SpriteDrawer.DrawText($"Gold: {_player.Gold}", new Vector2(_bounds.Center.X, _bounds.Top + 25f), 20f, Color.White);
                         _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.Skills.FireSkillTree.PointsAvailable})";
                         _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.Skills.FrostSkillTree.PointsAvailable})";
                         _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.Skills.ArcaneSkillTree.PointsAvailable})";
-                        Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.X + _bounds.Width / 2, _bounds.Bottom - 50), 20f, Color.White);
-                        _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 20), 20f, 50f, Color.White, new Color(200, 200, 200));
+                        Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 20f, Color.White);
+                        _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 70), 20f, 50f, Color.White, new Color(200, 200, 200));
+                        Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Color.White);
                         return;
-                    case 1:
+                    case Screen.FireSkills:
                         _player.Skills.FireSkillTree.Draw(_bounds);
                         return;
-                    case 2:
+                    case Screen.FrostSkills:
                         _player.Skills.FrostSkillTree.Draw(_bounds);
                         return;
-                    case 3:
+                    case Screen.ArcaneSkills:
                         _player.Skills.ArcaneSkillTree.Draw(_bounds);
                         return;
+                    case Screen.AbilityUpgrade:
+                        Globals.SpriteDrawer.DrawText("UPGRADE", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Top + 40f), 40f, Color.White);
+                        var height = (_bounds.Height - 180) / 3;
+                        DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item1, new Rectangle(_bounds.Left + 20, _bounds.Top + 100, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[0]);
+                        DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item2, new Rectangle(_bounds.Left + 20, _bounds.Top + height + 110, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[1]);
+                        DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item3, new Rectangle(_bounds.Left + 20, _bounds.Top + 2 * height + 120, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[2]);
+                        Globals.SpriteDrawer.DrawText("Press A to Choose", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Bottom - 30f), 20f, Color.White);
+                        return;
+                    case Screen.Potion:
+                        return;
                 }
-                Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 30f), 20f, Color.White);
+            }
+
+            private void DrawAbilityUpgrade(AbilityUpgrade upgrade, Rectangle bounds, bool selected)
+            {
+                Globals.SpriteDrawer.DrawRect(bounds, selected ? Color.White : new Color(30, 30, 30));
+                Globals.SpriteDrawer.DrawRect(new Rectangle(bounds.Left + 8, bounds.Top + 8, bounds.Width - 16, bounds.Height - 16));
+                Globals.SpriteDrawer.Draw(upgrade.Texture, new Rectangle(bounds.Center.X - 32, bounds.Top + 20, 64, 64), color: Color.White);
+                Globals.SpriteDrawer.DrawText(upgrade.Text1, new Vector2(bounds.Center.X, bounds.Center.Y + 30), 16f, Color.White);
+                Globals.SpriteDrawer.DrawText(upgrade.Text2, new Vector2(bounds.Center.X, bounds.Center.Y + 56), 16f, Color.White);
             }
 
             public void Update()
             {
                 if (ControllerService.Controllers[_index].IsPressed(Buttons.Start))
                     Ready = true;
-                if (ControllerService.Controllers[_index].IsPressed(Buttons.B))
-                    _menu = 0;                
-                switch (_menu)
+                if (ControllerService.Controllers[_index].IsPressed(Buttons.A))
                 {
-                    case 0:
+                    if (_screen == Screen.LevelRecap)
+                    {
+                        _screen = Screen.AbilityUpgrade;
+                        _abilityUpgradeMenu = new MenuList(new List<MenuListItem>
+                        {
+                            new MenuListItem("", () => UpgradeSelect(Level.AbilityUpgrades[_player].Item1)),
+                            new MenuListItem("", () => UpgradeSelect(Level.AbilityUpgrades[_player].Item2)),
+                            new MenuListItem("", () => UpgradeSelect(Level.AbilityUpgrades[_player].Item3))
+                        });
+                    }
+                }
+                if (ControllerService.Controllers[_index].IsPressed(Buttons.B))
+                {
+                    switch (_screen)
+                    {
+                        case Screen.ArcaneSkills:
+                        case Screen.FireSkills:
+                        case Screen.FrostSkills:
+                            _screen = Screen.Skills;
+                            break;
+                    }   
+                }
+                switch (_screen)
+                {
+                    case Screen.Skills:
                         _mainMenu.Update();
                         return;
-                    case 1:
+                    case Screen.FireSkills:
                         _player.Skills.FireSkillTree.Update();
                         return;
-                    case 2:
+                    case Screen.FrostSkills:
                         _player.Skills.FrostSkillTree.Update();
                         return;
-                    case 3:
+                    case Screen.ArcaneSkills:
                         _player.Skills.ArcaneSkillTree.Update();
                         return;
+                    case Screen.AbilityUpgrade:
+                        _abilityUpgradeMenu.Update();
+                        return;
                 }
+            }
+
+            private bool UpgradeSelect(AbilityUpgrade upgrade)
+            {
+                _player.AbilityUpgrades[upgrade.Type] += (100 - _player.AbilityUpgrades[upgrade.Type]) * upgrade.Amount / 100;
+                _screen = Screen.Skills;
+                return true;
             }
         }
 

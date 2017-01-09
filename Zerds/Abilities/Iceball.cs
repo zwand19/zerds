@@ -3,6 +3,7 @@ using System;
 using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
+using Zerds.GameObjects;
 using Zerds.Graphics;
 using Zerds.Missiles;
 
@@ -12,7 +13,7 @@ namespace Zerds.Abilities
     {
         public float IceballDamage { get; set; }
 
-        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, 0f, "ice-bolt.png")
+        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt.png")
         {
             IceballDamage = 10;
 
@@ -35,9 +36,12 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
-            var damage = IceballDamage * (1 + Helpers.GetPlayer(Being as Zerd).Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
-            Globals.GameState.Missiles.Add(new IceballMissile(Being, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Frost, Being), Being.Position));
+            var knockback = new Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
+            var damage = IceballDamage * (1 + ((Zerd)Being).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+            Globals.GameState.Missiles.Add(new IceballMissile(Being, new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
+            // replenish mana based on bonuses
+            if (Being is Zerd)
+                Being.Mana += AbilityConstants.FireballManaCost * (((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.IceballMana] / 100f);
             return base.Execute();
         }
     }

@@ -26,6 +26,7 @@ namespace Zerds.Menus
         private const int Border = 6;
         private const int LineWidth = 5;
         private const int InfoHeight = 320;
+        private const int TitleHeight = 28;
 
         public SkillTreeItem(string title, string description, int points, int row, int col, string file, SkillTreeItem parent = null, AbilityTypes ability = AbilityTypes.None)
         {
@@ -64,7 +65,7 @@ namespace Zerds.Menus
             var rowVal = row ?? Row;
             var colVal = col ?? Col;
             var x = bounds.X + Padding + (bounds.Width - Padding * 2) * colVal / NumCols;
-            var y = bounds.Y + Padding + (bounds.Height - InfoHeight - Padding * 2) * rowVal / NumRows;
+            var y = TitleHeight +  bounds.Y + Padding + (bounds.Height - InfoHeight - Padding * 2) * rowVal / NumRows;
             return new Point(x, y);
         }
     }

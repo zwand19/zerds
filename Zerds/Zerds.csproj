@@ -110,6 +110,7 @@
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
+    <Compile Include="GameObjects\AbilityUpgrades.cs" />
     <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
     <Compile Include="Constants\DisplayConstants.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="GameObjects\DamageInstance.cs" />
     <Compile Include="GameObjects\DamageText.cs" />
     <Compile Include="GameObjects\Knockback.cs" />
+    <Compile Include="GameObjects\Level.cs" />
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
     <Compile Include="Helpers.cs" />
@@ -244,43 +246,87 @@
     <Content Include="Content\HUD\Witch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\chained-heart.png" />
+    <Content Include="Content\Icons\chained-heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\charging-bull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\devastation.png" />
+    <Content Include="Content\Icons\devastation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\fairy-wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\fire-bottle.png" />
-    <Content Include="Content\Icons\fire-breath.png" />
-    <Content Include="Content\Icons\fire-dash.png" />
+    <Content Include="Content\Icons\fire-bottle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\fire-breath.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\fire-dash.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\fire-zone.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\fireball.png" />
-    <Content Include="Content\Icons\fire_mastery.png" />
+    <Content Include="Content\Icons\fireball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\fire_mastery.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\glass-heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\ice-bolt.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\improved_fireball.png" />
-    <Content Include="Content\Icons\improved_iceball.png" />
-    <Content Include="Content\Icons\improved_wand.png" />
-    <Content Include="Content\Icons\lava_blast.png" />
-    <Content Include="Content\Icons\magic-portal.png" />
-    <Content Include="Content\Icons\potion-ball.png" />
+    <Content Include="Content\Icons\improved_fireball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\improved_wand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\lava_blast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\magic-portal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\pentagram-rose.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\potion-ball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\rabbit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\sprint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\volcano.png">
+    <Content Include="Content\Icons\viking-shield.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Icons\walking-boot.png" />
-    <Content Include="Content\Icons\zerd-black.png" />
-    <Content Include="Content\Icons\zerd-blue.png" />
-    <Content Include="Content\Icons\zerd-brown.png" />
-    <Content Include="Content\Icons\zerd-cyan.png" />
-    <Content Include="Content\Icons\zerd-red.png" />
+    <Content Include="Content\Icons\walking-boot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\zerd-black.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\zerd-blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\zerd-brown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\zerd-cyan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\zerd-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Items\magic-books.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

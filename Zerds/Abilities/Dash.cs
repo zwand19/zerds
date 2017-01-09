@@ -16,7 +16,7 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             Being.AddBuff(BuffTypes.Dash);
-            Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds - Helpers.GetPlayer(Being as Zerd).Skills.Dancer * SkillConstants.DancerStat);
+            Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds - ((Zerd)Being).Player.Skills.Dancer * SkillConstants.DancerStat);
             return true;
         }
     }

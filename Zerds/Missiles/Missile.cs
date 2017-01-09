@@ -37,7 +37,7 @@ namespace Zerds.Missiles
                 {
                     if (enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
                     {
-                        ((Zerd) Creator).Combo++;
+                        ((Zerd)Creator).IncreaseCombo();
                         OnHit(enemy);
                         return;
                     }
@@ -58,7 +58,8 @@ namespace Zerds.Missiles
             {
                 Speed *= 0.75f;
                 IsAlive = false;
-                ((Zerd) Creator).Combo = 0;
+                if (Creator is Zerd)
+                    ((Zerd) Creator).Combo = 0;
             }
             base.Update(gameTime);
         }

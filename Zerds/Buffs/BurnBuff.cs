@@ -7,7 +7,7 @@ namespace Zerds.Buffs
 {
     public class BurnBuff : Buff
     {
-        public BurnBuff(Being being, TimeSpan length, float burnDamage) : base(being, length, true, damagePerSecond: burnDamage)
+        public BurnBuff(Being creator, Being being, TimeSpan length, float burnDamage) : base(creator, being, length, true, damagePerSecond: burnDamage)
         {
             Texture = TextureCacheFactory.Get("Buffs/burn.png");
             Animation = new Animation("");

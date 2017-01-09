@@ -43,6 +43,9 @@ namespace Zerds.Abilities
 
         protected virtual bool Execute()
         {
+            Being.Mana -= ManaCost;
+            if (Being.Mana < 0)
+                Being.Mana = 0;
             Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds);
             return true;
         }

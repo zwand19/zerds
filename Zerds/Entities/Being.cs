@@ -22,6 +22,7 @@ namespace Zerds.Entities
         public Knockback Knockback { get; set; }
         public List<Buff> Buffs { get; set; }
         public Vector2 CastPoint { get; set; }
+        public Being Killer { get; set; }
 
         public bool IsAlive => Health > 0;
         public bool Stunned => Buffs.Any(b => b.IsStunned);
@@ -35,7 +36,7 @@ namespace Zerds.Entities
             Buffs = new List<Buff>();
         }
 
-        public virtual bool IsCritical(DamageTypes type)
+        public virtual bool IsCritical(DamageTypes type, AbilityTypes ability)
         {
             return new Random().NextDouble() < CriticalChance;
         }
@@ -87,21 +88,37 @@ namespace Zerds.Entities
                 Speed = BaseSpeed;
 
                 if (this is Zerd)
-                    Speed *= 1 + Helpers.GetPlayer(this as Zerd).Skills.Swift * SkillConstants.SwiftStat / 100;
+                    Speed *= 1 + ((Zerd)this).Player.Skills.Swift * SkillConstants.SwiftStat / 100;
 
                 Buffs.ForEach(b =>
                 {
                     Speed += b.MovementSpeedFactor;
                     Health -= b.DamagePerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Health < 0 && Killer == null)
+                    {
+                        Killer = b.Applier;
+                        Globals.GameState.Players.FirstOrDefault(p => p.Zerd == Killer)?.Zerd.EnemyKilled(this as Enemy);
+                    }
                     b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                 });
+
+                if (Buffs.Any(b => b is SprintBuff) && this is Zerd)
+                    Speed *= 1 + ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.SprintSpeed] / 100;
+                else if (this is Zerd)
+                    Speed *= 1 + ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.MovementSpeed] / 100;
 
                 Speed = MathHelper.Clamp(Speed, GameplayConstants.MinSpeed, GameplayConstants.MaxSpeed);
 
                 Buffs = Buffs.Where(b => b.TimeRemaining > TimeSpan.Zero).ToList();
 
                 Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                if (this is Zerd)
+                    Health += HealthRegen * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed *
+                              ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.HealthRegen];
                 Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                if (this is Zerd)
+                    Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed *
+                              ((Zerd)this).Player.AbilityUpgrades[AbilityUpgradeType.ManaRegen];
 
                 if (Knockback == null)
                 {

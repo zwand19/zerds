@@ -3,6 +3,7 @@ using System;
 using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
+using Zerds.GameObjects;
 using Zerds.Graphics;
 using Zerds.Missiles;
 
@@ -12,7 +13,7 @@ namespace Zerds.Abilities
     {
         public float FireballDamage { get; set; }
 
-        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, 0f, "fire-zone.png")
+        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballManaCost, "fire-zone.png")
         {
             FireballDamage = 10;
 
@@ -35,10 +36,14 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.FireballKnockbackLength, AbilityConstants.FireballKnockback);
-            var damage = FireballDamage * (1 + Helpers.GetPlayer(Being as Zerd).Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100) *
-                         (1 + Helpers.GetPlayer(Being as Zerd).Skills.FireMastery * SkillConstants.FireMasteryStat / 100);
-            Globals.GameState.Missiles.Add(new FireballMissile(Being as Zerd, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Fire, Being), Being.Position));
+            var knockback = new Knockback(Being.Facing, AbilityConstants.FireballKnockbackLength, AbilityConstants.FireballKnockback);
+            var damage = FireballDamage * (1 + ((Zerd)Being).Player.Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100) *
+                         (1 + ((Zerd)Being).Player.Skills.FireMastery * SkillConstants.FireMasteryStat / 100) *
+                         (1 + ((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.FireballDamage] / 100);
+            Globals.GameState.Missiles.Add(new FireballMissile(Being as Zerd, new DamageInstance(knockback, damage, DamageTypes.Fire, Being, AbilityTypes.Fireball), Being.Position));
+            // replenish mana based on bonuses
+            if (Being is Zerd)
+                Being.Mana += AbilityConstants.FireballManaCost * (((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.FireballMana] / 100f); 
             return base.Execute();
         }
     }

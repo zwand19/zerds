@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -61,11 +60,6 @@ namespace Zerds.Menus
             private readonly Func<bool> _startFunc;
             private Rectangle _bounds;
             private int _step;
-            private readonly Texture2D _blackZerd;
-            private readonly Texture2D _blueZerd;
-            private readonly Texture2D _brownZerd;
-            private readonly Texture2D _cyanZerd;
-            private readonly Texture2D _redZerd;
             private readonly List<Texture2D> _textures;
             private int _selection;
 
@@ -76,12 +70,12 @@ namespace Zerds.Menus
                 _step = 0;
                 _startFunc = startFunc;
 
-                _blackZerd = TextureCacheFactory.Get("Icons/zerd-black.png");
-                _blueZerd = TextureCacheFactory.Get("Icons/zerd-blue.png");
-                _brownZerd = TextureCacheFactory.Get("Icons/zerd-brown.png");
-                _cyanZerd = TextureCacheFactory.Get("Icons/zerd-cyan.png");
-                _redZerd = TextureCacheFactory.Get("Icons/zerd-red.png");
-                _textures = new List<Texture2D> {_blackZerd, _blueZerd, _brownZerd, _cyanZerd, _redZerd};
+                var blackZerd = TextureCacheFactory.Get("Icons/zerd-black.png");
+                var blueZerd = TextureCacheFactory.Get("Icons/zerd-blue.png");
+                var brownZerd = TextureCacheFactory.Get("Icons/zerd-brown.png");
+                var cyanZerd = TextureCacheFactory.Get("Icons/zerd-cyan.png");
+                var redZerd = TextureCacheFactory.Get("Icons/zerd-red.png");
+                _textures = new List<Texture2D> {blackZerd, blueZerd, brownZerd, cyanZerd, redZerd};
             }
 
             public void Draw()
@@ -94,11 +88,11 @@ namespace Zerds.Menus
                         return;
                     case 1:
                         var t = _textures[_selection];
-                        Globals.SpriteDrawer.Draw(t, new Vector2(_bounds.Center.X, c.Y - 20f), color: Color.White, origin: new Vector2(-t.Width / 2.0f, -t.Height / 2.0f));
+                        Globals.SpriteDrawer.Draw(t, new Vector2(c.X, c.Y - 20f), color: Color.White, origin: new Vector2(t.Width / 2.0f, t.Height / 2.0f));
                         Globals.SpriteDrawer.DrawText("Press A to select Zerd.", new Vector2(c.X, _bounds.Bottom - 50f), 20f, color: Color.White);
                         return;
                     case 2:
-                        Globals.SpriteDrawer.DrawText("Press Start to being.", c.ToVector2(), 20f, color: Color.White);
+                        Globals.SpriteDrawer.DrawText("Press Start to Begin.", c.ToVector2(), 20f, color: Color.White);
                         return;
                 }
             }

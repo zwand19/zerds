@@ -2,6 +2,8 @@
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Buffs;
+using Zerds.Constants;
+using Zerds.GameObjects;
 
 namespace Zerds.Factories
 {
@@ -12,10 +14,10 @@ namespace Zerds.Factories
             switch (type)
             {
                 case BuffTypes.Dash:
-                    being.Buffs.Add(new DashBuff(being));
+                    being.Buffs.Add(new DashBuff(being, AbilityConstants.DashBonus * (1 + ((Zerd) being).Player.AbilityUpgrades[AbilityUpgradeType.DashDistance] / 100f)));
                     return;
                 case BuffTypes.Sprint:
-                    being.Buffs.Add(new SprintBuff(being)); 
+                    being.Buffs.Add(new SprintBuff(being));
                     return;
             }
             throw new Exception("Unhandled buff");

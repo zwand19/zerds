@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Zerds.Buffs;
 using Zerds.Constants;
-using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Input;
 
@@ -18,13 +18,28 @@ namespace Zerds.GameObjects
         public Entities.Zerd Zerd { get; set; }
         public int FloatingSkillPoints { get; set; }
         public PlayerSkills Skills { get; set; }
+        public Dictionary<AbilityUpgradeType, float> AbilityUpgrades { get; set; }
         public int Gold { get; set; }
 
         public Player(string name, PlayerIndex playerIndex)
         {
             Name = name;
             PlayerIndex = playerIndex;
-            Skills = new PlayerSkills(playerIndex);
+            Skills = new PlayerSkills(this);
+            AbilityUpgrades = new Dictionary<AbilityUpgradeType, float>
+            {
+                {AbilityUpgradeType.DamageTaken, 0},
+                {AbilityUpgradeType.DashDistance, 0},
+                {AbilityUpgradeType.FireballDamage, 0},
+                {AbilityUpgradeType.FireballMana, 0},
+                {AbilityUpgradeType.HealthRegen, 0},
+                {AbilityUpgradeType.IceballCrit, 0},
+                {AbilityUpgradeType.IceballMana, 0},
+                {AbilityUpgradeType.LavaBlastDistance, 0},
+                {AbilityUpgradeType.ManaRegen, 0},
+                {AbilityUpgradeType.MovementSpeed, 0},
+                {AbilityUpgradeType.SprintSpeed, 0}
+            };
             Gold = GameplayConstants.StartingGold;
         }
 
@@ -83,7 +98,7 @@ namespace Zerds.GameObjects
                 default:
                     throw new Exception("Unknown Zerd Type");
             }
-            Zerd = new Entities.Zerd(PlayerIndex, zerdFile);
+            Zerd = new Entities.Zerd(this, zerdFile);
             Globals.GameState.Zerds.Add(Zerd);
         }
     }

@@ -23,7 +23,7 @@ namespace Zerds.Abilities
         public DamageInstance GetDamage()
         {
             var knockback = new Knockback(Being.Facing, TimeSpan.FromMilliseconds(250), 250f);
-            return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Physical, Being);
+            return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Physical, Being, AbilityTypes.Melee);
         }
 
         public bool Attacked()

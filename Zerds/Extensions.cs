@@ -98,6 +98,13 @@ namespace Zerds
             spriteBatch.DrawTextLeftAlign(text, position - fontSize * size / 100f, fontSize, type, color);
         }
 
+        public static void DrawWrappedText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, float maxWidth, Color? color = null, FontTypes type = FontTypes.Pericles)
+        {
+            var font = Globals.Fonts[type];
+            var size = font.MeasureString(text);
+            spriteBatch.DrawTextLeftAlign(text.Wrap(maxWidth, fontSize), position - fontSize * size / 100f, fontSize, type, color);
+        }
+
         public static void DrawRect(this SpriteBatch spriteBatch, Rectangle rect, Color? color = null)
         {
             var colorVal = color ?? Color.Black;

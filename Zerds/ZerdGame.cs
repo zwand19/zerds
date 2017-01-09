@@ -83,7 +83,7 @@ namespace Zerds
             _state = GameStates.Game;
             for (var i=0; i < players.Count; i++)
                 if (players[i] != ZerdTypes.NotPlaying) _players[i].JoinGame(players[i]);
-
+            Globals.GameState.StartLevel();
             return true;
         }
 
@@ -119,6 +119,7 @@ namespace Zerds
                     {
                         _state = GameStates.Intermission;
                         _intermissionScreen = new IntermissionScreen();
+                        Level.LevelComplete();
                     }
                     break;
                 case GameStates.Intermission:

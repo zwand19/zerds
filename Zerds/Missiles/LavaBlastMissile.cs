@@ -25,7 +25,7 @@ namespace Zerds.Missiles
             Y = p.Y;
             Creator = zerd;
             Origin = p;
-            Distance = AbilityConstants.FireballDistance;
+            Distance = AbilityConstants.FireballDistance * (1 + zerd.Player.AbilityUpgrades[AbilityUpgradeType.LavaBlastDistance] / 100f);
             Speed = AbilityConstants.FireballSpeed;
             Velocity = Creator.Facing.Normalized();
             TargetsHit = new List<Being>();
@@ -106,11 +106,11 @@ namespace Zerds.Missiles
             if (TargetsHit.Contains(target))
                 return;
             if (!TargetsHit.Any())
-                ((Zerd)Creator).Combo++;
+                ((Zerd)Creator).IncreaseCombo();
             TargetsHit.Add(target);
             Damage.DamageBeing(target);
             Speed *= 0.9f;
-            target.AddBuff(new BurnBuff(target, TimeSpan.FromMilliseconds(AbilityConstants.LavaBlastBurnLength), Damage.Damage * AbilityConstants.LavaBlastBurnDamagePercentage));
+            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.LavaBlastBurnLength), Damage.Damage * AbilityConstants.LavaBlastBurnDamagePercentage));
         }
     }
 }

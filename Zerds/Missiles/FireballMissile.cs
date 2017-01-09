@@ -16,7 +16,7 @@ namespace Zerds.Missiles
         public FireballMissile(Zerd zerd, DamageInstance damageInstance, Point p) : base("Missiles/fireball.png")
         {
             Damage = damageInstance;
-            var size = 64f * (1 + Helpers.GetPlayer(zerd).Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100);
+            var size = 64f * (1 + zerd.Player.Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100);
             Width = (int) size;
             Height = (int) size;
             X = p.X;
@@ -73,7 +73,7 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new BurnBuff(target, TimeSpan.FromMilliseconds(AbilityConstants.FireballBurnLength), Damage.Damage * AbilityConstants.FireballBurnDamagePercentage));
+            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.FireballBurnLength), Damage.Damage * AbilityConstants.FireballBurnDamagePercentage));
         }
     }
 }

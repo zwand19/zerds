@@ -9,6 +9,7 @@
         Iceball,
         Wand,
         Melee,
-        LavaBlast
+        LavaBlast,
+        Range
     }
 }

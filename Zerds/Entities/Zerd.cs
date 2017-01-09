@@ -6,6 +6,7 @@ using Zerds.Enums;
 using System.Collections.Generic;
 using Zerds.Abilities;
 using System.Linq;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities
 {
@@ -13,12 +14,16 @@ namespace Zerds.Entities
     {
         public string Name { get; set; }
         public List<Ability> Abilities { get; set; }
-        public PlayerIndex PlayerIndex { get; private set; }
         public int Combo { get; set; }
+        public int MaxCombo { get; set; }
+        public int MaxLevelCombo { get; set; }
+        public int EnemiesKilled { get; set; }
+        public int LevelEnemiesKilled { get; set; }
+        public Player Player { get; set; }
 
-        public Zerd(PlayerIndex playerIndex, string zerdFile) : base(zerdFile, false)
+        public Zerd(Player player, string zerdFile) : base(zerdFile, false)
         {
-            PlayerIndex = playerIndex;
+            Player = player;
             X = 650;
             Y = 300;
             Health = GameplayConstants.ZerdStartingHealth;
@@ -72,11 +77,13 @@ namespace Zerds.Entities
             return Animations.Get(AnimationTypes.Stand);
         }
 
-        public override bool IsCritical(DamageTypes type)
+        public override bool IsCritical(DamageTypes type, AbilityTypes ability)
         {
             var chance = CriticalChance;
             if (type == DamageTypes.Fire)
-                chance += Helpers.GetPlayer(this).Skills.Devastation * SkillConstants.DevastationStat / 100;
+                chance += Player.Skills.Devastation * SkillConstants.DevastationStat / 100;
+            if (ability == AbilityTypes.Iceball)
+                chance += Player.AbilityUpgrades[AbilityUpgradeType.IceballCrit] / 100;
             return new Random().NextDouble() < chance;
         }
 
@@ -106,6 +113,18 @@ namespace Zerds.Entities
             base.Update(gameTime);
         }
 
+        public void IncreaseCombo()
+        {
+            Combo++;
+            MaxCombo = Combo > MaxCombo ? Combo : MaxCombo;
+            MaxLevelCombo = Combo > MaxLevelCombo ? Combo : MaxLevelCombo;
+        }
+
+        public void EnemyKilled(Enemy enemy)
+        {
+            EnemiesKilled++;
+            LevelEnemiesKilled++;
+        }
         
         public override float SpriteRotation()
         {

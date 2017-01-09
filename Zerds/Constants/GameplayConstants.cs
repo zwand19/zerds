@@ -8,6 +8,13 @@ namespace Zerds.Constants
         public static float HealthFactorPerLevel = 0.3f;
         public static float DamageFactorPerLevel = 0.12f;
         public static int StartingGold = 100;
+        public static int BaseLevelGold = 135;
+        public static int BonusGoldPerLevel = 15;
+        public static int GoldPerEnemy = 6;
+        public static int BonusGoldPerEnemyPerLevel = 4;
+        public static float GoldPerCombo = 2f;
+        public static int AbilityUpgradeCost = 50;
+        public static int FloatingSkillPointCost = 75;
 
         public const int FloatingPointsPerLevel = 3;
         public const int SkillPointsPerLevel = 3;
