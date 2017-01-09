@@ -38,7 +38,7 @@ namespace Zerds.Abilities
         {
             var knockback = new Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
             var damage = IceballDamage * (1 + ((Zerd)Being).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
-            Globals.GameState.Missiles.Add(new IceballMissile(Being, new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
+            Globals.GameState.Missiles.Add(new IceballMissile((Zerd)Being, new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
             // replenish mana based on bonuses
             var zerd = (Zerd) Being;
             if (zerd != null)

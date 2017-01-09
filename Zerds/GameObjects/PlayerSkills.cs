@@ -63,7 +63,7 @@ namespace Zerds.GameObjects
         public int ImprovedIceball => FrostSkill(SkillConstants.ImprovedIceballName);
         public int FrozenSoul => FrostSkill(SkillConstants.FrozenSoulName);
         public int ColdExplosion => FrostSkill(SkillConstants.ColdExplosionName);
-        public int BitterCold => FrostSkill(SkillConstants.BitterColdName)
+        public int BitterCold => FrostSkill(SkillConstants.BitterColdName);
 
         public int ImprovedWand => ArcaneSkill(SkillConstants.ImprovedWandName);
         public int Dancer => ArcaneSkill(SkillConstants.DancerName);
