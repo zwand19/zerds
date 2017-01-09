@@ -33,8 +33,11 @@ namespace Zerds.GameObjects
             FrostSkillTree.Items.Add(improvedIceball);
             var frozenSoul = new SkillTreeItem(SkillConstants.FrozenSoulName, $"Reduce mana cost of all frost spells by {StatStr(SkillConstants.FrozenSoulStat, 5, 1)}%.", 5, 0, 2, "Icons/cold-heart.png");
             FrostSkillTree.Items.Add(frozenSoul);
-            var coldExplosion = new SkillTreeItem(SkillConstants.ColdExplosionName, $"Causes iceballs to explode in a small radius, dealing {StatStr(SkillConstants.ColdExplosionStat, 5, 0)}% damage and slow effect to nearby enemies.", 5, 0, 4, "Icons/cold-explosion.png");
+            var coldExplosion = new SkillTreeItem(SkillConstants.ColdExplosionName, $"Cause iceballs to explode in a small radius, dealing {StatStr(SkillConstants.ColdExplosionStat, 5, 0)}% damage and slow effect to nearby enemies.", 5, 0, 4, "Icons/cold-explosion.png");
             FrostSkillTree.Items.Add(coldExplosion);
+            // Frost Row 2
+            var bitterCold = new SkillTreeItem(SkillConstants.BitterColdName, $"Increase length of all slow effects by {StatStr(SkillConstants.BitterColdStat, 5, 0)}%.", 5, 1, 0, "Icons/thermometer-cold.png");
+            FrostSkillTree.Items.Add(bitterCold);
 
             ArcaneSkillTree = new SkillTree("Arcane", player);
             // Arcane Row 1
@@ -60,6 +63,7 @@ namespace Zerds.GameObjects
         public int ImprovedIceball => FrostSkill(SkillConstants.ImprovedIceballName);
         public int FrozenSoul => FrostSkill(SkillConstants.FrozenSoulName);
         public int ColdExplosion => FrostSkill(SkillConstants.ColdExplosionName);
+        public int BitterCold => FrostSkill(SkillConstants.BitterColdName)
 
         public int ImprovedWand => ArcaneSkill(SkillConstants.ImprovedWandName);
         public int Dancer => ArcaneSkill(SkillConstants.DancerName);

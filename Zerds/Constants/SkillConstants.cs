@@ -22,6 +22,9 @@
         public const string ColdExplosionName = "Cold Explosion";
         public const float ColdExplosionStat = 6f;
 
+        public const string BitterColdName = "Bitter Cold";
+        public const float BitterColdStat = 13f;
+
         // Arcane
         public const string ImprovedWandName = "Improved Wand";
         public const float ImprovedWandStat = 4f;
