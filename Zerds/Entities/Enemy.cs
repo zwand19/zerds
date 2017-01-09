@@ -60,17 +60,16 @@ namespace Zerds.Entities
 
         protected bool OnDeath()
         {
-            if (Helpers.RandomChance(GameplayConstants.PotionDropChance))
-            {
-                if (Helpers.RandomChance(0.5f))
-                {
-                    Globals.GameState.Items.Add(new HealthPotion(this));
-                }
-                else
-                {
-                    Globals.GameState.Items.Add(new ManaPotion(this));
-                }
-            }
+            var chance = GameplayConstants.PotionDropChance;
+            if (Killer is Zerd)
+                chance += ((Zerd) Killer).Player.Skills.Guzzler / 100f;
+            if (!Helpers.RandomChance(chance))
+                return true;
+
+            if (Helpers.RandomChance(0.5f))
+                Globals.GameState.Items.Add(new HealthPotion(this));
+            else
+                Globals.GameState.Items.Add(new ManaPotion(this));
             return true;
         }
 

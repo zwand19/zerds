@@ -40,8 +40,9 @@ namespace Zerds.Abilities
             var damage = IceballDamage * (1 + ((Zerd)Being).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
             Globals.GameState.Missiles.Add(new IceballMissile(Being, new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
             // replenish mana based on bonuses
-            if (Being is Zerd)
-                Being.Mana += AbilityConstants.FireballManaCost * (((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.IceballMana] / 100f);
+            var zerd = (Zerd) Being;
+            if (zerd != null)
+                zerd.Mana += AbilityConstants.IceballManaCost * ((zerd.Player.Skills.FrozenSoul * SkillConstants.FrozenSoulStat + zerd.Player.AbilityUpgrades[AbilityUpgradeType.IceballMana]) / 100f);
             return base.Execute();
         }
     }

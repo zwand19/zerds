@@ -23,11 +23,16 @@ namespace Zerds
             WhiteTexture = new Texture2D(SpriteDrawer.GraphicsDevice, 1, 1);
             WhiteTexture.SetData(new[] { Color.White });
             Fonts = new Dictionary<FontTypes, SpriteFont>();
+            ContinueColor = new Color(80, 220, 100);
+            GoldColor = new Color(255, 215, 0);
         }
 
         public static void LoadFont(string fileName, FontTypes type)
         {
             Fonts[type] = ContentManager.Load<SpriteFont>(fileName);
         }
+
+        public static Color ContinueColor { get; internal set; }
+        public static Color GoldColor { get; internal set; }
     }
 }

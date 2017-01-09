@@ -137,17 +137,17 @@ namespace Zerds
                         Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.MaxCombo} ({Level.ComboGold(_player)})",
                             new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 100f), 20f, Color.White);
                         Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 160f), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText($"Total Level Gold: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 220f), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Total Level Gold: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 220f), 20f, Globals.GoldColor);
+                        Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.Skills:
-                        Globals.SpriteDrawer.DrawText($"Gold: {_player.Gold}", new Vector2(_bounds.Center.X, _bounds.Top + 25f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Gold: {_player.Gold}", new Vector2(_bounds.Center.X, _bounds.Top + 25f), 20f, Globals.GoldColor);
                         _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.Skills.FireSkillTree.PointsAvailable})";
                         _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.Skills.FrostSkillTree.PointsAvailable})";
                         _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.Skills.ArcaneSkillTree.PointsAvailable})";
                         Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 20f, Color.White);
                         _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 70), 20f, 50f, Color.White, new Color(200, 200, 200));
-                        Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.FireSkills:
                         _player.Skills.FireSkillTree.Draw(_bounds);
@@ -164,7 +164,7 @@ namespace Zerds
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item1, new Rectangle(_bounds.Left + 20, _bounds.Top + 100, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[0]);
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item2, new Rectangle(_bounds.Left + 20, _bounds.Top + height + 110, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[1]);
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item3, new Rectangle(_bounds.Left + 20, _bounds.Top + 2 * height + 120, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[2]);
-                        Globals.SpriteDrawer.DrawText("Press A to Choose", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Bottom - 30f), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText("Press A to Choose", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.Potion:
                         return;

@@ -6,6 +6,7 @@ using Zerds.Graphics;
 using Zerds.Enums;
 using Zerds.Constants;
 using System.Collections.Generic;
+using System.Linq;
 using Zerds.Factories;
 using Zerds.Buffs;
 
@@ -78,6 +79,20 @@ namespace Zerds.Missiles
             Speed *= 0.15f;
             var slowLevel = AbilityConstants.ColdSpeedFactor * (1 + ((Zerd) Creator).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
             target.AddBuff(new ColdBuff(target, AbilityConstants.IceballColdLength, slowLevel));
+            var zerd = (Zerd) Creator;
+            if (zerd != null && zerd.Player.Skills.ColdExplosion > 0)
+            {
+                var explosionSlowLevel = zerd.Player.Skills.ColdExplosion * SkillConstants.ColdExplosionStat *  AbilityConstants.ColdSpeedFactor * (1 + ((Zerd)Creator).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+                Damage.Damage *= zerd.Player.Skills.ColdExplosion * SkillConstants.ColdExplosionStat;
+                foreach (
+                    var e in
+                    Globals.GameState.Enemies.Where(
+                        e => target.Position.DistanceBetween(e.Position) < AbilityConstants.IceballExplosionDistance && e != target))
+                {
+                    e.AddBuff(new ColdBuff(target, AbilityConstants.IceballColdLength, explosionSlowLevel));
+                    Damage.DamageBeing(e);
+                }
+            }
         }
     }
 }

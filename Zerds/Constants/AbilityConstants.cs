@@ -27,6 +27,7 @@ namespace Zerds.Constants
         public const float IceballSpeed = 720f;
         public const float IceballDistance = 650f;
         public const float IceballManaCost = 50f;
+        public const float IceballExplosionDistance = 100f;
         public static TimeSpan IceballColdLength => TimeSpan.FromMilliseconds(5000);
         public static TimeSpan IceballKnockbackLength => TimeSpan.Zero;
         public static TimeSpan IceballCastTime => TimeSpan.FromMilliseconds(450);

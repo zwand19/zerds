@@ -13,8 +13,8 @@ namespace Zerds.Constants
         public static int GoldPerEnemy = 6;
         public static int BonusGoldPerEnemyPerLevel = 4;
         public static float GoldPerCombo = 2f;
-        public static int AbilityUpgradeCost = 50;
-        public static int FloatingSkillPointCost = 75;
+        public static int AbilityUpgradeCost = 150;
+        public static int FloatingSkillPointCost = 250;
 
         public const int FloatingPointsPerLevel = 3;
         public const int SkillPointsPerLevel = 3;
@@ -39,7 +39,7 @@ namespace Zerds.Constants
         public const float ZerdStartingManaRegen = 1.5f;
         public const float ZerdCritChance = 0.1f;
 
-        public const float PotionDropChance = 0.75f;
+        public const float PotionDropChance = 0.2f;
         public const float PickupItemSpeed = 80f;
         public const float PickupItemSpeedDecay = 60f;
         public const float DefaultItemSize = 26f;

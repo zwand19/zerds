@@ -16,6 +16,12 @@
         public const string ImprovedIceballName = "Improved Iceball";
         public const float ImprovedIceballStat = 4f;
 
+        public const string FrozenSoulName = "Frozen Soul";
+        public const float FrozenSoulStat = 2f;
+
+        public const string ColdExplosionName = "Cold Explosion";
+        public const float ColdExplosionStat = 6f;
+
         // Arcane
         public const string ImprovedWandName = "Improved Wand";
         public const float ImprovedWandStat = 4f;
@@ -31,5 +37,8 @@
 
         public const string SprinterName = "Sprinter";
         public const float SprintStat = 5f;
+
+        public const string GuzzlerName = "Guzzler";
+        public const float GuzzlerStat = 2.2f;
     }
 }
