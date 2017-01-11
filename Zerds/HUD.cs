@@ -55,7 +55,7 @@ namespace Zerds
 
         private static void DrawLevelText()
         {
-            var opacity = (float)Math.Sqrt((TimeSpan.FromSeconds(3) - Globals.GameState.TimeIntoLevel).TotalSeconds / 3.0f);
+            var opacity = Globals.GameState.LevelTimeRemaining <= TimeSpan.Zero ? 0f : (float)Math.Sqrt((TimeSpan.FromSeconds(3) - Globals.GameState.TimeIntoLevel).TotalSeconds / 3.0f);
             if (opacity > 0f)
             {
                 var position = Globals.ViewportBounds.Center.ToVector2() + new Vector2(0, (opacity - 1f) * 80);
