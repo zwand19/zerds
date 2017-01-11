@@ -69,5 +69,11 @@ namespace Zerds.Constants
         public const float FrostDemonSlowAmount = -100f;
         public static TimeSpan FrostDemonColdLength => TimeSpan.FromMilliseconds(2200);
         public static TimeSpan FrostDemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
+
+        public const float ArcherArrowSpeed = 675f;
+        public const float ArcherArrowLength = 850f;
+        public const float ArcherArrowKnockback = 100f;
+        public static TimeSpan ArcherArrowKnockbackLength => TimeSpan.FromMilliseconds(300);
+        public static TimeSpan ArcherArrowCooldown => TimeSpan.FromMilliseconds(750);
     }
 }

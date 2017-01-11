@@ -79,7 +79,7 @@ namespace Zerds
                 LevelTimeRemaining = TimeSpan.Zero;
             Beings.ForEach(b => b.Update(gameTime));
             Enemies = Enemies.Where(e => e.IsActive).ToList();
-            Enemies.ForEach(e => e.GetAI().Run());
+            Enemies.ForEach(e => e.GetAI().Run(gameTime));
             Missiles = Missiles.Where(m => m.IsActive).ToList();
             Missiles.ForEach(m => m.Update(gameTime));
             Items = Items.Where(i => i.IsActive).ToList();

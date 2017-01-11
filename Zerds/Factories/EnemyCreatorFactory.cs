@@ -23,6 +23,8 @@ namespace Zerds.Factories
                     return new Demon();
                 case EnemyTypes.FrostDemon:
                     return new FrostDemon();
+                case EnemyTypes.Archer:
+                    return new Archer();
             }
             throw new ArgumentException("Unknown Enemy Type");
         }
@@ -35,15 +37,15 @@ namespace Zerds.Factories
                 case 1:
                     return new List<Enemy> { CreateEnemy(rand < 0.9 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
                 case 2:
-                    return new List<Enemy> { CreateEnemy(rand < 0.82 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
+                    return new List<Enemy> { CreateEnemy(rand < 0.25 ? EnemyTypes.Archer : rand < 0.82 ? EnemyTypes.Zombie : EnemyTypes.Dog) };
                 case 3:
-                    return new List<Enemy> {CreateEnemy(rand < 0.5 ? EnemyTypes.Zombie : rand < 0.9 ? EnemyTypes.Dog : rand < 0.95 ? EnemyTypes.Demon : EnemyTypes.FrostDemon)};
+                    return new List<Enemy> { CreateEnemy(rand < 0.25 ? EnemyTypes.Archer : rand < 0.5 ? EnemyTypes.Zombie : rand < 0.9 ? EnemyTypes.Dog : rand < 0.95 ? EnemyTypes.Demon : EnemyTypes.FrostDemon)};
                 case 4:
-                    return new List<Enemy> { CreateEnemy(rand < 0.25 ? EnemyTypes.Zombie : rand < 0.5 ? EnemyTypes.Dog : rand < 0.75 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
+                    return new List<Enemy> { CreateEnemy(rand < 0.25 ? EnemyTypes.Archer : rand < 0.35 ? EnemyTypes.Zombie : rand < 0.5 ? EnemyTypes.Dog : rand < 0.75 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
                 case 5:
-                    return new List<Enemy> { CreateEnemy(rand < 0.15 ? EnemyTypes.Zombie : rand < 0.4 ? EnemyTypes.Dog : rand < 0.7 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
+                    return new List<Enemy> { CreateEnemy(rand < 0.24 ? EnemyTypes.Archer : rand < 0.3 ? EnemyTypes.Zombie : rand < 0.4 ? EnemyTypes.Dog : rand < 0.7 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
                 case 6:
-                    return new List<Enemy> { CreateEnemy(rand < 0.1 ? EnemyTypes.Zombie : rand < 0.25 ? EnemyTypes.Dog : rand < 0.6 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
+                    return new List<Enemy> { CreateEnemy(rand < 0.22 ? EnemyTypes.Archer : rand < 0.25 ? EnemyTypes.Dog : rand < 0.6 ? EnemyTypes.Demon : EnemyTypes.FrostDemon) };
             }
             return new List<Enemy>();
         }
@@ -56,6 +58,8 @@ namespace Zerds.Factories
                     return 5;
                 if (e is Dog)
                     return 7;
+                if (e is Archer)
+                    return 8;
                 if (e is Demon)
                     return 17;
                 if (e is FrostDemon)

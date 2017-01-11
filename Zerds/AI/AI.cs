@@ -1,4 +1,5 @@
-﻿using Zerds.Entities;
+﻿using Microsoft.Xna.Framework;
+using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Graphics;
 
@@ -15,7 +16,7 @@ namespace Zerds.AI
             State = EnemyStates.Sitting;
         }
 
-        public abstract void Run();
+        public abstract void Run(GameTime gameTime);
         public abstract Animation GetCurrentAnimation();
     }
 }

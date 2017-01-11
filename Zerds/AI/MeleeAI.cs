@@ -17,7 +17,7 @@ namespace Zerds.AI
             _meleeAbility = melee;
         }
 
-        public override void Run()
+        public override void Run(GameTime gameTime)
         {
             if (Enemy.Stunned)
                 return;

@@ -34,9 +34,9 @@ namespace Zerds.Constants
         public const float DamageVariance = 0.3f;
 
         public const float ZerdStartingHealth = 100f;
-        public const float ZerdStartingMana = 100f;
-        public const float ZerdStartingHealthRegen = 1f;
-        public const float ZerdStartingManaRegen = 1.5f;
+        public const float ZerdStartingMana = 150f;
+        public const float ZerdStartingHealthRegen = 1.5f;
+        public const float ZerdStartingManaRegen = 5f;
         public const float ZerdCritChance = 0.1f;
 
         public const float PotionDropChance = 0.2f;

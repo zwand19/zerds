@@ -3,6 +3,7 @@
     public enum MissileTypes
     {
         DemonMissile,
-        FrostDemonMissile
+        FrostDemonMissile,
+        Arrow
     }
 }

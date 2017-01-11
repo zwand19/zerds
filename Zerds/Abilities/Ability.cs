@@ -30,7 +30,7 @@ namespace Zerds.Abilities
 
         public void BasicMissileCast()
         {
-            if (Cooldown > TimeSpan.Zero) return;
+            if (Cooldown > TimeSpan.Zero || Being.Mana < ManaCost) return;
             if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
             Active = true;
         }

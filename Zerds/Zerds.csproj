@@ -110,6 +110,7 @@
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
+    <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="GameObjects\AbilityUpgrades.cs" />
     <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Menus\MenuListItem.cs" />
     <Compile Include="Menus\SkillTree.cs" />
     <Compile Include="Menus\SkillTreeItem.cs" />
+    <Compile Include="Missiles\ArrowMissile.cs" />
     <Compile Include="Missiles\DemonMissile.cs" />
     <Compile Include="Missiles\LavaBlastMissile.cs" />
     <Compile Include="Missiles\FireballMissile.cs" />
@@ -218,6 +220,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Buffs\dash.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\archer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\Demon.png" />
@@ -343,6 +348,9 @@
     <Content Include="Content\Maps\DungeonTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Missiles\arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Missiles\fireball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -356,9 +364,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\orbs.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Random\xbox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />

@@ -18,8 +18,9 @@ namespace Zerds.AI
             _rangeAttack = range;
         }
 
-        public override void Run()
+        public override void Run(GameTime gameTime)
         {
+            _rangeAttack.Update(gameTime);
             if (Enemy.Stunned)
                 return;
             if (!Enemy.IsAlive)

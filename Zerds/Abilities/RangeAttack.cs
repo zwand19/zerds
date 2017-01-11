@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
@@ -31,12 +32,16 @@ namespace Zerds.Abilities
                     return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Fire, Being, AbilityTypes.Range);
                 case MissileTypes.FrostDemonMissile:
                     return new DamageInstance(null, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Frost, Being, AbilityTypes.Range);
+                case MissileTypes.Arrow:
+                    var arrowKnockback = new Knockback(Being.Facing, AbilityConstants.ArcherArrowKnockbackLength, AbilityConstants.ArcherArrowKnockback);
+                    return new DamageInstance(arrowKnockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Physical, Being, AbilityTypes.Range);
             }
             throw new Exception("Unknown missile type");
         }
 
         public bool Attacked()
         {
+            Cooldown = TimeSpan.FromMilliseconds(FullCooldown.TotalMilliseconds);
             switch (_missileType)
             {
                 case MissileTypes.DemonMissile:
@@ -44,6 +49,9 @@ namespace Zerds.Abilities
                     return true;
                 case MissileTypes.FrostDemonMissile:
                     Globals.GameState.Missiles.Add(new FrostDemonMissile(Being, GetDamage(), Being.Position));
+                    return true;
+                case MissileTypes.Arrow:
+                    Globals.GameState.Missiles.Add(new ArrowMissile(Being, GetDamage(), Being.Position));
                     return true;
             }
             return false;
