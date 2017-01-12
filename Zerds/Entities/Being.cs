@@ -101,6 +101,7 @@ namespace Zerds.Entities
                     }
                     b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                 });
+                Buffs.ForEach(b => Speed = b.Frozen ? 0 : Speed);
 
                 if (Buffs.Any(b => b is SprintBuff) && this is Zerd)
                     Speed *= 1 + ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.SprintSpeed] / 100;

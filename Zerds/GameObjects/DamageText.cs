@@ -23,19 +23,19 @@ namespace Zerds.GameObjects
             switch (damageInstance.DamageType)
             {
                 case Enums.DamageTypes.Fire:
-                    _color = new Color(226, 88, 34);
+                    _color = new Color(236, 112, 64);
                     break;
                 case Enums.DamageTypes.Frost:
-                    _color = new Color(34, 172, 226);
+                    _color = new Color(64, 192, 236);
                     break;
                 case Enums.DamageTypes.Lightning:
                     _color = new Color(125, 249, 255);
                     break;
                 case Enums.DamageTypes.Magic:
-                    _color = new Color(246, 226, 34);
+                    _color = new Color(256, 246, 54);
                     break;
                 default:
-                    _color = new Color(34, 34, 34);
+                    _color = new Color(220, 220, 220);
                     break;
             }
         }
@@ -48,7 +48,7 @@ namespace Zerds.GameObjects
 
         public void Draw()
         {
-            Globals.SpriteDrawer.DrawText(((int) DamageInstance.Damage).ToString(), Position, DamageInstance.IsCritical ? 20f : 14f, color: _color);
+            Globals.SpriteDrawer.DrawText(((int) DamageInstance.Damage).ToString(), Position, DamageInstance.IsCritical ? 23f : 17f, color: _color);
         }
     }
 }

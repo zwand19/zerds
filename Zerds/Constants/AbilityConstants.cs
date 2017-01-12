@@ -18,6 +18,7 @@ namespace Zerds.Constants
         public const float WandKnockback = 200f;
         public const float WandSpeed = 600f;
         public const float WandDistance = 400f;
+        public const float WandDamage = 6f;
         public static TimeSpan WandKnockbackLength => TimeSpan.FromMilliseconds(250);
         public static TimeSpan WandCastTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan WandFollowThroughTime => TimeSpan.FromMilliseconds(200);
@@ -28,6 +29,7 @@ namespace Zerds.Constants
         public const float IceballDistance = 650f;
         public const float IceballManaCost = 50f;
         public const float IceballExplosionDistance = 100f;
+        public const float IceballDamage = 10f;
         public static TimeSpan IceballColdLength => TimeSpan.FromMilliseconds(5000);
         public static TimeSpan IceballKnockbackLength => TimeSpan.Zero;
         public static TimeSpan IceballCastTime => TimeSpan.FromMilliseconds(450);
@@ -40,6 +42,7 @@ namespace Zerds.Constants
         public const float FireballManaCost = 50f;
         public const float FireballBurnLength = 1500f;
         public const float FireballBurnDamagePercentage = 0.15f;
+        public const float FireballDamage = 10f;
         public static TimeSpan FireballKnockbackLength => TimeSpan.FromMilliseconds(315);
         public static TimeSpan FireballCastTime => TimeSpan.FromMilliseconds(550);
         public static TimeSpan FireballFollowThroughTime => TimeSpan.FromMilliseconds(200);
@@ -51,10 +54,19 @@ namespace Zerds.Constants
         public const float LavaBlastManaCost = 80f;
         public const float LavaBlastBurnLength = 3000f;
         public const float LavaBlastBurnDamagePercentage = 0.1f;
+        public const float LavaBlastDamage = 14f;
         public static TimeSpan LavaBlastKnockbackLength => TimeSpan.FromMilliseconds(400);
         public static TimeSpan LavaBlastCastTime => TimeSpan.FromMilliseconds(1250);
         public static TimeSpan LavaBlastFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan LavaBlastCooldown = TimeSpan.FromMilliseconds(10000);
+
+        public const float FrostPoundDamage = 10f;
+        public const float FrostPoundManaCost = 75f;
+        public const float FrostPoundRange = 260f;
+        public static TimeSpan FrostPoundCastTime => TimeSpan.FromMilliseconds(200);
+        public static TimeSpan FrostPoundFollowThroughTime => TimeSpan.FromMilliseconds(200);
+        public static TimeSpan FrostPoundFrozenLength = TimeSpan.FromMilliseconds(2250);
+        public static TimeSpan FrostPoundCooldown = TimeSpan.FromMilliseconds(12000);
 
         public const float DemonMissileKnockback = 350f;
         public const float DemonMissileSpeed = 550f;

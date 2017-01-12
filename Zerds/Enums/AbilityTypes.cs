@@ -10,6 +10,7 @@
         Wand,
         Melee,
         LavaBlast,
-        Range
+        Range,
+        FrostPound
     }
 }

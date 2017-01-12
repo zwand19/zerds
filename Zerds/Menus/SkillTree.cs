@@ -60,8 +60,18 @@ namespace Zerds.Menus
                         PointsAvailable--;
                     else
                         _player.FloatingSkillPoints--;
-                    if (Selected.PointsSpent == Selected.MaxPoints && Selected.Ability != AbilityTypes.None)
-                        _player.Zerd.Abilities.Add(new LavaBlast(_player.Zerd));
+                    if (Selected.PointsSpent == Selected.MaxPoints)
+                    {
+                        switch (Selected.Ability)
+                        {
+                            case AbilityTypes.LavaBlast:
+                                _player.Zerd.Abilities.Add(new LavaBlast(_player.Zerd));
+                                break;
+                            case AbilityTypes.FrostPound:
+                                _player.Zerd.Abilities.Add(new FrostPound(_player.Zerd));
+                                break;
+                        }
+                    }
                 }
             }
 

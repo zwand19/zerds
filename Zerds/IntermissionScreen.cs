@@ -145,8 +145,8 @@ namespace Zerds
                         _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.Skills.FireSkillTree.PointsAvailable})";
                         _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.Skills.FrostSkillTree.PointsAvailable})";
                         _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.Skills.ArcaneSkillTree.PointsAvailable})";
-                        Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 20f, Color.White);
-                        _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 70), 20f, 50f, Color.White, new Color(200, 200, 200));
+                        Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 17f, Color.White);
+                        _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 70), 17f, 50f, Color.White, new Color(200, 200, 200));
                         Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.FireSkills:

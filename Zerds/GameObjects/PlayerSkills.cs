@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Zerds.Constants;
 using Zerds.Enums;
 using Zerds.Menus;
@@ -38,6 +37,8 @@ namespace Zerds.GameObjects
             // Frost Row 2
             var bitterCold = new SkillTreeItem(SkillConstants.BitterColdName, $"Increase length of all slow effects by {StatStr(SkillConstants.BitterColdStat, 5, 0)}%.", 5, 1, 0, "Icons/thermometer-cold.png");
             FrostSkillTree.Items.Add(bitterCold);
+            var frostPound = new SkillTreeItem("Frost Pound", "Slam the ground with a frozen fist, dealing damage and freezing all nearby enemies in place. Not learned until all 5 skill points are spent.", 5, 1, 2, "Icons/ice-punch.png", null, AbilityTypes.FrostPound);
+            FrostSkillTree.Items.Add(frostPound);
 
             ArcaneSkillTree = new SkillTree("Arcane", player);
             // Arcane Row 1

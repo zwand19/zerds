@@ -10,12 +10,8 @@ namespace Zerds.Abilities
 {
     public class LavaBlast : Ability
     {
-        public float LavaBlastDamage { get; set; }
-
         public LavaBlast(Zerd zerd) : base(AbilityTypes.LavaBlast, zerd, AbilityConstants.LavaBlastCooldown, AbilityConstants.LavaBlastManaCost, "lava_blast.png")
         {
-            LavaBlastDamage = 14;
-
             var anim = new Animation(AnimationTypes.LavaBlastAttack);
             anim.AddFrame(new Rectangle(64 * 1, 0, 64, 64), AbilityConstants.LavaBlastCastTime);
             anim.AddFrame(new Rectangle(64 * 3, 0, 64, 64), AbilityConstants.LavaBlastFollowThroughTime, Execute);
@@ -25,7 +21,7 @@ namespace Zerds.Abilities
 
         public override void Cast()
         {
-            BasicMissileCast();
+            BasicMissileCast(AnimationTypes.LavaBlastAttack);
         }
 
         private bool Casted()
@@ -36,7 +32,7 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.LavaBlastKnockbackLength, AbilityConstants.LavaBlastKnockback);
-            var damage = LavaBlastDamage * (1 + ((Zerd)Being).Player.Skills.FireMastery * SkillConstants.FireMasteryStat / 100);
+            var damage = AbilityConstants.LavaBlastDamage * (1 + ((Zerd)Being).Player.Skills.FireMastery * SkillConstants.FireMasteryStat / 100);
             Globals.GameState.Missiles.Add(new LavaBlastMissile(Being as Zerd, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Fire, Being, AbilityTypes.LavaBlast),
                 Being.Position));
             return base.Execute();

@@ -21,8 +21,11 @@ namespace Zerds.Buffs
         public Texture2D Texture { get; set; }
         public bool GrantsInvulnerability { get; internal set; }
         public Being Applier { get; set; }
+        public bool Frozen { get; set; }
 
-        protected Buff(Being applier, Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0)
+        protected Buff(Being applier, Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0,
+            float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0,
+            bool frozen = false)
         {
             Length = length;
             MovementSpeedFactor = movementSpeedFactor;
@@ -33,6 +36,7 @@ namespace Zerds.Buffs
             TimeRemaining = length;
             Being = being;
             Applier = applier;
+            Frozen = frozen;
         }
 
         public virtual void Draw()

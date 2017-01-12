@@ -28,9 +28,10 @@ namespace Zerds.Abilities
             Texture = iconFile == "" ? null : TextureCacheFactory.GetOnce($"Icons/{iconFile}");
         }
 
-        public void BasicMissileCast()
+        public void BasicMissileCast(string animation)
         {
             if (Cooldown > TimeSpan.Zero || Being.Mana < ManaCost) return;
+            Being.Animations.Get(animation).ResetAnimation();
             if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
             Active = true;
         }

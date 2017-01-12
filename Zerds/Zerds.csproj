@@ -109,8 +109,8 @@
     <Compile Include="AI\Extensions.cs" />
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />
+    <Compile Include="Buffs\FrozenBuff.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
-    <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="GameObjects\AbilityUpgrades.cs" />
     <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
@@ -168,7 +168,6 @@
     <Compile Include="Menus\MenuListItem.cs" />
     <Compile Include="Menus\SkillTree.cs" />
     <Compile Include="Menus\SkillTreeItem.cs" />
-    <Compile Include="Missiles\ArrowMissile.cs" />
     <Compile Include="Missiles\DemonMissile.cs" />
     <Compile Include="Missiles\LavaBlastMissile.cs" />
     <Compile Include="Missiles\FireballMissile.cs" />
@@ -197,6 +196,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\FrostPound.cs" />
     <None Include="Content\Pericles.spritefont">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -220,9 +220,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Buffs\dash.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Entities\archer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\Demon.png" />
@@ -293,6 +290,9 @@
     <Content Include="Content\Icons\ice-bolt.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\ice-punch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\improved_fireball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -348,9 +348,6 @@
     <Content Include="Content\Maps\DungeonTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Missiles\arrow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Missiles\fireball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -364,6 +361,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\orbs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Random\xbox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />
