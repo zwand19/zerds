@@ -39,9 +39,9 @@
             {
                 MinHealth = GetHealth(1.1f),
                 HealthRegen = BaseRegen * 2,
-                MinSpeed = BaseSpeed * 1.2f,
+                MinSpeed = BaseSpeed * 0.85f,
                 MaxHealth = GetHealth(1.4f),
-                MaxSpeed = BaseSpeed * 1.5f,
+                MaxSpeed = BaseSpeed * 1.15f,
                 CritChance = 0.2f
             };
         }

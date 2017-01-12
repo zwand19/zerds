@@ -59,6 +59,8 @@ namespace Zerds.GameObjects
                 Zerd.Abilities.First(a => a.Type == AbilityTypes.Fireball).Cast();
             if (buttonsPressed.Contains(Buttons.X))
                 Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Cast();
+            if (buttonsPressed.Contains(Buttons.RightStick))
+                Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Cast();
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
                 Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds * (1 - Skills.FireMastery * SkillConstants.SprintStat / 100);
