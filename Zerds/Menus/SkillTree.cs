@@ -39,9 +39,9 @@ namespace Zerds.Menus
             Globals.SpriteDrawer.DrawText(Selected.Title, new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 30), 24f, Color.Black);
             Globals.SpriteDrawer.DrawText($"{Selected.PointsSpent} / {Selected.MaxPoints}", new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 80f), 20f);
             Globals.SpriteDrawer.DrawText(Selected.Description.Wrap(bounds.Width - Padding * 2, 16f), new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 180f), 16f);
-            var skillPts = _player.FloatingSkillPoints + Name == "Fire"
+            var skillPts = (_player.FloatingSkillPoints) + (Name == "Fire"
                 ? _player.Skills.FireSkillTree.PointsAvailable
-                : Name == "Frost" ? _player.Skills.FrostSkillTree.PointsAvailable : _player.Skills.ArcaneSkillTree.PointsAvailable;
+                : Name == "Frost" ? _player.Skills.FrostSkillTree.PointsAvailable : _player.Skills.ArcaneSkillTree.PointsAvailable);
             Globals.SpriteDrawer.DrawText($"Pts Available: {skillPts} ({_player.FloatingSkillPoints} Floating)",
                 new Vector2(bounds.Center.X, bounds.Y + 30f), 15f, Color.White);
         }
