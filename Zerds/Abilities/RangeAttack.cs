@@ -28,12 +28,12 @@ namespace Zerds.Abilities
             switch (_missileType)
             {
                 case MissileTypes.DemonMissile:
-                    var knockback = new Knockback(Being.Facing, AbilityConstants.DemonMissileKnockbackLength, AbilityConstants.DemonMissileKnockback);
+                    var knockback = new Knockback(Being.Facing, EnemyConstants.DemonMissileKnockbackLength, EnemyConstants.DemonMissileKnockback);
                     return new DamageInstance(knockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Fire, Being, AbilityTypes.Range);
                 case MissileTypes.FrostDemonMissile:
                     return new DamageInstance(null, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Frost, Being, AbilityTypes.Range);
                 case MissileTypes.Arrow:
-                    var arrowKnockback = new Knockback(Being.Facing, AbilityConstants.ArcherArrowKnockbackLength, AbilityConstants.ArcherArrowKnockback);
+                    var arrowKnockback = new Knockback(Being.Facing, EnemyConstants.ArcherArrowKnockbackLength, EnemyConstants.ArcherArrowKnockback);
                     return new DamageInstance(arrowKnockback, Helpers.RandomInRange(_minDamage, _maxDamage), DamageTypes.Physical, Being, AbilityTypes.Range);
             }
             throw new Exception("Unknown missile type");

@@ -24,8 +24,8 @@ namespace Zerds.Missiles
             Y = p.Y;
             Creator = being;
             Origin = p;
-            Distance = AbilityConstants.FrostDemonMissileLength;
-            Speed = AbilityConstants.FrostDemonMissileSpeed;
+            Distance = EnemyConstants.FrostDemonMissileLength;
+            Speed = EnemyConstants.FrostDemonMissileSpeed;
             Velocity = Creator.Facing.Normalized().Rotate(Helpers.RandomInRange(-3, 3));
 
             Animations = new AnimationList();
@@ -81,7 +81,7 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new ColdBuff(target, AbilityConstants.FrostDemonColdLength, AbilityConstants.FrostDemonSlowAmount));
+            target.AddBuff(new ColdBuff(target, EnemyConstants.FrostDemonColdLength, EnemyConstants.FrostDemonSlowAmount));
         }
     }
 }

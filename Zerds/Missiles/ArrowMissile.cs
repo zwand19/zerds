@@ -22,8 +22,8 @@ namespace Zerds.Missiles
             Y = p.Y;
             Creator = being;
             Origin = p;
-            Distance = AbilityConstants.ArcherArrowLength;
-            Speed = AbilityConstants.ArcherArrowSpeed;
+            Distance = EnemyConstants.ArcherArrowLength;
+            Speed = EnemyConstants.ArcherArrowSpeed;
             Velocity = Creator.Facing.Normalized().Rotate(Helpers.RandomInRange(-3, 3));
 
             Animations = new AnimationList();

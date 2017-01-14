@@ -67,25 +67,5 @@ namespace Zerds.Constants
         public static TimeSpan FrostPoundFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan FrostPoundFrozenLength = TimeSpan.FromMilliseconds(2250);
         public static TimeSpan FrostPoundCooldown = TimeSpan.FromMilliseconds(12000);
-
-        public const float DemonMissileKnockback = 350f;
-        public const float DemonMissileSpeed = 550f;
-        public const float DemonMissileDistance = 750f;
-        public const float DemonMissileBurnDamagePercentage = 0.2f;
-        public static TimeSpan DemonMissileBurnLength => TimeSpan.FromMilliseconds(1500);
-        public static TimeSpan DemonMissileKnockbackLength => TimeSpan.FromMilliseconds(315);
-        public static TimeSpan DemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
-        
-        public const float FrostDemonMissileSpeed = 550f;
-        public const float FrostDemonMissileLength = 700f;
-        public const float FrostDemonSlowAmount = -100f;
-        public static TimeSpan FrostDemonColdLength => TimeSpan.FromMilliseconds(2200);
-        public static TimeSpan FrostDemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
-
-        public const float ArcherArrowSpeed = 675f;
-        public const float ArcherArrowLength = 850f;
-        public const float ArcherArrowKnockback = 100f;
-        public static TimeSpan ArcherArrowKnockbackLength => TimeSpan.FromMilliseconds(300);
-        public static TimeSpan ArcherArrowCooldown => TimeSpan.FromMilliseconds(750);
     }
 }
