@@ -17,10 +17,12 @@ namespace Zerds.GameObjects
         public static int DamageTakenUpgrade => (int) Helpers.RandomInRange(1f, 4f);
         public static int HealthRegenUpgrade => (int) Helpers.RandomInRange(4f, 8f);
         public static int ManaRegenUpgrade => (int)Helpers.RandomInRange(4f, 7f);
+        public static int MaxHealthUpgrade => (int)Helpers.RandomInRange(5f, 8f);
+        public static int MaxManaUpgrade => (int)Helpers.RandomInRange(4f, 7f);
 
         public static AbilityUpgrade GetRandomUpgrade()
         {
-            var upgrade = new Random().Next(11);
+            var upgrade = new Random().Next(13);
             int amt;
             switch (upgrade)
             {
@@ -57,6 +59,12 @@ namespace Zerds.GameObjects
                 case 10:
                     amt = ManaRegenUpgrade;
                     return new AbilityUpgrade(AbilityUpgradeType.HealthRegen, "Increase mana regen", $"by {amt}%", amt);
+                case 11:
+                    amt = MaxHealthUpgrade;
+                    return new AbilityUpgrade(AbilityUpgradeType.MaxHealth, "Increase max health", $"by {amt}%", amt);
+                case 12:
+                    amt = MaxManaUpgrade;
+                    return new AbilityUpgrade(AbilityUpgradeType.MaxHealth, "Increase max mana", $"by {amt}%", amt);
                 default:
                     throw new Exception("Invalid upgrade");
             }
@@ -97,6 +105,7 @@ namespace Zerds.GameObjects
                     Texture = TextureCacheFactory.GetOnce("Icons/glass-heart.png");
                     return;
                 case AbilityUpgradeType.ManaRegen:
+                case AbilityUpgradeType.MaxMana:
                     Texture = TextureCacheFactory.GetOnce("Icons/pentagram-rose.png");
                     return;
                 case AbilityUpgradeType.LavaBlastDistance:
@@ -106,6 +115,9 @@ namespace Zerds.GameObjects
                     Texture = TextureCacheFactory.GetOnce("Icons/sprint.png");
                     return;
                 case AbilityUpgradeType.MovementSpeed:
+                    Texture = TextureCacheFactory.GetOnce("Icons/walking-boot.png");
+                    return;
+                case AbilityUpgradeType.MaxHealth:
                     Texture = TextureCacheFactory.GetOnce("Icons/walking-boot.png");
                     return;
             }
@@ -124,6 +136,8 @@ namespace Zerds.GameObjects
         MovementSpeed,
         DamageTaken,
         HealthRegen,
-        ManaRegen
+        ManaRegen,
+        MaxHealth,
+        MaxMana
     }
 }

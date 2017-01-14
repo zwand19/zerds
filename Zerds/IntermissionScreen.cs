@@ -232,7 +232,19 @@ namespace Zerds
             {
                 _player.AbilityUpgrades[upgrade.Type] += (100 - _player.AbilityUpgrades[upgrade.Type]) * upgrade.Amount / 100;
                 _screen = Screen.Skills;
-                return true;
+                switch (upgrade.Type)
+                {
+                    case AbilityUpgradeType.MaxHealth:
+                        _player.Zerd.MaxHealth *= 1 + upgrade.Amount / 100f;
+                        _player.Zerd.Health *= 1 + upgrade.Amount / 100f;
+                        return true;
+                    case AbilityUpgradeType.MaxMana:
+                        _player.Zerd.MaxMana *= 1 + upgrade.Amount / 100f;
+                        _player.Zerd.Mana *= 1 + upgrade.Amount / 100f;
+                        return true;
+                    default:
+                        return true;
+                }
             }
         }
 
