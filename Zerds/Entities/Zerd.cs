@@ -83,9 +83,9 @@ namespace Zerds.Entities
         {
             var chance = CriticalChance;
             if (type == DamageTypes.Fire)
-                chance += Player.Skills.Devastation * SkillConstants.DevastationStat / 100;
+                chance += this.SkillValue(SkillType.Devastation) / 100;
             if (ability == AbilityTypes.Iceball)
-                chance += Player.AbilityUpgrades[AbilityUpgradeType.IceballCrit] / 100;
+                chance += this.AbilityValue(AbilityUpgradeType.IceballCrit) / 100;
             return new Random().NextDouble() < chance;
         }
 

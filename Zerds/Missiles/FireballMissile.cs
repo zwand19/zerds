@@ -16,7 +16,7 @@ namespace Zerds.Missiles
         public FireballMissile(Zerd zerd, DamageInstance damageInstance, Point p) : base("Missiles/fireball.png")
         {
             Damage = damageInstance;
-            var size = 64f * (1 + zerd.Player.Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100);
+            var size = 64f * zerd.SkillValue(SkillType.ImprovedFireball);
             Width = (int) size;
             Height = (int) size;
             X = p.X;

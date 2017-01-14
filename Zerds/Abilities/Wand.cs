@@ -33,8 +33,7 @@ namespace Zerds.Abilities
         {
             var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.WandKnockbackLength,
                 AbilityConstants.WandKnockback);
-            var damage = AbilityConstants.WandDamage *
-                         (1 + ((Zerd) Being).Player.Skills.ImprovedWand * SkillConstants.ImprovedWandStat / 100);
+            var damage = AbilityConstants.WandDamage * Being.SkillValue(SkillType.ImprovedWand, true);
             Globals.GameState.Missiles.Add(new WandMissile(Being,
                 new GameObjects.DamageInstance(knockback, damage, DamageTypes.Magic, Being, AbilityTypes.Wand),
                 Being.Position));

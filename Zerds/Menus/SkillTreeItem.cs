@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Constants;
 using Zerds.Enums;
 using Zerds.Factories;
 
@@ -18,6 +19,7 @@ namespace Zerds.Menus
         public int Row { get; set; }
         public int Col { get; set; }
         public AbilityTypes Ability { get; set; }
+        public SkillType Type { get; set; }
 
         private const int Padding = 22;
         private const int NumRows = 6;
@@ -28,8 +30,9 @@ namespace Zerds.Menus
         private const int InfoHeight = 320;
         private const int TitleHeight = 28;
 
-        public SkillTreeItem(string title, string description, int points, int row, int col, string file, SkillTreeItem parent = null, AbilityTypes ability = AbilityTypes.None)
+        public SkillTreeItem(SkillType type, string title, string description, int points, int row, int col, string file, SkillTreeItem parent = null, AbilityTypes ability = AbilityTypes.None)
         {
+            Type = type;
             Row = row;
             Col = col;
             Title = title;

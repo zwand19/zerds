@@ -32,7 +32,7 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new GameObjects.Knockback(Being.Facing, AbilityConstants.LavaBlastKnockbackLength, AbilityConstants.LavaBlastKnockback);
-            var damage = AbilityConstants.LavaBlastDamage * (1 + ((Zerd)Being).Player.Skills.FireMastery * SkillConstants.FireMasteryStat / 100);
+            var damage = AbilityConstants.LavaBlastDamage * Being.SkillValue(SkillType.FireMastery);
             Globals.GameState.Missiles.Add(new LavaBlastMissile(Being as Zerd, new GameObjects.DamageInstance(knockback, damage, DamageTypes.Fire, Being, AbilityTypes.LavaBlast),
                 Being.Position));
             return base.Execute();

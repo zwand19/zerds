@@ -38,8 +38,9 @@ namespace Zerds.Abilities
 
         public virtual void Cast()
         {
+            if (Cooldown > TimeSpan.Zero) return;
             Being.Animations.ResetAll();
-            if (Cooldown <= TimeSpan.Zero) Execute();
+            Execute();
         }
 
         protected virtual bool Execute()

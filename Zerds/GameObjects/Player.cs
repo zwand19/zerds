@@ -63,7 +63,8 @@ namespace Zerds.GameObjects
                 Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Cast();
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
-                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds * (1 - Skills.FireMastery * SkillConstants.SprintStat / 100);
+                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float) gameTime.ElapsedGameTime.TotalSeconds *
+                             (1 - Zerd.SkillValue(SkillType.Sprinter) / 100);
                 if (!Zerd.Buffs.Any(b => b is SprintBuff))
                     Zerd.Buffs.Add(new SprintBuff(Zerd));
             }

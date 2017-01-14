@@ -33,13 +33,14 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new Knockback(Being.Facing, AbilityConstants.FireballKnockbackLength, AbilityConstants.FireballKnockback);
-            var damage = AbilityConstants.FireballDamage * (1 + ((Zerd)Being).Player.Skills.ImprovedFireball * SkillConstants.ImprovedFireballStat / 100) *
-                         (1 + ((Zerd)Being).Player.Skills.FireMastery * SkillConstants.FireMasteryStat / 100) *
-                         (1 + ((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.FireballDamage] / 100);
-            Globals.GameState.Missiles.Add(new FireballMissile(Being as Zerd, new DamageInstance(knockback, damage, DamageTypes.Fire, Being, AbilityTypes.Fireball), Being.Position));
+            var damage = AbilityConstants.FireballDamage * Being.SkillValue(SkillType.ImprovedFireball, true) *
+                         Being.SkillValue(SkillType.FireMastery, true) *
+                         Being.AbilityValue(AbilityUpgradeType.FireballDamage, true);
+            Globals.GameState.Missiles.Add(new FireballMissile(Being as Zerd,
+                new DamageInstance(knockback, damage, DamageTypes.Fire, Being, AbilityTypes.Fireball), Being.Position));
             // replenish mana based on bonuses
-            if (Being is Zerd)
-                Being.Mana += AbilityConstants.FireballManaCost * (((Zerd)Being).Player.AbilityUpgrades[AbilityUpgradeType.FireballMana] / 100f); 
+            Being.Mana += AbilityConstants.FireballManaCost *
+                          (Being.AbilityValue(AbilityUpgradeType.FireballMana) / 100f);
             return base.Execute();
         }
     }

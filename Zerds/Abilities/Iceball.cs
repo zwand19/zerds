@@ -33,16 +33,13 @@ namespace Zerds.Abilities
         protected override bool Execute()
         {
             var knockback = new Knockback(Being.Facing, AbilityConstants.IceballKnockbackLength, AbilityConstants.IceballKnockback);
-            var damage = AbilityConstants.IceballDamage *
-                         (1 + ((Zerd) Being).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+            var damage = AbilityConstants.IceballDamage * Being.SkillValue(SkillType.ImprovedIceball, true);
             Globals.GameState.Missiles.Add(new IceballMissile((Zerd) Being,
                 new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
             // replenish mana based on bonuses
-            var zerd = (Zerd) Being;
-            if (zerd != null)
-                zerd.Mana += AbilityConstants.IceballManaCost *
-                             ((zerd.Player.Skills.FrozenSoul * SkillConstants.FrozenSoulStat +
-                               zerd.Player.AbilityUpgrades[AbilityUpgradeType.IceballMana]) / 100f);
+            Being.Mana += AbilityConstants.IceballManaCost *
+                          ((Being.SkillValue(SkillType.FrozenSoul) + Being.AbilityValue(AbilityUpgradeType.IceballMana)) /
+                           100f);
             return base.Execute();
         }
     }

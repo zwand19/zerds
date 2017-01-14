@@ -1,47 +1,64 @@
-﻿namespace Zerds.Constants
+﻿using System.Collections.Generic;
+
+namespace Zerds.Constants
 {
+    public enum SkillType
+    {
+        ImprovedFireball,
+        FireMastery,
+        Devastation,
+        ImprovedIceball,
+        FrozenSoul,
+        ColdExplosion,
+        BitterCold,
+        LavaBlast,
+        FrostPound,
+        ImprovedWand,
+        Dancer,
+        Swiftness,
+        Replenish,
+        Sprinter,
+        Guzzler,
+        Rewind
+    }
+
     public static class SkillConstants
     {
-        // Fire
-        public const string ImprovedFireballName = "Improved Fireball";
-        public const float ImprovedFireballStat = 4f;
+        public static Dictionary<SkillType, SkillInfo> Values { get; private set; }
 
-        public const string FireMasteryName = "Fire Mastery";
-        public const float FireMasteryStat = 3f;
+        public struct SkillInfo
+        {
+            public float Stat { get; set; }
+            public int MaxPoints { get; set; }
+            public int DecimalPlaces { get; set; }
 
-        public const string DevastationName = "Devastation";
-        public const float DevastationStat = 2.5f;
+            public SkillInfo(float stat, int decimalPlaces = 0, int maxPoints = 5)
+            {
+                Stat = stat;
+                DecimalPlaces = decimalPlaces;
+                MaxPoints = maxPoints;
+            }
+        }
 
-        // Frost
-        public const string ImprovedIceballName = "Improved Iceball";
-        public const float ImprovedIceballStat = 4f;
-
-        public const string FrozenSoulName = "Frozen Soul";
-        public const float FrozenSoulStat = 2f;
-
-        public const string ColdExplosionName = "Cold Explosion";
-        public const float ColdExplosionStat = 6f;
-
-        public const string BitterColdName = "Bitter Cold";
-        public const float BitterColdStat = 13f;
-
-        // Arcane
-        public const string ImprovedWandName = "Improved Wand";
-        public const float ImprovedWandStat = 4f;
-
-        public const string DancerName = "Dancer";
-        public const float DancerStat = 0.5f;
-
-        public const string SwiftName = "Swiftness";
-        public const float SwiftStat = 1.5f;
-
-        public const string ReplenishName = "Replenish";
-        public const float ReplenishStat = 0.5f;
-
-        public const string SprinterName = "Sprinter";
-        public const float SprintStat = 5f;
-
-        public const string GuzzlerName = "Guzzler";
-        public const float GuzzlerStat = 2.2f;
+        public static void Initialize()
+        {
+            Values = new Dictionary<SkillType, SkillInfo>
+            {
+                {SkillType.BitterCold, new SkillInfo(13f)},
+                {SkillType.ColdExplosion, new SkillInfo(6f)},
+                {SkillType.Dancer, new SkillInfo(0.5f, 1)},
+                {SkillType.Devastation, new SkillInfo(2.5f, 1)},
+                {SkillType.FireMastery, new SkillInfo(3f)},
+                {SkillType.FrozenSoul, new SkillInfo(2f)},
+                {SkillType.Guzzler, new SkillInfo(2.2f, 1)},
+                {SkillType.ImprovedFireball, new SkillInfo(4f)},
+                {SkillType.ImprovedIceball, new SkillInfo(4f)},
+                {SkillType.ImprovedWand, new SkillInfo(4f)},
+                {SkillType.Replenish, new SkillInfo(0.5f, 1)},
+                {SkillType.Rewind, new SkillInfo(0.25f, 2)},
+                {SkillType.Sprinter, new SkillInfo(5f)},
+                {SkillType.Swiftness, new SkillInfo(1.5f, 1)}
+            };
+        }
     }
 }

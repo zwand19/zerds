@@ -88,7 +88,7 @@ namespace Zerds.Entities
                 Speed = BaseSpeed;
 
                 if (this is Zerd)
-                    Speed *= 1 + ((Zerd)this).Player.Skills.Swift * SkillConstants.SwiftStat / 100;
+                    Speed *= this.SkillValue(SkillType.Swiftness, true);
 
                 Buffs.ForEach(b =>
                 {

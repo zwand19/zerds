@@ -44,10 +44,7 @@ namespace Zerds.Abilities
                 enemy.Buffs.Add(new FrozenBuff(enemy, AbilityConstants.FrostPoundFrozenLength));
             }
             // replenish mana based on bonuses
-            var zerd = (Zerd)Being;
-            if (zerd != null)
-                zerd.Mana += AbilityConstants.IceballManaCost *
-                             (zerd.Player.Skills.FrozenSoul * SkillConstants.FrozenSoulStat / 100f);
+            Being.Mana += AbilityConstants.IceballManaCost * (Being.SkillValue(SkillType.FrozenSoul) / 100f);
             return base.Execute();
         }
     }

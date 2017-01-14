@@ -78,16 +78,16 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            var slowLevel = AbilityConstants.ColdSpeedFactor *
-                            (1 + zerd.Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
+            var slowLevel = AbilityConstants.ColdSpeedFactor * zerd.SkillValue(SkillType.ImprovedIceball, true);
             var coldLength =
                 TimeSpan.FromMilliseconds(AbilityConstants.IceballColdLength.TotalMilliseconds *
-                                          (1 + zerd.Player.Skills.BitterCold * SkillConstants.BitterColdStat / 100));
+                                          zerd.SkillValue(SkillType.BitterCold, true));
             target.AddBuff(new ColdBuff(target, coldLength, slowLevel));
-            if (zerd.Player.Skills.ColdExplosion > 0)
+            if (zerd.SkillPoints(SkillType.ColdExplosion) > 0)
             {
-                var explosionSlowLevel = zerd.Player.Skills.ColdExplosion * SkillConstants.ColdExplosionStat *  AbilityConstants.ColdSpeedFactor * (1 + ((Zerd)Creator).Player.Skills.ImprovedIceball * SkillConstants.ImprovedIceballStat / 100);
-                Damage.Damage *= zerd.Player.Skills.ColdExplosion * SkillConstants.ColdExplosionStat / 100f;
+                var explosionSlowLevel = zerd.SkillValue(SkillType.ColdExplosion) * AbilityConstants.ColdSpeedFactor *
+                                         zerd.SkillValue(SkillType.ImprovedIceball, true);
+                Damage.Damage *= zerd.SkillValue(SkillType.ColdExplosion) / 100f;
                 foreach (
                     var e in
                     Globals.GameState.Enemies.Where(
