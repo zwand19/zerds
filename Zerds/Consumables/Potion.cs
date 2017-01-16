@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Zerds.Entities;
+﻿using Zerds.Entities;
 
-namespace Zerds.Items
+namespace Zerds.Consumables
 {
     public abstract class Potion : PickupItem
     {

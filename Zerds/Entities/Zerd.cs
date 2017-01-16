@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Zerds.Abilities;
 using System.Linq;
 using Zerds.GameObjects;
+using Zerds.Items;
 
 namespace Zerds.Entities
 {
@@ -14,6 +15,7 @@ namespace Zerds.Entities
     {
         public string Name { get; set; }
         public List<Ability> Abilities { get; set; }
+        public List<Item> Inventory { get; set; }
         public int Combo { get; set; }
         public int MaxCombo { get; set; }
         public int MaxLevelCombo { get; set; }

@@ -6,7 +6,7 @@ using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Factories;
 using Zerds.GameObjects;
-using Zerds.Items;
+using Zerds.Consumables;
 using Zerds.Missiles;
 
 namespace Zerds

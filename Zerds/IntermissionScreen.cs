@@ -55,9 +55,22 @@ namespace Zerds
             {
                 _index = index;
                 _player = Globals.GameState.Players.First(p => p.PlayerIndex == index);
+                Ready = !_player.IsPlaying;
                 var width = (Globals.ViewportBounds.Width - MenuSidePadding * 2 - QuadrantPadding * 3) / 4;
                 var height = (Globals.ViewportBounds.Height - MenuTopPadding * 2);
                 _bounds = Helpers.CreateRect(MenuSidePadding, MenuTopPadding, width, height);
+                switch (_index)
+                {
+                    case PlayerIndex.Two:
+                        _bounds = new Rectangle(_bounds.X + width + QuadrantPadding, _bounds.Y, _bounds.Width, _bounds.Height);
+                        break;
+                    case PlayerIndex.Three:
+                        _bounds = new Rectangle(_bounds.X + width * 2 + QuadrantPadding * 2, _bounds.Y, _bounds.Width, _bounds.Height);
+                        break;
+                    case PlayerIndex.Four:
+                        _bounds = new Rectangle(_bounds.X + width * 3 + QuadrantPadding * 3, _bounds.Y, _bounds.Width, _bounds.Height);
+                        break;
+                }
                 _mainMenu = new MenuList(new List<MenuListItem>
                 {
                     new MenuListItem("Fire", () =>
@@ -78,19 +91,6 @@ namespace Zerds
                     new MenuListItem($"Ability Upgrade ({GameplayConstants.AbilityUpgradeCost} gold)", BuyAbilityUpgrade),
                     new MenuListItem($"Buy Skill Point ({GameplayConstants.FloatingSkillPointCost} gold)", BuyFloatingSkillPoint)
                 });
-                switch (_index)
-                {
-                    case PlayerIndex.Two:
-                        _bounds = new Rectangle(_bounds.X + width + QuadrantPadding, _bounds.Y, _bounds.Width, _bounds.Height);
-                        break;
-                    case PlayerIndex.Three:
-                        _bounds = new Rectangle(_bounds.X + width * 2 + QuadrantPadding * 2, _bounds.Y, _bounds.Width, _bounds.Height);
-                        break;
-                    case PlayerIndex.Four:
-                        _bounds = new Rectangle(_bounds.X + width * 3 + QuadrantPadding * 3, _bounds.Y, _bounds.Width, _bounds.Height);
-                        break;
-                }
-                Ready = !_player.IsPlaying;
             }
 
             private bool BuyFloatingSkillPoint()

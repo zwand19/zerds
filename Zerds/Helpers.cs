@@ -48,6 +48,7 @@ namespace Zerds
             if (zerd == null)
                 return 0;
             var val = zerd.Player.AbilityUpgrades[type];
+            val += zerd.Inventory.SelectMany(i => i.AbilityUpgrades).Where(i => i.Type == type).Sum(i => i.Amount);
             return asPercentage ? 1 + val / 100 : val;
         }
     }

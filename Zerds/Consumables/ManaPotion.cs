@@ -5,11 +5,11 @@ using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Graphics;
 
-namespace Zerds.Items
+namespace Zerds.Consumables
 {
     public class ManaPotion : Potion
     {
-        public ManaPotion(Enemy dropper) : base("Items/potions.png", dropper)
+        public ManaPotion(Enemy dropper) : base("Consumables/potions.png", dropper)
         {
             Animations = new AnimationList();
             var anim = new Animation(AnimationTypes.Stand);

@@ -41,9 +41,9 @@ namespace Zerds.Constants
             {
                 MinHealth = GetHealth(1.1f),
                 HealthRegen = BaseRegen * 2,
-                MinSpeed = BaseSpeed * 0.85f,
+                MinSpeed = BaseSpeed * 0.75f,
                 MaxHealth = GetHealth(1.4f),
-                MaxSpeed = BaseSpeed * 1.15f,
+                MaxSpeed = BaseSpeed * 0.9f,
                 CritChance = 0.2f
             };
         }

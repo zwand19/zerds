@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.Graphics;
-using Zerds.Items;
+using Zerds.Consumables;
 
 namespace Zerds.Entities
 {

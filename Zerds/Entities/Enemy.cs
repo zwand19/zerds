@@ -2,7 +2,7 @@
 using Zerds.Constants;
 using Zerds.GameObjects;
 using Zerds.Graphics;
-using Zerds.Items;
+using Zerds.Consumables;
 
 namespace Zerds.Entities
 {
@@ -18,11 +18,11 @@ namespace Zerds.Entities
 
         protected Enemy(EnemyConstants.EnemyProperties properties, string file, bool randomSpawn) : base(file, true)
         {
-            Health = Helpers.RandomInRange(properties.MinHealth, properties.MaxHealth) * DifficultyConstants.HealthFactor *
+            MaxHealth = Helpers.RandomInRange(properties.MinHealth, properties.MaxHealth) * DifficultyConstants.HealthFactor *
                      (1 + Level.CurrentLevel * GameplayConstants.HealthFactorPerLevel);
-            MaxHealth = Health;
-            Mana = Helpers.RandomInRange(properties.MinMana, properties.MaxMana) * DifficultyConstants.ManaFactor;
-            MaxMana = Mana;
+            Health = MaxHealth;
+            MaxMana = Helpers.RandomInRange(properties.MinMana, properties.MaxMana) * DifficultyConstants.ManaFactor;
+            Mana = MaxMana;
             HealthRegen = properties.HealthRegen * DifficultyConstants.HealthFactor * (1 + Level.CurrentLevel * GameplayConstants.HealthFactorPerLevel);
             ManaRegen = properties.ManaRegen * DifficultyConstants.ManaFactor;
             BaseSpeed = Helpers.RandomInRange(properties.MinSpeed, properties.MaxSpeed) * DifficultyConstants.SpeedFactor;
