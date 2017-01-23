@@ -20,11 +20,20 @@ namespace Zerds.GameObjects
             FireSkillTree.Items.Add(improvedFireball);
             var fireMastery = new SkillTreeItem(SkillType.FireMastery, "Fire Mastery", $"Increase all fire damage done by {StatStr(SkillType.FireMastery)}%.", 5, 0, 2, "Icons/fire_mastery.png");
             FireSkillTree.Items.Add(fireMastery);
-            var devastationSkill = new SkillTreeItem(SkillType.Devastation, "Devastation", $"Increase critical hit chance of fire spells by {StatStr(SkillType.Devastation)}%.", 5, 0, 4, "Icons/devastation.png");
-            FireSkillTree.Items.Add(devastationSkill);
+            var devastation = new SkillTreeItem(SkillType.Devastation, "Devastation", $"Increase critical hit chance of fire spells by {StatStr(SkillType.Devastation)}%.", 5, 0, 4, "Icons/devastation.png");
+            FireSkillTree.Items.Add(devastation);
             // Fire Row 2
-            var lavaBlastSkill = new SkillTreeItem(SkillType.LavaBlast, "Lava Blast", "Fuel up a large ball of lava that can blast through multiple enemies. Not learned until all 5 skill points are spent.", 5, 1, 2, "Icons/lava_blast.png", null, AbilityTypes.LavaBlast);
-            FireSkillTree.Items.Add(lavaBlastSkill);
+            var deepBurn = new SkillTreeItem(SkillType.DeepBurn, "Deep Burn", $"Increases the damage and duration of burn effects by {StatStr(SkillType.DeepBurn)}.", 5, 1, 0, "Icons/heartburn.png");
+            FireSkillTree.Items.Add(deepBurn);
+            var lavaBlast = new SkillTreeItem(SkillType.LavaBlast, "Lava Blast", "Fuel up a large ball of lava that can blast through multiple enemies. Not learned until all 5 skill points are spent.", 5, 1, 2, "Icons/lava_blast.png", null, AbilityTypes.LavaBlast);
+            FireSkillTree.Items.Add(lavaBlast);
+            var fireballExplosion = new SkillTreeItem(SkillType.FireballExplosion, "Fireball Explosion", $"Cause fireballs to explode in a small radius, dealing {StatStr(SkillType.FireballExplosion)}% damage and burn effect to nearby enemies.", 5, 1, 4, "Icons/mine-explosion.png");
+            FrostSkillTree.Items.Add(fireballExplosion);
+            // Fire Row 3
+            var exposure = new SkillTreeItem(SkillType.Exposure, "Exposure", $"Enemies afflicted by a burn effect take {StatStr(SkillType.Exposure)}% extra damage from missiles.", 5, 2, 0, "Icons/sun.png", deepBurn);
+            FrostSkillTree.Items.Add(exposure);
+            var sniper = new SkillTreeItem(SkillType.Sniper, "Sniper", $"Your fire missiles gain {StatStr(SkillType.Sniper)}% of their distance travelled in damage.", 5, 2, 2, "Icons/targeting.png");
+            FrostSkillTree.Items.Add(sniper);
 
             FrostSkillTree = new SkillTree("Frost", player);
             // Frost Row 1
@@ -39,6 +48,8 @@ namespace Zerds.GameObjects
             FrostSkillTree.Items.Add(bitterCold);
             var frostPound = new SkillTreeItem(SkillType.FrostPound, "Frost Pound", "Slam the ground with a frozen fist, dealing damage and freezing all nearby enemies in place. Not learned until all 5 skill points are spent.", 5, 1, 2, "Icons/ice-punch.png", null, AbilityTypes.FrostPound);
             FrostSkillTree.Items.Add(frostPound);
+            var coldWinds = new SkillTreeItem(SkillType.ColdWinds, "Cold Winds", $"Dashing through enemies freezes them in place for {StatStr(SkillType.ColdWinds)} seconds.", 5, 1, 4, "Icons/wind-slap.png");
+            FrostSkillTree.Items.Add(coldWinds);
 
             ArcaneSkillTree = new SkillTree("Arcane", player);
             // Arcane Row 1
@@ -56,7 +67,7 @@ namespace Zerds.GameObjects
             var guzzler = new SkillTreeItem(SkillType.Guzzler, "Guzzler", $"Increase chance of potions dropping from enemies you kill by {StatStr(SkillType.Guzzler)}%.", 5, 1, 2, "Icons/potion-ball.png");
             ArcaneSkillTree.Items.Add(guzzler);
             // Arcane Row 3
-            var rewind = new SkillTreeItem(SkillType.Rewind, "Rewind", $"Cast dash again within {StatStr(SkillType.Replenish)}s to teleport back to your original position", 5, 2, 0, "Icons/back-forth.png");
+            var rewind = new SkillTreeItem(SkillType.Rewind, "Rewind", $"Cast dash again within {StatStr(SkillType.Rewind)}s to teleport back to your original position", 5, 2, 0, "Icons/back-forth.png");
             ArcaneSkillTree.Items.Add(rewind);
         }
 
@@ -67,7 +78,7 @@ namespace Zerds.GameObjects
                    0 + ArcaneSkillTree.Items.FirstOrDefault(i => i.Type == type)?.PointsSpent ?? 0;
         }
 
-        private string StatStr(SkillType type)
+        private static string StatStr(SkillType type)
         {
             var skillInfo = SkillConstants.Values[type];
             var str = "";

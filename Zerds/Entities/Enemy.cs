@@ -62,7 +62,7 @@ namespace Zerds.Entities
         {
             var chance = GameplayConstants.PotionDropChance;
             if (Killer is Zerd)
-                chance += Killer.SkillValue(SkillType.Guzzler) / 100f;
+                chance += Killer.SkillValue(SkillType.Guzzler, false) / 100f;
             if (!Helpers.RandomChance(chance))
                 return true;
 

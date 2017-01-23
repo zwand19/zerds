@@ -85,9 +85,8 @@ namespace Zerds.Missiles
             target.AddBuff(new ColdBuff(target, coldLength, slowLevel));
             if (zerd.SkillPoints(SkillType.ColdExplosion) > 0)
             {
-                var explosionSlowLevel = zerd.SkillValue(SkillType.ColdExplosion) * AbilityConstants.ColdSpeedFactor *
-                                         zerd.SkillValue(SkillType.ImprovedIceball, true);
-                Damage.Damage *= zerd.SkillValue(SkillType.ColdExplosion) / 100f;
+                var explosionSlowLevel = zerd.SkillValue(SkillType.ColdExplosion, false) * slowLevel / 100f;
+                Damage.Damage *= zerd.SkillValue(SkillType.ColdExplosion, false) / 100f;
                 foreach (
                     var e in
                     Globals.GameState.Enemies.Where(

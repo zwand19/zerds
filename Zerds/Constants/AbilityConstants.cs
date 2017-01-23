@@ -5,11 +5,10 @@ namespace Zerds.Constants
     public static class AbilityConstants
     {
         public const float DashBonus = 600f;
-        public static TimeSpan DashCooldown = TimeSpan.FromSeconds(10);
+        public static TimeSpan DashCooldown = TimeSpan.FromSeconds(8);
         public static TimeSpan DashLength => new TimeSpan(0, 0, 0, 0, 300);
         
         public const float SprintBonus = 175f;
-        public static TimeSpan SprintCooldown = TimeSpan.FromSeconds(10);
         public static TimeSpan SprintLength => new TimeSpan(0, 0, 2);
         public const float SprintManaPerSecond = 15f;
 
@@ -39,10 +38,11 @@ namespace Zerds.Constants
         public const float FireballKnockback = 350f;
         public const float FireballSpeed = 550f;
         public const float FireballDistance = 750f;
+        public const float FireballExplosionDistance = 100f;
         public const float FireballManaCost = 50f;
-        public const float FireballBurnLength = 1500f;
         public const float FireballBurnDamagePercentage = 0.15f;
         public const float FireballDamage = 10f;
+        public static TimeSpan FireballBurnLength = TimeSpan.FromMilliseconds(1500);
         public static TimeSpan FireballKnockbackLength => TimeSpan.FromMilliseconds(315);
         public static TimeSpan FireballCastTime => TimeSpan.FromMilliseconds(550);
         public static TimeSpan FireballFollowThroughTime => TimeSpan.FromMilliseconds(200);

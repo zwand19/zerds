@@ -6,6 +6,7 @@ using Zerds.Graphics;
 using Zerds.Enums;
 using Zerds.Constants;
 using System.Collections.Generic;
+using System.Linq;
 using Zerds.Factories;
 using Zerds.Buffs;
 
@@ -16,7 +17,7 @@ namespace Zerds.Missiles
         public FireballMissile(Zerd zerd, DamageInstance damageInstance, Point p) : base("Missiles/fireball.png")
         {
             Damage = damageInstance;
-            var size = 64f * zerd.SkillValue(SkillType.ImprovedFireball);
+            var size = 64f * zerd.SkillValue(SkillType.ImprovedFireball, true);
             Width = (int) size;
             Height = (int) size;
             X = p.X;
@@ -70,10 +71,26 @@ namespace Zerds.Missiles
 
         public override void OnHit(Being target)
         {
+            var zerd = (Zerd)Creator;
+            Damage.Damage *= Origin.DistanceBetween(Position) * zerd.SkillValue(SkillType.Sniper, true) / 100f;
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.FireballBurnLength), Damage.Damage * AbilityConstants.FireballBurnDamagePercentage));
+            var burnDamage = Damage.Damage * AbilityConstants.FireballBurnDamagePercentage;
+            target.AddBuff(new BurnBuff(Creator, target, AbilityConstants.FireballBurnLength, burnDamage));
+            if (zerd.SkillPoints(SkillType.FireballExplosion) > 0)
+            {
+                var explosionBurnLevel = zerd.SkillValue(SkillType.FireballExplosion, false) * burnDamage / 100f;
+                Damage.Damage *= zerd.SkillValue(SkillType.FireballExplosion, false) / 100f;
+                foreach (
+                    var e in
+                    Globals.GameState.Enemies.Where(
+                        e => target.Position.DistanceBetween(e.Position) < AbilityConstants.FireballExplosionDistance && e != target))
+                {
+                    e.AddBuff(new BurnBuff(zerd, target, AbilityConstants.FireballBurnLength, explosionBurnLevel));
+                    Damage.DamageBeing(e);
+                }
+            }
         }
     }
 }

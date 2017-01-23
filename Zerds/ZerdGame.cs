@@ -8,6 +8,7 @@ using Zerds.Factories;
 using Zerds.GameObjects;
 using Zerds.Input;
 using Zerds.Menus;
+using Zerds.Constants;
 
 namespace Zerds
 {
@@ -25,6 +26,7 @@ namespace Zerds
         public ZerdGame()
         {
             _state = GameStates.MainMenu;
+            IsMouseVisible = false;
             // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -40,6 +42,7 @@ namespace Zerds
         {
             TextureCacheFactory.Initialize(GraphicsDevice);
             ControllerService.Initialize();
+            SkillConstants.Initialize();
 
             Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);
             _mainMenu = new MainMenu(SetupGameFunc);

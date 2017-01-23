@@ -33,7 +33,7 @@ namespace Zerds
             return zerd?.Player.Skills.Pts(type) ?? 0;
         }
 
-        public static float SkillValue(this Being being, SkillType type, bool asPercentage = false)
+        public static float SkillValue(this Being being, SkillType type, bool asPercentage)
         {
             var zerd = being as Zerd;
             if (zerd == null)

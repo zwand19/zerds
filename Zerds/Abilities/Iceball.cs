@@ -38,7 +38,7 @@ namespace Zerds.Abilities
                 new DamageInstance(knockback, damage, DamageTypes.Frost, Being, AbilityTypes.Iceball), Being.Position));
             // replenish mana based on bonuses
             Being.Mana += AbilityConstants.IceballManaCost *
-                          ((Being.SkillValue(SkillType.FrozenSoul) + Being.AbilityValue(AbilityUpgradeType.IceballMana)) /
+                          ((Being.SkillValue(SkillType.FrozenSoul, false) + Being.AbilityValue(AbilityUpgradeType.IceballMana)) /
                            100f);
             return base.Execute();
         }

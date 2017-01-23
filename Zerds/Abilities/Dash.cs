@@ -28,7 +28,7 @@ namespace Zerds.Abilities
             {
                 if (LastLevel != Level.CurrentLevel ||
                     Globals.GameState.TimeIntoLevel.TotalMilliseconds - LastDashMilliseconds <
-                    Being.SkillValue(SkillType.Rewind) * 1000)
+                    Being.SkillValue(SkillType.Rewind, false) * 1000)
                 {
                     Being.X = LastPosition.X;
                     Being.Y = LastPosition.Y;
@@ -42,9 +42,10 @@ namespace Zerds.Abilities
         {
             LastDashMilliseconds = (float) Globals.GameState.TimeIntoLevel.TotalMilliseconds;
             LastLevel = Level.CurrentLevel;
+            LastPosition = new Vector2(Being.Position.X, Being.Position.Y);
             Rewound = false;
             Being.AddBuff(BuffTypes.Dash);
-            Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds - Being.SkillValue(SkillType.Dancer));
+            Cooldown = TimeSpan.FromSeconds(FullCooldown.TotalSeconds - Being.SkillValue(SkillType.Dancer, false));
             return true;
         }
     }

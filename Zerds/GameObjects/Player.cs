@@ -38,7 +38,9 @@ namespace Zerds.GameObjects
                 {AbilityUpgradeType.LavaBlastDistance, 0},
                 {AbilityUpgradeType.ManaRegen, 0},
                 {AbilityUpgradeType.MovementSpeed, 0},
-                {AbilityUpgradeType.SprintSpeed, 0}
+                {AbilityUpgradeType.SprintSpeed, 0},
+                {AbilityUpgradeType.MaxHealth, 0},
+                {AbilityUpgradeType.MaxMana, 0}
             };
             Gold = GameplayConstants.StartingGold;
         }
@@ -49,22 +51,26 @@ namespace Zerds.GameObjects
             var controller = ControllerService.Controllers[PlayerIndex];
             Zerd.ControllerUpdate(controller.LeftTrigger, controller.RightTrigger, controller.LeftStickDirection, controller.RightStickDirection);
             var buttonsPressed = ControllerService.Controllers[PlayerIndex].ButtonsPressed;
-            if (buttonsPressed.Contains(Buttons.RightShoulder))
-                Zerd.Abilities.First(a => a.Type == AbilityTypes.Dash).Cast();
-            if (buttonsPressed.Contains(Buttons.A))
-                Zerd.Abilities.First(a => a.Type == AbilityTypes.Wand).Cast();
-            if (buttonsPressed.Contains(Buttons.B))
-                Zerd.Abilities.First(a => a.Type == AbilityTypes.Iceball).Cast();
-            if (buttonsPressed.Contains(Buttons.Y))
-                Zerd.Abilities.First(a => a.Type == AbilityTypes.Fireball).Cast();
-            if (buttonsPressed.Contains(Buttons.X))
-                Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Cast();
-            if (buttonsPressed.Contains(Buttons.RightStick))
-                Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Cast();
+            if (Zerd.GetCurrentAnimation().Name == AnimationTypes.Stand ||
+                Zerd.GetCurrentAnimation().Name == AnimationTypes.Move)
+            {
+                if (buttonsPressed.Contains(Buttons.RightShoulder))
+                    Zerd.Abilities.First(a => a.Type == AbilityTypes.Dash).Cast();
+                if (buttonsPressed.Contains(Buttons.A))
+                    Zerd.Abilities.First(a => a.Type == AbilityTypes.Wand).Cast();
+                if (buttonsPressed.Contains(Buttons.B))
+                    Zerd.Abilities.First(a => a.Type == AbilityTypes.Iceball).Cast();
+                if (buttonsPressed.Contains(Buttons.Y))
+                    Zerd.Abilities.First(a => a.Type == AbilityTypes.Fireball).Cast();
+                if (buttonsPressed.Contains(Buttons.X))
+                    Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Cast();
+                if (buttonsPressed.Contains(Buttons.RightStick))
+                    Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Cast();
+            }
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
                 Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float) gameTime.ElapsedGameTime.TotalSeconds *
-                             (1 - Zerd.SkillValue(SkillType.Sprinter) / 100);
+                             (1 - Zerd.SkillValue(SkillType.Sprinter, false) / 100);
                 if (!Zerd.Buffs.Any(b => b is SprintBuff))
                     Zerd.Buffs.Add(new SprintBuff(Zerd));
             }

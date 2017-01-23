@@ -2,7 +2,7 @@
 {
     public class RobeItem : Item
     {
-        public RobeItem()
+        public RobeItem(ItemRarities rarity) : base(rarity, "robe")
         {
             
         }

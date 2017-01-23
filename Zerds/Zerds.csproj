@@ -155,6 +155,7 @@
     <Compile Include="GameObjects\Level.cs" />
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
+    <Compile Include="Storage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Input\Controller.cs" />
     <Compile Include="IntermissionScreen.cs" />
@@ -218,7 +219,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="zerds.pfx" />
     <None Include="Zerds_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +305,9 @@
     <Content Include="Content\Icons\health-normal.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\heartburn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\ice-bolt.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -323,6 +326,9 @@
     <Content Include="Content\Icons\magic-portal.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\mine-explosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\pentagram-rose.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -333,6 +339,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\sprint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\sun.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\targeting.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\thermometer-cold.png">

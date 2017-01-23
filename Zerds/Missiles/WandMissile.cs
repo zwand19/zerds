@@ -23,7 +23,7 @@ namespace Zerds.Missiles
             Y = p.Y;
             Origin = p;
             Creator = being;
-            Distance = AbilityConstants.WandDistance * being.SkillValue(SkillType.ImprovedWand);
+            Distance = AbilityConstants.WandDistance * being.SkillValue(SkillType.ImprovedWand, true);
             Speed = AbilityConstants.WandSpeed;
             Velocity = Creator.Facing.Normalized();
 
@@ -74,12 +74,10 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsActive = false;
             var zerd = Creator as Zerd;
-            if (zerd != null)
-            {
-                zerd.Mana += zerd.MaxMana * zerd.SkillValue(SkillType.Replenish) / 100;
-                if (zerd.Mana > zerd.MaxMana)
-                    zerd.Mana = zerd.MaxMana;
-            }
+            if (zerd == null) return;
+            zerd.Mana += zerd.MaxMana * zerd.SkillValue(SkillType.Replenish, false) / 100;
+            if (zerd.Mana > zerd.MaxMana)
+                zerd.Mana = zerd.MaxMana;
         }
     }
 }

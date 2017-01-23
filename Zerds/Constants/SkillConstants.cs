@@ -19,7 +19,12 @@ namespace Zerds.Constants
         Replenish,
         Sprinter,
         Guzzler,
-        Rewind
+        Rewind,
+        DeepBurn,
+        FireballExplosion,
+        Exposure,
+        Sniper,
+        ColdWinds
     }
 
     public static class SkillConstants
@@ -55,9 +60,14 @@ namespace Zerds.Constants
                 {SkillType.ImprovedIceball, new SkillInfo(4f)},
                 {SkillType.ImprovedWand, new SkillInfo(4f)},
                 {SkillType.Replenish, new SkillInfo(0.5f, 1)},
-                {SkillType.Rewind, new SkillInfo(0.25f, 2)},
+                {SkillType.Rewind, new SkillInfo(0.5f, 1)},
                 {SkillType.Sprinter, new SkillInfo(5f)},
-                {SkillType.Swiftness, new SkillInfo(1.5f, 1)}
+                {SkillType.Swiftness, new SkillInfo(1.5f, 1)},
+                {SkillType.DeepBurn, new SkillInfo(7f)},
+                {SkillType.FireballExplosion, new SkillInfo(5f)},
+                {SkillType.Exposure, new SkillInfo(2f)},
+                {SkillType.Sniper, new SkillInfo(5f)},
+                {SkillType.ColdWinds, new SkillInfo(0.4f, 1)}
             };
         }
     }

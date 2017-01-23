@@ -6,6 +6,7 @@ using Zerds.Constants;
 using Zerds.GameObjects;
 using Zerds.Buffs;
 using Zerds.Enums;
+using Zerds.Factories;
 
 namespace Zerds.Entities
 {
@@ -100,6 +101,13 @@ namespace Zerds.Entities
                         Globals.GameState.Players.FirstOrDefault(p => p.Zerd == Killer)?.Zerd.EnemyKilled(this as Enemy);
                     }
                     b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
+                    if (b is DashBuff && this is Zerd && ((Zerd)this).SkillPoints(SkillType.ColdWinds) > 0)
+                    {
+                        foreach (var e in Globals.GameState.Enemies.Where(e => e.Buffs.All(b2 => !(b2 is FrozenBuff)) && e.Hitbox().Any(h => Hitbox().Any(h.Intersects))))
+                        {
+                            e.AddBuff(new FrozenBuff(e, TimeSpan.FromSeconds(((Zerd)this).SkillValue(SkillType.ColdWinds, false))));
+                        }
+                    }
                 });
                 Buffs.ForEach(b => Speed = b.Frozen ? 0 : Speed);
 

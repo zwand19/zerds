@@ -118,7 +118,7 @@ namespace Zerds.GameObjects
                     Texture = TextureCacheFactory.GetOnce("Icons/walking-boot.png");
                     return;
                 case AbilityUpgradeType.MaxHealth:
-                    Texture = TextureCacheFactory.GetOnce("Icons/walking-boot.png");
+                    Texture = TextureCacheFactory.GetOnce("Icons/health-normal.png");
                     return;
             }
         }

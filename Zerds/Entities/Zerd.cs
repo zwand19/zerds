@@ -48,6 +48,7 @@ namespace Zerds.Entities
                 new Wand(this),
                 new Iceball(this)
             };
+            Inventory = new List<Item>();
 
             var attackedAnimation = new Animation(AnimationTypes.Damaged);
             attackedAnimation.AddFrame(new Rectangle(64 * 10, 0, 64, 64), TimeSpan.FromSeconds(0.25));
@@ -85,7 +86,7 @@ namespace Zerds.Entities
         {
             var chance = CriticalChance;
             if (type == DamageTypes.Fire)
-                chance += this.SkillValue(SkillType.Devastation) / 100;
+                chance += this.SkillValue(SkillType.Devastation, false) / 100;
             if (ability == AbilityTypes.Iceball)
                 chance += this.AbilityValue(AbilityUpgradeType.IceballCrit) / 100;
             return new Random().NextDouble() < chance;
@@ -100,7 +101,7 @@ namespace Zerds.Entities
             {
                 Facing = leftStickDirection;
             }
-            if (leftTrigger > CodingConstants.TriggerPress)
+            if (leftTrigger > CodingConstants.TriggerPress && Velocity.Length() > 0)
             {
                 Facing = Facing.Rotate(180);
             }
