@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -70,6 +71,13 @@ namespace Zerds.Menus
                             case AbilityTypes.FrostPound:
                                 _player.Zerd.Abilities.Add(new FrostPound(_player.Zerd));
                                 break;
+                            case AbilityTypes.DragonsBreath:
+                                _player.Zerd.Abilities.Add(new DragonBreath(_player.Zerd));
+                                break;
+                            case AbilityTypes.None:
+                                break;
+                            default:
+                                throw new Exception("missing ability type");
                         }
                     }
                 }

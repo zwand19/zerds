@@ -31,29 +31,7 @@ namespace Zerds.Missiles
 
         public override void Update(GameTime gameTime)
         {
-            if (Creator is Zerd && IsAlive)
-            {
-                foreach (var enemy in Globals.GameState.Enemies.Where(e => e.IsAlive))
-                {
-                    if (enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
-                    {
-                        ((Zerd)Creator).IncreaseCombo();
-                        OnHit(enemy);
-                        return;
-                    }
-                }
-            }
-            else if (IsAlive)
-            {
-                foreach (var zerd in Globals.GameState.Zerds.Where(e => e.IsAlive))
-                {
-                    if (zerd.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
-                    {
-                        OnHit(zerd);
-                        return;
-                    }
-                }
-            }
+            CheckHit();
             if (Origin.DistanceBetween(Position) > Distance && IsAlive)
             {
                 Speed *= 0.75f;
@@ -62,6 +40,30 @@ namespace Zerds.Missiles
                     ((Zerd) Creator).Combo = 0;
             }
             base.Update(gameTime);
+        }
+
+        private void CheckHit()
+        {
+            var creator = Creator as Zerd;
+            if (creator != null && IsAlive)
+            {
+                foreach (var enemy in Globals.GameState.Enemies.Where(e => e.IsAlive))
+                {
+                    if (!enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects))) continue;
+                    creator.IncreaseCombo();
+                    OnHit(enemy);
+                    return;
+                }
+            }
+            else if (IsAlive)
+            {
+                foreach (var zerd in Globals.GameState.Zerds.Where(e => e.IsAlive))
+                {
+                    if (!zerd.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects))) continue;
+                    OnHit(zerd);
+                    return;
+                }
+            }
         }
 
         public override void Draw()

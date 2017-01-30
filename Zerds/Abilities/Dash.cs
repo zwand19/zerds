@@ -15,7 +15,7 @@ namespace Zerds.Abilities
         public int LastLevel { get; set; }
         public bool Rewound { get; set; }
 
-        public Dash(Being being) : base(AbilityTypes.Dash, being, AbilityConstants.DashCooldown, 0f, "charging-bull.png")
+        public Dash(Being being) : base(AbilityTypes.Dash, being, AbilityConstants.DashCooldown, 0f, "charging-bull")
         {
 
         }

@@ -24,7 +24,9 @@ namespace Zerds.Constants
         FireballExplosion,
         Exposure,
         Sniper,
-        ColdWinds
+        ColdWinds,
+        BlazingSpeed,
+        DragonsBreath
     }
 
     public static class SkillConstants
@@ -67,7 +69,8 @@ namespace Zerds.Constants
                 {SkillType.FireballExplosion, new SkillInfo(5f)},
                 {SkillType.Exposure, new SkillInfo(2f)},
                 {SkillType.Sniper, new SkillInfo(5f)},
-                {SkillType.ColdWinds, new SkillInfo(0.4f, 1)}
+                {SkillType.ColdWinds, new SkillInfo(0.4f, 1)},
+                {SkillType.BlazingSpeed, new SkillInfo(2f, 1)}
             };
         }
     }

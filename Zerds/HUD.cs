@@ -102,10 +102,9 @@ namespace Zerds
                 new Color(0.25f, 0.25f, 0.55f));
             // Ability Icons
             var iconPosition = new Vector2(position.X, position.Y + PlayerHudHeight + 8);
-            foreach (var ability in player.Zerd.Abilities)
+            foreach (var ability in player.Zerd.Abilities.Where(a => a.DrawIcon))
             {
-                var color = ability.Cooldown > TimeSpan.Zero ? new Color(Color.Black, 0.35f) : Color.White;
-                Globals.SpriteDrawer.Draw(ability.Texture, Helpers.CreateRect(iconPosition.X, iconPosition.Y, 32, 32), color);
+                Globals.SpriteDrawer.Draw(ability.IconTexture(), Helpers.CreateRect(iconPosition.X, iconPosition.Y, 32, 32), Color.White);
                 iconPosition = iconPosition.Move(40);
             }
         }

@@ -10,7 +10,7 @@ namespace Zerds.Abilities
 {
     public class Wand : Ability
     {
-        public Wand(Being being) : base(AbilityTypes.Wand, being, AbilityConstants.WandCooldown, 0f, "fairy-wand.png")
+        public Wand(Being being) : base(AbilityTypes.Wand, being, AbilityConstants.WandCooldown, 0f, "fairy-wand")
         {
             var wandAnimation = new Animation(AnimationTypes.Attack);
             wandAnimation.AddFrame(new Rectangle(64 * 2, 0, 64, 64), AbilityConstants.WandCastTime);

@@ -15,9 +15,11 @@ namespace Zerds.Abilities
         public AbilityTypes Type { get; set; }
         public Func<bool> Callback { get; set; }
         public bool Active { get; set; }
+        public bool DrawIcon { get; set; }
         public float ManaCost { get; set; }
         public float Range { get; set; }
         public Texture2D Texture { get; set; }
+        public Texture2D DisabledTexture { get; set; }
 
         protected Ability(AbilityTypes type, Being being, TimeSpan cooldown, float manaCost, string iconFile)
         {
@@ -25,14 +27,16 @@ namespace Zerds.Abilities
             Being = being;
             FullCooldown = cooldown;
             ManaCost = manaCost;
-            Texture = iconFile == "" ? null : TextureCacheFactory.GetOnce($"Icons/{iconFile}");
+            DrawIcon = iconFile != "";
+            Texture = DrawIcon ? TextureCacheFactory.GetOnce($"Icons/{iconFile}.png") : null;
+            DisabledTexture = DrawIcon ? TextureCacheFactory.GetOnce($"Icons/{iconFile}-grey.png") : null;
         }
 
         public void BasicMissileCast(string animation)
         {
             if (Cooldown > TimeSpan.Zero || Being.Mana < ManaCost) return;
-            Being.Animations.Get(animation).ResetAnimation();
             if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
+            Being.Animations.Get(animation).ResetAnimation();
             Active = true;
         }
 
@@ -62,6 +66,11 @@ namespace Zerds.Abilities
         public virtual void Cancel()
         {
             Active = false;
+        }
+
+        public Texture2D IconTexture()
+        {
+            return Cooldown > TimeSpan.Zero || Being.Mana < ManaCost ? DisabledTexture : Texture;
         }
     }
 }

@@ -59,6 +59,12 @@ namespace Zerds.Constants
         public static TimeSpan LavaBlastCastTime => TimeSpan.FromMilliseconds(1250);
         public static TimeSpan LavaBlastFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan LavaBlastCooldown = TimeSpan.FromMilliseconds(10000);
+        
+        public const float DragonBreathSpeed = 275f;
+        public const float DragonBreathDistance = 250f;
+        public const float DragonBreathManaCost = 80f;
+        public const float DragonBreathDamage = 2f;
+        public static TimeSpan DragonBreathCooldown = TimeSpan.FromMilliseconds(10000);
 
         public const float FrostPoundDamage = 10f;
         public const float FrostPoundManaCost = 75f;

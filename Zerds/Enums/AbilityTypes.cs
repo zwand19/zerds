@@ -11,6 +11,7 @@
         Melee,
         LavaBlast,
         Range,
-        FrostPound
+        FrostPound,
+        DragonsBreath
     }
 }

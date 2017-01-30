@@ -38,7 +38,7 @@ namespace Zerds.Menus
             Title = title;
             MaxPoints = points;
             Description = description;
-            Texture = TextureCacheFactory.GetOnce(file);
+            Texture = TextureCacheFactory.GetOnce($"Icons/{file}");
             Children = new List<SkillTreeItem>();
             Parent = parent;
             parent?.Children.Add(this);

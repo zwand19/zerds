@@ -16,7 +16,7 @@ namespace Zerds.Constants
         public static int AbilityUpgradeCost = 150;
         public static int FloatingSkillPointCost = 250;
 
-        public const int FloatingPointsPerLevel = 3;
+        public const int FloatingPointsPerLevel = 30;
         public const int SkillPointsPerLevel = 3;
 
         public const float BackpedalFactor = 0.35f;

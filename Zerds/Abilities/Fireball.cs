@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Zerds.Buffs;
 using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
+using Zerds.Factories;
 using Zerds.GameObjects;
 using Zerds.Graphics;
 using Zerds.Missiles;
@@ -11,7 +13,7 @@ namespace Zerds.Abilities
 {
     public class Fireball : Ability
     {
-        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballManaCost, "fire-zone.png")
+        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballManaCost, "fireball")
         {
             var fireballAnimation = new Animation(AnimationTypes.FireAttack);
             fireballAnimation.AddFrame(new Rectangle(64 * 1, 0, 64, 64), AbilityConstants.FireballCastTime);
@@ -41,6 +43,7 @@ namespace Zerds.Abilities
             // replenish mana based on bonuses
             Being.Mana += AbilityConstants.FireballManaCost *
                           (Being.AbilityValue(AbilityUpgradeType.FireballMana) / 100f);
+            Being.AddBuff(BuffTypes.BlazingSpeed);
             return base.Execute();
         }
     }

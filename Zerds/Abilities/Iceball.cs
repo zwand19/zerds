@@ -11,7 +11,7 @@ namespace Zerds.Abilities
 {
     public class Iceball : Ability
     {
-        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt.png")
+        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt")
         {
             var iceballAnimation = new Animation(AnimationTypes.FrostAttack);
             iceballAnimation.AddFrame(new Rectangle(64 * 8, 0, 64, 64), AbilityConstants.IceballCastTime);

@@ -4,6 +4,7 @@
     {
         Sprint,
         Dash,
-        Cold
+        Cold,
+        BlazingSpeed
     }
 }

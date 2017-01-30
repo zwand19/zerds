@@ -72,7 +72,7 @@ namespace Zerds.Missiles
         public override void OnHit(Being target)
         {
             var zerd = (Zerd)Creator;
-            Damage.Damage *= Origin.DistanceBetween(Position) * zerd.SkillValue(SkillType.Sniper, true) / 100f;
+            Damage.Damage += Origin.DistanceBetween(Position) * zerd.SkillValue(SkillType.Sniper, true) / 100f;
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;

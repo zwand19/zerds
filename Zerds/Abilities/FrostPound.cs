@@ -13,7 +13,7 @@ namespace Zerds.Abilities
 {
     public class FrostPound : Ability
     {
-        public FrostPound(Being being) : base(AbilityTypes.FrostPound, being, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundManaCost, "ice-punch.png")
+        public FrostPound(Being being) : base(AbilityTypes.FrostPound, being, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundManaCost, "ice-punch")
         {
             var anim = new Animation(AnimationTypes.FrostPoundAttack);
             anim.AddFrame(new Rectangle(64 * 8, 0, 64, 64), AbilityConstants.FrostPoundCastTime);
