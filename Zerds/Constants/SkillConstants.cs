@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Zerds.Constants
 {
@@ -26,7 +27,14 @@ namespace Zerds.Constants
         Sniper,
         ColdWinds,
         BlazingSpeed,
-        DragonsBreath
+        DragonsBreath,
+        BleedFire,
+        Maniac,
+        Shatter,
+        DeepCold,
+        IceShield,
+        FrostAura,
+        Icicle
     }
 
     public static class SkillConstants
@@ -39,11 +47,11 @@ namespace Zerds.Constants
             public int MaxPoints { get; set; }
             public int DecimalPlaces { get; set; }
 
-            public SkillInfo(float stat, int decimalPlaces = 0, int maxPoints = 5)
+            public SkillInfo(float stat)
             {
                 Stat = stat;
-                DecimalPlaces = decimalPlaces;
-                MaxPoints = maxPoints;
+                DecimalPlaces = Math.Abs(stat * 10 % 10) < CodingConstants.Tolerance ? 0 : 1;
+                MaxPoints = 5;
             }
         }
 
@@ -53,24 +61,30 @@ namespace Zerds.Constants
             {
                 {SkillType.BitterCold, new SkillInfo(13f)},
                 {SkillType.ColdExplosion, new SkillInfo(6f)},
-                {SkillType.Dancer, new SkillInfo(0.5f, 1)},
-                {SkillType.Devastation, new SkillInfo(2.5f, 1)},
+                {SkillType.Dancer, new SkillInfo(0.5f)},
+                {SkillType.Devastation, new SkillInfo(2.5f)},
                 {SkillType.FireMastery, new SkillInfo(3f)},
                 {SkillType.FrozenSoul, new SkillInfo(2f)},
-                {SkillType.Guzzler, new SkillInfo(2.2f, 1)},
+                {SkillType.Guzzler, new SkillInfo(2.2f)},
                 {SkillType.ImprovedFireball, new SkillInfo(4f)},
                 {SkillType.ImprovedIceball, new SkillInfo(4f)},
                 {SkillType.ImprovedWand, new SkillInfo(4f)},
-                {SkillType.Replenish, new SkillInfo(0.5f, 1)},
-                {SkillType.Rewind, new SkillInfo(0.5f, 1)},
+                {SkillType.Replenish, new SkillInfo(0.5f)},
+                {SkillType.Rewind, new SkillInfo(0.5f)},
                 {SkillType.Sprinter, new SkillInfo(5f)},
-                {SkillType.Swiftness, new SkillInfo(1.5f, 1)},
+                {SkillType.Swiftness, new SkillInfo(1.5f)},
                 {SkillType.DeepBurn, new SkillInfo(7f)},
                 {SkillType.FireballExplosion, new SkillInfo(5f)},
                 {SkillType.Exposure, new SkillInfo(2f)},
                 {SkillType.Sniper, new SkillInfo(5f)},
-                {SkillType.ColdWinds, new SkillInfo(0.4f, 1)},
-                {SkillType.BlazingSpeed, new SkillInfo(2f, 1)}
+                {SkillType.ColdWinds, new SkillInfo(0.4f)},
+                {SkillType.BlazingSpeed, new SkillInfo(2f)},
+                {SkillType.BleedFire, new SkillInfo(4f)},
+                {SkillType.Maniac, new SkillInfo(8f)},
+                {SkillType.Shatter, new SkillInfo(5f)},
+                {SkillType.DeepCold, new SkillInfo(5f)},
+                {SkillType.IceShield, new SkillInfo(0.6f)},
+                {SkillType.FrostAura, new SkillInfo(3f)}
             };
         }
     }

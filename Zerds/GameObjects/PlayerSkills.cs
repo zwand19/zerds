@@ -13,6 +13,9 @@ namespace Zerds.GameObjects
         public SkillTree FrostSkillTree { get; set; }
 
         public static int BlazingSpeedSeconds = 4;
+        public static int BleedFireHealthPercent = 8;
+        public static int FrostAuraRange = 200;
+        public static float IcicleKillPercent = 0.2f;
 
         public PlayerSkills(Player player)
         {
@@ -41,6 +44,11 @@ namespace Zerds.GameObjects
             // Fire Row 4
             var dragonsBreath = new SkillTreeItem(SkillType.DragonsBreath, "Dragon Breath", "Instantly project devastating flames from your mouth for the next 2 seconds. Not learned until all 5 skill points are spent.", 5, 3, 2, "dragon-breath.png", null, AbilityTypes.DragonsBreath);
             FireSkillTree.Items.Add(dragonsBreath);
+            var bleedFire = new SkillTreeItem(SkillType.BleedFire, "Bleed Fire", $"Blazing speed buffs burn you for {BleedFireHealthPercent}% of your max health, but you gain {StatStr(SkillType.BleedFire)}% lifesteal from all fire spells.", 5, 3, 4, "life-support.png", blazingSpeed);
+            FireSkillTree.Items.Add(bleedFire);
+            //Fire Row 5
+            var maniac = new SkillTreeItem(SkillType.Maniac, "Maniac", $"Gain {StatStr(SkillType.Maniac)}% of your missing health % in fire damage (e.g. having 50% health and full skill pts = 20% increase).", 5, 4, 4, "life-support.png", bleedFire);
+            FireSkillTree.Items.Add(maniac);
 
             FrostSkillTree = new SkillTree("Frost", player);
             // Frost Row 1
@@ -57,6 +65,18 @@ namespace Zerds.GameObjects
             FrostSkillTree.Items.Add(frostPound);
             var coldWinds = new SkillTreeItem(SkillType.ColdWinds, "Cold Winds", $"Dashing through enemies freezes them in place for {StatStr(SkillType.ColdWinds)} seconds.", 5, 1, 4, "wind-slap.png");
             FrostSkillTree.Items.Add(coldWinds);
+            // Frost Row 3
+            var deepCold = new SkillTreeItem(SkillType.DeepCold, "Deep Cold", $"Deal an additional {StatStr(SkillType.DeepCold)}% frost damage to slowed targets.", 5, 2, 0, "brain-freeze.png", bitterCold);
+            FrostSkillTree.Items.Add(deepCold);
+            var shatter = new SkillTreeItem(SkillType.Shatter, "Shatter", $"Deal an additional {StatStr(SkillType.Shatter)}% damage to frozen targets.", 5, 2, 2, "shatter.png", frostPound);
+            FrostSkillTree.Items.Add(shatter);
+            var iceShield = new SkillTreeItem(SkillType.IceShield, "Ice Shield", $"Critical hits with frost spells grant you an invulnerability buff for {StatStr(SkillType.IceShield)}% seconds.", 5, 2, 4, "ice-shield.png");
+            FrostSkillTree.Items.Add(iceShield);
+            // Frost Row 4
+            var frostAura = new SkillTreeItem(SkillType.FrostAura, "Frost Aura", $"Enemies within {FrostAuraRange} range take {StatStr(SkillType.FrostAura)}% more frost damage", 5, 3, 0, "ice-aura.png");
+            FrostSkillTree.Items.Add(frostAura);
+            var icicle = new SkillTreeItem(SkillType.Icicle, "Icicle", "Whip icicles in 8 directions around you which freeze, deal damage, and instantly killing enemies with <20% health.", 5, 3, 2, "icicle.png", null, AbilityTypes.Icicle);
+            FrostSkillTree.Items.Add(icicle);
 
             ArcaneSkillTree = new SkillTree("Arcane", player);
             // Arcane Row 1

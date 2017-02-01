@@ -5,7 +5,6 @@
         Magic,
         Frost,
         Fire,
-        Lightning,
         Physical
     }
 }

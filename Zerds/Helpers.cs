@@ -51,5 +51,10 @@ namespace Zerds
             val += zerd.Inventory.SelectMany(i => i.AbilityUpgrades).Where(i => i.Type == type).Sum(i => i.Amount);
             return asPercentage ? 1 + val / 100 : val;
         }
+
+        public static void AddHealth(this Being b, float amt)
+        {
+            b.Health = MathHelper.Clamp(b.Health + amt, -1, b.MaxHealth);
+        }
     }
 }

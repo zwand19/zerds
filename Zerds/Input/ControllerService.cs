@@ -67,6 +67,14 @@ namespace Zerds.Input
                 buttons.Add(Buttons.RightThumbstickLeft);
             if (state.ThumbSticks.Right.X > CodingConstants.JoystickPress && oldState.ThumbSticks.Right.X < CodingConstants.JoystickPress)
                 buttons.Add(Buttons.RightThumbstickRight);
+            if (state.DPad.Down == ButtonState.Pressed && oldState.DPad.Down == ButtonState.Released)
+                buttons.Add(Buttons.DPadDown);
+            if (state.DPad.Left == ButtonState.Pressed && oldState.DPad.Left == ButtonState.Released)
+                buttons.Add(Buttons.DPadLeft);
+            if (state.DPad.Right == ButtonState.Pressed && oldState.DPad.Right == ButtonState.Released)
+                buttons.Add(Buttons.DPadRight);
+            if (state.DPad.Up == ButtonState.Pressed && oldState.DPad.Up == ButtonState.Released)
+                buttons.Add(Buttons.DPadUp);
             return buttons;
         }
 

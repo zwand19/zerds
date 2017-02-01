@@ -35,6 +35,14 @@ namespace Zerds.Constants
         public static TimeSpan IceballFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan IceballCooldown = TimeSpan.FromMilliseconds(3050);
 
+        public const float IcicleKnockback = 0f;
+        public const float IcicleSpeed = 650f;
+        public const float IcicleDistance = 650f;
+        public const float IcicleManaCost = 75f;
+        public const float IcicleDamage = 15f;
+        public static TimeSpan IcicleColdLength => TimeSpan.FromMilliseconds(3000);
+        public static TimeSpan IcicleCooldown = TimeSpan.FromMilliseconds(8000);
+
         public const float FireballKnockback = 350f;
         public const float FireballSpeed = 550f;
         public const float FireballDistance = 750f;

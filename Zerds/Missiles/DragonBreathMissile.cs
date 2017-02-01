@@ -38,6 +38,12 @@ namespace Zerds.Missiles
             return Animations.Get(AnimationTypes.Move);
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (!IsAlive) IsActive = false;
+            base.Update(gameTime);
+        }
+
         public override float SpriteRotation()
         {
             return (float)Math.PI / 2;

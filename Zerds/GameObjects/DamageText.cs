@@ -22,16 +22,13 @@ namespace Zerds.GameObjects
             Duration = DisplayConstants.DamageTextDuration;
             switch (damageInstance.DamageType)
             {
-                case Enums.DamageTypes.Fire:
-                    _color = new Color(236, 112, 64);
+                case DamageTypes.Fire:
+                    _color = new Color(176, 66, 30);
                     break;
-                case Enums.DamageTypes.Frost:
+                case DamageTypes.Frost:
                     _color = new Color(64, 192, 236);
                     break;
-                case Enums.DamageTypes.Lightning:
-                    _color = new Color(125, 249, 255);
-                    break;
-                case Enums.DamageTypes.Magic:
+                case DamageTypes.Magic:
                     _color = new Color(256, 246, 54);
                     break;
                 default:

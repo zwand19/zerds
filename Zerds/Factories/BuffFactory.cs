@@ -21,7 +21,7 @@ namespace Zerds.Factories
                     return;
                 case BuffTypes.BlazingSpeed:
                     if (being.SkillPoints(SkillType.BlazingSpeed) > 0)
-                        being.Buffs.Add(new BlazingSpeedBuff(being, TimeSpan.FromSeconds(PlayerSkills.BlazingSpeedSeconds), being.BaseSpeed * being.SkillValue(SkillType.BlazingSpeed, false) / 100f));
+                        being.Buffs.Add(new BlazingSpeedBuff(being as Zerd, TimeSpan.FromSeconds(PlayerSkills.BlazingSpeedSeconds), being.BaseSpeed * being.SkillValue(SkillType.BlazingSpeed, false) / 100f));
                     return;
             }
             throw new Exception("Unhandled buff");

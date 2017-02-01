@@ -74,6 +74,9 @@ namespace Zerds.Menus
                             case AbilityTypes.DragonsBreath:
                                 _player.Zerd.Abilities.Add(new DragonBreath(_player.Zerd));
                                 break;
+                            case AbilityTypes.Icicle:
+                                _player.Zerd.Abilities.Add(new Icicle(_player.Zerd));
+                                break;
                             case AbilityTypes.None:
                                 break;
                             default:

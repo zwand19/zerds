@@ -34,17 +34,17 @@ namespace Zerds.Constants
         public const float DamageVariance = 0.3f;
 
         public const float ZerdStartingHealth = 100f;
-        public const float ZerdStartingMana = 150f;
+        public const float ZerdStartingMana = 200f;
         public const float ZerdStartingHealthRegen = 1.5f;
-        public const float ZerdStartingManaRegen = 5.5f;
+        public const float ZerdStartingManaRegen = 9f;
         public const float ZerdCritChance = 0.1f;
 
-        public const float PotionDropChance = 0.2f;
+        public const float PotionDropChance = 0.25f;
         public const float PickupItemSpeed = 80f;
         public const float PickupItemSpeedDecay = 60f;
         public const float DefaultItemSize = 26f;
         public static TimeSpan PickupItemLength = TimeSpan.FromSeconds(5);
         public const float HealthPotionBonus = 0.25f;
-        public const float ManaPotionBonus = 0.15f;
+        public const float ManaPotionBonus = 0.2f;
     }
 }

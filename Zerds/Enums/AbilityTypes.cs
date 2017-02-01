@@ -12,6 +12,7 @@
         LavaBlast,
         Range,
         FrostPound,
+        Icicle,
         DragonsBreath
     }
 }

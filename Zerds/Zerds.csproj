@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="Abilities\Dash.cs" />
     <Compile Include="Abilities\DragonBreath.cs" />
+    <Compile Include="Abilities\Icicle.cs" />
     <Compile Include="Abilities\LavaBlast.cs" />
     <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Iceball.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />
     <Compile Include="Buffs\BlazingSpeedBuff.cs" />
+    <Compile Include="Buffs\IceShieldBuff.cs" />
     <Compile Include="Buffs\FrozenBuff.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
     <Compile Include="Entities\Enemies\Archer.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
     <Compile Include="Missiles\DragonBreathMissile.cs" />
+    <Compile Include="Missiles\IcicleMissile.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Input\Controller.cs" />
@@ -234,6 +237,9 @@
     <Content Include="Content\Buffs\dash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Buffs\ice-shield.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Entities\archer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -264,6 +270,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\back-forth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\brain-freeze.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\chained-heart.png">
@@ -323,6 +332,9 @@
     <Content Include="Content\Icons\heartburn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\ice-aura.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\ice-bolt-grey.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -335,13 +347,28 @@
     <Content Include="Content\Icons\ice-punch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\ice-shield.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\icicle-grey.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\icicle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\improved_fireball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\improved_wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\lava_blast-grey.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\lava_blast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\life-support.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\magic-portal.png">
@@ -357,6 +384,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\rabbit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\shatter.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\sprint.png">
@@ -375,9 +405,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\viking-shield.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\volcano-grey.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\walking-boot.png">

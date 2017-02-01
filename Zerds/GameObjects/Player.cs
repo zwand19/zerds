@@ -68,6 +68,8 @@ namespace Zerds.GameObjects
                     Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Cast();
                 if (buttonsPressed.Contains(Buttons.LeftStick))
                     Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.DragonsBreath)?.Cast();
+                if (buttonsPressed.Contains(Buttons.DPadDown))
+                    Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.Icicle)?.Cast();
             }
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {

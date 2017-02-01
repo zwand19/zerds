@@ -62,7 +62,7 @@ namespace Zerds.Entities
 
         public override List<Rectangle> Hitbox()
         {
-            return new List<Rectangle> {this.BasicHitbox()};
+            return Buffs.Any(b => b.GrantsInvulnerability) ? new List<Rectangle>() : new List<Rectangle> {this.BasicHitbox()};
         }
 
         public virtual void DrawHealthbar()
@@ -138,7 +138,7 @@ namespace Zerds.Entities
                 }
                 else
                 {
-                    if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero)
+                    if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero && IsAlive)
                     {
                         X += (int) (Knockback.Direction.X * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
                                     (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
@@ -148,7 +148,6 @@ namespace Zerds.Entities
                              Globals.GameState.GameSpeed;
                     }
                     Knockback.Duration = Knockback.Duration.Subtract(gameTime.ElapsedGameTime);
-                    Facing = Knockback.Direction;
                     if (Knockback.Duration < TimeSpan.Zero)
                         Knockback = null;
                 }
