@@ -82,10 +82,8 @@ namespace Zerds.Missiles
             {
                 var explosionBurnLevel = zerd.SkillValue(SkillType.FireballExplosion, false) * burnDamage / 100f;
                 Damage.Damage *= zerd.SkillValue(SkillType.FireballExplosion, false) / 100f;
-                foreach (
-                    var e in
-                    Globals.GameState.Enemies.Where(
-                        e => target.Position.DistanceBetween(e.Position) < AbilityConstants.FireballExplosionDistance && e != target))
+                foreach (var e in
+                    Creator.Enemies().Where(e => target.Position.DistanceBetween(e.Position) < AbilityConstants.FireballExplosionDistance && e != target))
                 {
                     e.AddBuff(new BurnBuff(zerd, target, AbilityConstants.FireballBurnLength, explosionBurnLevel));
                     Damage.DamageBeing(e);

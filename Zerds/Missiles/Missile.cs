@@ -47,7 +47,7 @@ namespace Zerds.Missiles
             var creator = Creator as Zerd;
             if (creator != null && IsAlive)
             {
-                foreach (var enemy in Globals.GameState.Enemies.Where(e => e.IsAlive))
+                foreach (var enemy in Creator.Enemies().Where(e => e.IsAlive))
                 {
                     if (!enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects))) continue;
                     creator.IncreaseCombo();
@@ -57,7 +57,7 @@ namespace Zerds.Missiles
             }
             else if (IsAlive)
             {
-                foreach (var zerd in Globals.GameState.Zerds.Where(e => e.IsAlive))
+                foreach (var zerd in Globals.GameState.Friendlies.Where(e => e.IsAlive))
                 {
                     if (!zerd.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects))) continue;
                     OnHit(zerd);

@@ -80,12 +80,12 @@ namespace Zerds
             return true;
         }
 
-        private bool PlayGameFunc(List<ZerdTypes> players)
+        private bool PlayGameFunc(List<bool> players)
         {
             _gameSetup = null;
             _state = GameStates.Game;
             for (var i=0; i < players.Count; i++)
-                if (players[i] != ZerdTypes.NotPlaying) _players[i].JoinGame(players[i]);
+                if (players[i]) _players[i].JoinGame();
             Globals.GameState.StartLevel();
             return true;
         }

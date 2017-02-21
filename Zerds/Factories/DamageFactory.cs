@@ -20,6 +20,9 @@ namespace Zerds.Factories
             // Damage Taken Ability Upgrade
             if (zerdTarget != null)
                 damageInstance.Damage *= 1 - zerdTarget.AbilityValue(AbilityUpgradeType.DamageTaken) / 100f;
+            // Hardened Skill
+            if (zerdTarget != null && damageInstance.IsRanged)
+                damageInstance.Damage *= 1 - zerdTarget.SkillValue(SkillType.Hardened, false) / 100f;
             // Exposure Skill
             if (zerdCreator != null && target.Buffs.Any(b => b is BurnBuff) && zerdCreator.SkillPoints(SkillType.Exposure) > 0)
                 damageInstance.Damage *= zerdCreator.SkillValue(SkillType.Exposure, true);

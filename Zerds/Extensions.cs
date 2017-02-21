@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
@@ -119,6 +120,12 @@ namespace Zerds
         public static TimeSpan AddWithGameSpeed(this TimeSpan t1, TimeSpan t2)
         {
             return t1.Add(TimeSpan.FromMilliseconds(t2.TotalMilliseconds * Globals.GameState.GameSpeed));
+        }
+
+        public static List<Being> Enemies(this Being b)
+        {
+            var enemies = Globals.GameState.Enemies.Select(e => e as Being).ToList();
+            return b is Zerd || ((Enemy) b).Charmed ? enemies : Globals.GameState.Friendlies;
         }
 
         public static void DrawLine(this SpriteBatch sb, Vector2 start, Vector2 end, int width = 1, Color? color = null)

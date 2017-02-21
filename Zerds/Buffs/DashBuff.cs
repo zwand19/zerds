@@ -26,14 +26,14 @@ namespace Zerds.Buffs
                 return;
 
             var angle = -(float)Math.Atan2(Being.Facing.Y, Being.Facing.X) + (float)Math.PI / 2f;
-            
-            drawSprite(angle, 12.5f, 0.38f);
-            drawSprite(angle, 25f, 0.29f);
-            drawSprite(angle, 37.5f, 0.2f);
-            drawSprite(angle, 50f, 0.1f);
+
+            DrawSprite(angle, 12.5f, 0.38f);
+            DrawSprite(angle, 25f, 0.29f);
+            DrawSprite(angle, 37.5f, 0.2f);
+            DrawSprite(angle, 50f, 0.1f);
         }
 
-        private void drawSprite(float angle, float offset, float alpha)
+        private void DrawSprite(float angle, float offset, float alpha)
         {
             if (_initialPosition.DistanceBetween(Being.PositionVector) < offset)
                 return;

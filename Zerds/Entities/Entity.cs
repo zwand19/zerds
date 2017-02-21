@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.Graphics;
-using Zerds.Consumables;
 
 namespace Zerds.Entities
 {
@@ -28,7 +27,7 @@ namespace Zerds.Entities
 
         protected Entity(string file, bool cache)
         {
-            Texture = cache ? TextureCacheFactory.Get(file) : TextureCacheFactory.GetOnce(file);
+            Texture = string.IsNullOrWhiteSpace(file) ? null : cache ? TextureCacheFactory.Get(file) : TextureCacheFactory.GetOnce(file);
             IsActive = true;
         }
 

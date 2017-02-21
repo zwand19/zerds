@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Zerds.Abilities;
 using Zerds.Entities;
 using Zerds.Enums;
-using Zerds.Factories;
 using Zerds.Graphics;
 
 namespace Zerds.AI
@@ -25,7 +24,7 @@ namespace Zerds.AI
                 return;
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
-            var target = Enemy.GetNearestZerd();
+            var target = Enemy.GetNearestEnemy();
             if (target == null)
             {
                 Enemy.Velocity = Vector2.Zero;
@@ -40,11 +39,11 @@ namespace Zerds.AI
                     return;
                 case EnemyStates.Sitting:
                     Enemy.Velocity = Vector2.Zero;
-                    if (Enemy.Spawned && Globals.GameState.Zerds.Any(z => z.IsAlive))
+                    if (Enemy.Spawned && Enemy.Enemies().Any(z => z.IsAlive))
                         State = EnemyStates.Chasing;
                     return;
                 case EnemyStates.Chasing:
-                    if (!Globals.GameState.Zerds.Any(z => z.IsAlive))
+                    if (!Enemy.Enemies().Any(z => z.IsAlive))
                     {
                         State = EnemyStates.Sitting;
                         return;

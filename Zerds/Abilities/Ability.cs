@@ -36,7 +36,7 @@ namespace Zerds.Abilities
         {
             if (Cooldown > TimeSpan.Zero || Being.Mana < ManaCost) return;
             if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
-            Being.Animations.Get(animation).ResetAnimation();
+            (Being as Zerd).ZerdAnimations.Reset(animation);
             Active = true;
         }
 

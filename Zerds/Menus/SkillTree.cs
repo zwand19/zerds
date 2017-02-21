@@ -77,6 +77,9 @@ namespace Zerds.Menus
                             case AbilityTypes.Icicle:
                                 _player.Zerd.Abilities.Add(new Icicle(_player.Zerd));
                                 break;
+                            case AbilityTypes.Charm:
+                                _player.Zerd.Abilities.Add(new Charm(_player.Zerd));
+                                break;
                             case AbilityTypes.None:
                                 break;
                             default:

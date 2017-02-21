@@ -13,6 +13,7 @@
         Range,
         FrostPound,
         Icicle,
-        DragonsBreath
+        DragonsBreath,
+        Charm
     }
 }

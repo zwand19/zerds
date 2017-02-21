@@ -34,7 +34,7 @@ namespace Zerds.GameObjects
 
         public static int ComboGold(Player player)
         {
-            return (int) (player.Zerd.MaxLevelCombo * GameplayConstants.GoldPerCombo);
+            return (int) (player.Zerd.MaxLevelCombo * GameplayConstants.GoldPerCombo * player.Zerd.SkillValue(SkillType.ComboMaster, true));
         }
 
         public static int LevelGold()

@@ -80,22 +80,31 @@ namespace Zerds.GameObjects
 
             ArcaneSkillTree = new SkillTree("Arcane", player);
             // Arcane Row 1
-            var improvedWand = new SkillTreeItem(SkillType.ImprovedWand, "Improved Wand", $"Increase damage and range of wand attacks by {StatStr(SkillType.ImprovedWand)}%.", 5, 0, 0, "improved_wand.png");
-            ArcaneSkillTree.Items.Add(improvedWand);
-            var dancer = new SkillTreeItem(SkillType.Dancer, "Dancer", $"Reduces cooldown of dash by {StatStr(SkillType.Dancer)} seconds.", 5, 0, 2, "charging-bull.png");
-            ArcaneSkillTree.Items.Add(dancer);
+            var guzzler = new SkillTreeItem(SkillType.Guzzler, "Guzzler", $"Increase chance of potions dropping from enemies you kill by {StatStr(SkillType.Guzzler)}%.", 5, 0, 0, "potion-ball.png");
+            ArcaneSkillTree.Items.Add(guzzler);
+            var comboMaster = new SkillTreeItem(SkillType.ComboMaster, "Combo Master", $"Increase gold gained from your combo by {StatStr(SkillType.ComboMaster)}%.", 5, 0, 2, "ore.png");
+            ArcaneSkillTree.Items.Add(comboMaster);
             var swift = new SkillTreeItem(SkillType.Swiftness, "Swiftness", $"Increases movement speed by {StatStr(SkillType.Swiftness)}%.", 5, 0, 4, "walking-boot.png");
             ArcaneSkillTree.Items.Add(swift);
             // Arcane Row 2
-            var replenish = new SkillTreeItem(SkillType.Replenish, "Replenish", $"Wand attacks restore {StatStr(SkillType.Replenish)}% of your mana.", 5, 1, 0, "glass-heart.png", improvedWand);
-            ArcaneSkillTree.Items.Add(replenish);
+            var improvedWand = new SkillTreeItem(SkillType.ImprovedWand, "Improved Wand", $"Increase damage and range of wand attacks by {StatStr(SkillType.ImprovedWand)}%.", 5, 1, 0, "improved_wand.png");
+            ArcaneSkillTree.Items.Add(improvedWand);
+            var rage = new SkillTreeItem(SkillType.Rage, "Rage", $"After killing an enemy, your next wand attack, iceball, or fireball has a {StatStr(SkillType.Rage)}% increased crit chance.", 5, 1, 2, "enrage.png");
+            ArcaneSkillTree.Items.Add(rage);
             var sprinter = new SkillTreeItem(SkillType.Sprinter, "Sprinter", $"Reduces mana cost of sprint by {StatStr(SkillType.Sprinter)}%.", 5, 1, 4, "rabbit.png", swift);
             ArcaneSkillTree.Items.Add(sprinter);
-            var guzzler = new SkillTreeItem(SkillType.Guzzler, "Guzzler", $"Increase chance of potions dropping from enemies you kill by {StatStr(SkillType.Guzzler)}%.", 5, 1, 2, "potion-ball.png");
-            ArcaneSkillTree.Items.Add(guzzler);
             // Arcane Row 3
-            var rewind = new SkillTreeItem(SkillType.Rewind, "Rewind", $"Cast dash again within {StatStr(SkillType.Rewind)}s to teleport back to your original position", 5, 2, 0, "back-forth.png");
+            var replenish = new SkillTreeItem(SkillType.Replenish, "Replenish", $"Wand attacks restore {StatStr(SkillType.Replenish)}% of your mana.", 5, 2, 0, "glass-heart.png", improvedWand);
+            ArcaneSkillTree.Items.Add(replenish);
+            var rewind = new SkillTreeItem(SkillType.Rewind, "Rewind", $"Cast dash again within {StatStr(SkillType.Rewind)}s to teleport back to your original position", 5, 2, 2, "back-forth.png");
             ArcaneSkillTree.Items.Add(rewind);
+            var dancer = new SkillTreeItem(SkillType.Dancer, "Dancer", $"Reduces cooldown of dash by {StatStr(SkillType.Dancer)} seconds.", 5, 2, 4, "charging-bull.png");
+            ArcaneSkillTree.Items.Add(dancer);
+            // Arcane Row 4
+            var hardened = new SkillTreeItem(SkillType.Hardened, "Hardened", $"Take {StatStr(SkillType.Hardened)}% less damage and knockback from ranged attacks.", 5, 3, 0, "spiked-armor.png");
+            ArcaneSkillTree.Items.Add(hardened);
+            var charm = new SkillTreeItem(SkillType.Charm, "Charm", "Fire a powerful orb that charms the first enemy it hits into fighting for you. 30s cooldown. Charmed enemies degenerate health slowly.", 5, 3, 2, "chained-heart.png", null, AbilityTypes.Charm);
+            ArcaneSkillTree.Items.Add(charm);
         }
 
         public int Pts(SkillType type)

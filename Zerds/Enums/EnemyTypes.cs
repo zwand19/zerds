@@ -5,6 +5,7 @@
         Zombie,
         Dog,
         Demon,
+        SkeletonKing,
         FrostDemon,
         Archer
     }

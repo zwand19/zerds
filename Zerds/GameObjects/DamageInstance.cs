@@ -12,9 +12,11 @@ namespace Zerds.GameObjects
         public bool IsCritical { get; set; }
         public DamageTypes DamageType { get; set; }
         public Being Creator { get; set; }
+        public bool IsRanged { get; set; }
 
-        public DamageInstance(Knockback knockback, float damage, DamageTypes type, Being creator, AbilityTypes ability)
+        public DamageInstance(Knockback knockback, float damage, DamageTypes type, Being creator, AbilityTypes ability, bool isRanged = true)
         {
+            IsRanged = isRanged;
             Knockback = knockback;
             Damage = damage * (1 + GameplayConstants.DamageFactorPerLevel * Level.CurrentLevel);
             DamageType = type;

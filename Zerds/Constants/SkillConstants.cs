@@ -34,7 +34,11 @@ namespace Zerds.Constants
         DeepCold,
         IceShield,
         FrostAura,
-        Icicle
+        Icicle,
+        ComboMaster,
+        Rage,
+        Charm,
+        Hardened
     }
 
     public static class SkillConstants
@@ -61,7 +65,7 @@ namespace Zerds.Constants
             {
                 {SkillType.BitterCold, new SkillInfo(13f)},
                 {SkillType.ColdExplosion, new SkillInfo(6f)},
-                {SkillType.Dancer, new SkillInfo(0.5f)},
+                {SkillType.Dancer, new SkillInfo(0.6f)},
                 {SkillType.Devastation, new SkillInfo(2.5f)},
                 {SkillType.FireMastery, new SkillInfo(3f)},
                 {SkillType.FrozenSoul, new SkillInfo(2f)},
@@ -84,7 +88,10 @@ namespace Zerds.Constants
                 {SkillType.Shatter, new SkillInfo(5f)},
                 {SkillType.DeepCold, new SkillInfo(5f)},
                 {SkillType.IceShield, new SkillInfo(0.6f)},
-                {SkillType.FrostAura, new SkillInfo(3f)}
+                {SkillType.FrostAura, new SkillInfo(3f)},
+                {SkillType.ComboMaster, new SkillInfo(20f)},
+                {SkillType.Rage, new SkillInfo(5f)},
+                {SkillType.Hardened, new SkillInfo(4f)}
             };
         }
     }

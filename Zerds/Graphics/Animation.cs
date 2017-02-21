@@ -7,10 +7,22 @@ namespace Zerds.Graphics
 {
     public class Animation
     {
-        readonly List<AnimationFrame> _frames = new List<AnimationFrame>();
-        TimeSpan _timeIntoAnimation;
-        AnimationFrame _lastFrame;
+        private readonly List<AnimationFrame> _frames = new List<AnimationFrame>();
+        private TimeSpan _timeIntoAnimation;
+        private AnimationFrame _lastFrame;
         public string Name { get; set; }
+        private ZerdBodyPart _bodyPart;
+        
+        public Animation(string name, ZerdBodyPart bodyPart)
+        {
+            _bodyPart = bodyPart;
+            Name = name;
+        }
+
+        public Animation(string name)
+        {
+            Name = name;
+        }
 
         private TimeSpan Duration
         {
@@ -22,26 +34,29 @@ namespace Zerds.Graphics
             }
         }
 
-        public Animation(string name)
+        /// <summary>
+        /// Add a frame with a given row/col within the sprite sheet. All frames must be the same size for this to work.
+        /// </summary>
+        /// <param name="x">Column in the sprite sheet.</param>
+        /// <param name="y">Row in the sprite sheet.</param>
+        /// <param name="duration">Duration of this frame.</param>
+        /// <param name="func">Function to run when this frame is active.</param>
+        public void AddFrame(int x, int y, TimeSpan duration, Func<bool> func = null)
         {
-            Name = name;
+            var rectangle = new Rectangle(x * _bodyPart.Width, y * _bodyPart.Height, _bodyPart.Width, _bodyPart.Height);
+            _frames.Add(new AnimationFrame { SourceRectangle = rectangle, Duration = duration, StartFunc = func, Origin = new Vector2(rectangle.Width / 2f, rectangle.Height / 2f) });
         }
 
-        public void AddFrame(Rectangle rectangle, TimeSpan duration, Func<bool> func = null)
+        public void AddFrame(Rectangle rectangle, TimeSpan duration, Func<bool> func = null, Vector2? origin = null)
         {
-            _frames.Add(new AnimationFrame
-            {
-                SourceRectangle = rectangle,
-                Duration = duration,
-                StartFunc = func
-            });
+            _frames.Add(new AnimationFrame {SourceRectangle = rectangle, Duration = duration, StartFunc = func, Origin = origin ?? new Vector2(rectangle.Width / 2f, rectangle.Height / 2f)});
         }
 
         public void Update(GameTime gameTime)
         {
             var secondsIntoAnimation = _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
 
-            var remainder = secondsIntoAnimation % Duration.TotalSeconds;
+            var remainder = Duration.TotalSeconds == 0 ? 0 : secondsIntoAnimation % Duration.TotalSeconds;
 
             _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
         }
@@ -62,6 +77,8 @@ namespace Zerds.Graphics
                 return frame.SourceRectangle;
             }
         }
+
+        public Vector2 CurrentOrigin => GetCurrentAnimationFrame().Origin;
 
         private AnimationFrame GetCurrentAnimationFrame()
         {

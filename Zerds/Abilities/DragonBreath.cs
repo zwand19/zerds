@@ -14,16 +14,7 @@ namespace Zerds.Abilities
     {
         public DragonBreath(Zerd zerd) : base(AbilityTypes.DragonsBreath, zerd, AbilityConstants.DragonBreathCooldown, AbilityConstants.DragonBreathManaCost, "dragon-breath")
         {
-            var walkAnimation = new Animation(AnimationTypes.FireBreath);
-            walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.04));
-            walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.04), Execute);
-            for (var i = 0; i < 2 / 0.08; i++)
-            {
-                walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.04));
-                walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.04), MakeMissile);
-            }
-            walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.04), Casted);
-            zerd.Animations.Add(walkAnimation);
+            ZerdAnimationHelpers.AddDragonsBreathAnimation(zerd, Casted, Execute, MakeMissile);
         }
 
         public override void Cast()

@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\Charm.cs" />
     <Compile Include="Abilities\Dash.cs" />
     <Compile Include="Abilities\DragonBreath.cs" />
     <Compile Include="Abilities\Icicle.cs" />
@@ -112,10 +113,14 @@
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />
     <Compile Include="Buffs\BlazingSpeedBuff.cs" />
+    <Compile Include="Buffs\CharmBuff.cs" />
     <Compile Include="Buffs\IceShieldBuff.cs" />
     <Compile Include="Buffs\FrozenBuff.cs" />
+    <Compile Include="Buffs\RageBuff.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
     <Compile Include="Entities\Enemies\Archer.cs" />
+    <Compile Include="Entities\Enemies\SkeletonKing.cs" />
+    <Compile Include="Enums\ZerdBodyPartTypes.cs" />
     <Compile Include="GameObjects\AbilityUpgrades.cs" />
     <Compile Include="Constants\CodingConstants.cs" />
     <Compile Include="Constants\DifficultyConstants.cs" />
@@ -159,8 +164,15 @@
     <Compile Include="GameObjects\Level.cs" />
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
+    <Compile Include="Graphics\ZerdAnimationHelpers.cs" />
+    <Compile Include="Graphics\ZerdAnimations.cs" />
+    <Compile Include="Graphics\ZerdBodyPart.cs" />
+    <Compile Include="Items\BootItem.cs" />
+    <Compile Include="Items\RingItem.cs" />
+    <Compile Include="Items\WandItem.cs" />
     <Compile Include="Missiles\DragonBreathMissile.cs" />
     <Compile Include="Missiles\IcicleMissile.cs" />
+    <Compile Include="Missiles\CharmMissile.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Input\Controller.cs" />
@@ -231,6 +243,9 @@
     <Content Include="Content\Buffs\burn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Buffs\charm.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Buffs\cold.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -248,20 +263,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\FrostDemon.png" />
-    <Content Include="Content\Entities\Zerd-Blue.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Entities\Zerd-Brown.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Entities\Zerd-Cyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Entities\Zerd-Red.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Entities\Zerd-Black.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Content\Entities\Zomb-King.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\Zombie.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -273,6 +276,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\brain-freeze.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\chained-heart-grey.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\chained-heart.png">
@@ -297,6 +303,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\dragon-breath.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\enrage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\fairy-wand-grey.png">
@@ -377,6 +386,9 @@
     <Content Include="Content\Icons\mine-explosion.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Icons\ore.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Icons\pentagram-rose.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -387,6 +399,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\shatter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Icons\spiked-armor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\sprint.png">
@@ -411,21 +426,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Icons\wind-slap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\zerd-black.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\zerd-blue.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\zerd-brown.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\zerd-cyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Icons\zerd-red.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Consumables\magic-books.png">
@@ -513,6 +513,9 @@
     <Content Include="Content\Missiles\arrow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Missiles\charm.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Missiles\dragons_breath.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -532,6 +535,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Random\xbox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Zerds\bare-feet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Zerds\bare-hands.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Zerds\bare-head.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Zerds\blue-robe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Zerds\red-robe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Default.rd.xml" />

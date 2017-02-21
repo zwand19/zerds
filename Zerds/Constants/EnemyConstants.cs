@@ -21,7 +21,20 @@ namespace Zerds.Constants
             public float MaxSpeed { get; set; }
             public float CritChance { get; set; }
         }
-        
+
+        public static EnemyProperties GetSkeletonKingProperties()
+        {
+            return new EnemyProperties
+            {
+                MinHealth = GetHealth(8f),
+                HealthRegen = BaseRegen * 3f,
+                MinSpeed = BaseSpeed * 0.75f,
+                MaxHealth = GetHealth(8f),
+                MaxSpeed = BaseSpeed * 0.75f,
+                CritChance = 0f
+            };
+        }
+
         public static EnemyProperties GetZombieProperties()
         {
             return new EnemyProperties

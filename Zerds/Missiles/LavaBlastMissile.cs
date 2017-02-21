@@ -71,7 +71,7 @@ namespace Zerds.Missiles
         {
             if (IsAlive)
             {
-                foreach (var enemy in Globals.GameState.Enemies.Where(e => e.IsAlive && !TargetsHit.Contains(e)))
+                foreach (var enemy in Creator.Enemies().Where(e => e.IsAlive && !TargetsHit.Contains(e)))
                 {
                     if (enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects)))
                         OnHit(enemy);

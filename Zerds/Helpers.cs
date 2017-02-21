@@ -56,5 +56,10 @@ namespace Zerds
         {
             b.Health = MathHelper.Clamp(b.Health + amt, -1, b.MaxHealth);
         }
+
+        public static TimeSpan Split(this TimeSpan span, int num)
+        {
+            return TimeSpan.FromMilliseconds(span.TotalMilliseconds / num);
+        }
     }
 }

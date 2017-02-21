@@ -13,6 +13,7 @@ namespace Zerds.Buffs
         public float CooldownReductionFactor { get; set; }
         public float HealthRegenFactor { get; set; }
         public float DamagePerSecond { get; set; }
+        public float CritChanceFactor { get; set; }
         public bool IsPositive { get; set; }
         public bool IsStunned { get; set; }
         public Animation Animation { get; set; }

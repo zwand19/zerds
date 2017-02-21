@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Zerds.Buffs;
 using Zerds.Constants;
 using Zerds.GameObjects;
 using Zerds.Graphics;
@@ -15,6 +17,7 @@ namespace Zerds.Entities
         public bool Spawned { get; set; }
         public float AttackRange { get; set; }
         public float AttackDamage { get; set; }
+        public bool Charmed => Buffs.Any(b => b is CharmBuff);
 
         protected Enemy(EnemyConstants.EnemyProperties properties, string file, bool randomSpawn) : base(file, true)
         {

@@ -1,22 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using Zerds.Constants;
+﻿using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
-using Zerds.Graphics;
 using Zerds.Missiles;
 
 namespace Zerds.Abilities
 {
     public class Wand : Ability
     {
-        public Wand(Being being) : base(AbilityTypes.Wand, being, AbilityConstants.WandCooldown, 0f, "fairy-wand")
+        public Wand(Zerd zerd) : base(AbilityTypes.Wand, zerd, AbilityConstants.WandCooldown, 0f, "fairy-wand")
         {
-            var wandAnimation = new Animation(AnimationTypes.Attack);
-            wandAnimation.AddFrame(new Rectangle(64 * 2, 0, 64, 64), AbilityConstants.WandCastTime);
-            wandAnimation.AddFrame(new Rectangle(64 * 4, 0, 64, 64), AbilityConstants.WandFollowThroughTime, Execute);
-            wandAnimation.AddFrame(new Rectangle(64 * 4, 0, 64, 64), TimeSpan.FromSeconds(0.05), Casted);
-            being.Animations.Add(wandAnimation);
+            zerd.AddCastingAnimation(AnimationTypes.Attack, AbilityConstants.WandCastTime, AbilityConstants.WandFollowThroughTime, Execute, Casted);
         }
 
         public override void Cast()

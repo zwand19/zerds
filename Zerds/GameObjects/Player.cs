@@ -7,6 +7,7 @@ using Zerds.Buffs;
 using Zerds.Constants;
 using Zerds.Enums;
 using Zerds.Input;
+using Zerds.Factories;
 
 namespace Zerds.GameObjects
 {
@@ -51,8 +52,8 @@ namespace Zerds.GameObjects
             var controller = ControllerService.Controllers[PlayerIndex];
             Zerd.ControllerUpdate(controller.LeftTrigger, controller.RightTrigger, controller.LeftStickDirection, controller.RightStickDirection);
             var buttonsPressed = ControllerService.Controllers[PlayerIndex].ButtonsPressed;
-            if (Zerd.GetCurrentAnimation().Name == AnimationTypes.Stand ||
-                Zerd.GetCurrentAnimation().Name == AnimationTypes.Move)
+            if (Zerd.GetCurrentAnimationType() == AnimationTypes.Stand ||
+                Zerd.GetCurrentAnimationType() == AnimationTypes.Move)
             {
                 if (buttonsPressed.Contains(Buttons.RightShoulder))
                     Zerd.Abilities.First(a => a.Type == AbilityTypes.Dash).Cast();
@@ -70,6 +71,8 @@ namespace Zerds.GameObjects
                     Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.DragonsBreath)?.Cast();
                 if (buttonsPressed.Contains(Buttons.DPadDown))
                     Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.Icicle)?.Cast();
+                if (buttonsPressed.Contains(Buttons.DPadUp))
+                    Zerd.Abilities.FirstOrDefault(a => a.Type == AbilityTypes.Charm)?.Cast();
             }
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
@@ -85,33 +88,16 @@ namespace Zerds.GameObjects
             }
         }
 
-        public void JoinGame(ZerdTypes zerdType)
+        public void JoinGame()
         {
             if (Zerd != null) return;
 
             IsPlaying = true;
-            string zerdFile;
-            switch (zerdType)
-            {
-                case ZerdTypes.Black:
-                    zerdFile = "Entities/Zerd-Black.png";
-                    break;
-                case ZerdTypes.Blue:
-                    zerdFile = "Entities/Zerd-Blue.png";
-                    break;
-                case ZerdTypes.Brown:
-                    zerdFile = "Entities/Zerd-Brown.png";
-                    break;
-                case ZerdTypes.Cyan:
-                    zerdFile = "Entities/Zerd-Cyan.png";
-                    break;
-                case ZerdTypes.Red:
-                    zerdFile = "Entities/Zerd-Red.png";
-                    break;
-                default:
-                    throw new Exception("Unknown Zerd Type");
-            }
-            Zerd = new Entities.Zerd(this, zerdFile);
+            var chestTexture = TextureCacheFactory.GetOnce("Zerds/red-robe.png");
+            var feetTexture = TextureCacheFactory.GetOnce("Zerds/bare-feet.png");
+            var handsTexture = TextureCacheFactory.GetOnce("Zerds/bare-hands.png");
+            var headTexture = TextureCacheFactory.GetOnce("Zerds/bare-head.png");
+            Zerd = new Entities.Zerd(this, chestTexture, handsTexture, headTexture, feetTexture);
             Globals.GameState.Zerds.Add(Zerd);
         }
     }

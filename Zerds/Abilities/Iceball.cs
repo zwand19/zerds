@@ -1,23 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using Zerds.Constants;
+﻿using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.GameObjects;
-using Zerds.Graphics;
 using Zerds.Missiles;
 
 namespace Zerds.Abilities
 {
     public class Iceball : Ability
     {
-        public Iceball(Being being) : base(AbilityTypes.Iceball, being, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt")
+        public Iceball(Zerd zerd) : base(AbilityTypes.Iceball, zerd, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt")
         {
-            var iceballAnimation = new Animation(AnimationTypes.FrostAttack);
-            iceballAnimation.AddFrame(new Rectangle(64 * 8, 0, 64, 64), AbilityConstants.IceballCastTime);
-            iceballAnimation.AddFrame(new Rectangle(64 * 9, 0, 64, 64), AbilityConstants.IceballFollowThroughTime, Execute);
-            iceballAnimation.AddFrame(new Rectangle(64 * 9, 0, 64, 64), TimeSpan.FromSeconds(0.05), Casted);
-            being.Animations.Add(iceballAnimation);
+            zerd.AddCastingAnimation(AnimationTypes.FrostAttack, AbilityConstants.IceballCastTime, AbilityConstants.IceballFollowThroughTime, Execute, Casted);
         }
 
         public override void Cast()

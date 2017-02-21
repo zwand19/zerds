@@ -47,13 +47,7 @@ namespace Zerds.Entities
             if (IsAlive) Buffs.ForEach(b => b.Draw());
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var rect = GetCurrentAnimation().CurrentRectangle;
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
-                sourceRectangle: rect,
-                color: Color.White,
-                position: new Vector2(X, Y),
-                rotation: angle,
-                origin: new Vector2(rect.Width / 2f, rect.Height / 2f));
+            Globals.SpriteDrawer.Draw(texture: Texture, sourceRectangle: rect, color: Color.White, position: new Vector2(X, Y), rotation: angle, origin: GetCurrentAnimation().CurrentOrigin);
             if (Globals.ShowHitboxes && IsAlive)
             {
                 Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
@@ -103,13 +97,12 @@ namespace Zerds.Entities
                     b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                     if (b is DashBuff && this is Zerd && ((Zerd)this).SkillPoints(SkillType.ColdWinds) > 0)
                     {
-                        foreach (var e in Globals.GameState.Enemies.Where(e => e.Buffs.All(b2 => !(b2 is FrozenBuff)) && e.Hitbox().Any(h => Hitbox().Any(h.Intersects))))
+                        foreach (var e in this.Enemies().Where(e => e.Buffs.All(b2 => !(b2 is FrozenBuff)) && e.Hitbox().Any(h => Hitbox().Any(h.Intersects))))
                         {
                             e.AddBuff(new FrozenBuff(e, TimeSpan.FromSeconds(((Zerd)this).SkillValue(SkillType.ColdWinds, false))));
                         }
                     }
                 });
-                Buffs.ForEach(b => Speed = b.Frozen ? 0 : Speed);
 
                 if (Buffs.Any(b => b is SprintBuff) && this is Zerd)
                     Speed *= 1 + ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.SprintSpeed] / 100;
@@ -117,6 +110,8 @@ namespace Zerds.Entities
                     Speed *= 1 + ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.MovementSpeed] / 100;
 
                 Speed = MathHelper.Clamp(Speed, GameplayConstants.MinSpeed, GameplayConstants.MaxSpeed);
+
+                Buffs.ForEach(b => Speed = b.Frozen ? 0 : Speed);
 
                 Buffs = Buffs.Where(b => b.TimeRemaining > TimeSpan.Zero).ToList();
 
@@ -133,12 +128,15 @@ namespace Zerds.Entities
                 {
                     var angle = Velocity.AngleBetween(Facing);
                     Speed *= angle < GameplayConstants.ZerdFrontFacingAngle ? 1 : angle > 180 - GameplayConstants.ZerdFrontFacingAngle ? GameplayConstants.BackpedalFactor : GameplayConstants.SideStepFactor;
-                    X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
-                    Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                    if (Velocity.Length() > 0.01)
+                    {
+                        X += Velocity.X * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                        Y -= Velocity.Y * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                    }
                 }
                 else
                 {
-                    if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero && IsAlive)
+                    if (Knockback.Speed > 0 && Knockback.MaxDuration > TimeSpan.Zero)
                     {
                         X += (int) (Knockback.Direction.X * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
                                     (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *

@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using Zerds.Buffs;
-using Zerds.Constants;
+﻿using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
-using Zerds.Graphics;
 using Zerds.Missiles;
 
 namespace Zerds.Abilities
@@ -15,11 +11,7 @@ namespace Zerds.Abilities
     {
         public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballManaCost, "fireball")
         {
-            var fireballAnimation = new Animation(AnimationTypes.FireAttack);
-            fireballAnimation.AddFrame(new Rectangle(64 * 1, 0, 64, 64), AbilityConstants.FireballCastTime);
-            fireballAnimation.AddFrame(new Rectangle(64 * 3, 0, 64, 64), AbilityConstants.FireballFollowThroughTime, Execute);
-            fireballAnimation.AddFrame(new Rectangle(64 * 3, 0, 64, 64), TimeSpan.FromSeconds(0.05), Casted);
-            zerd.Animations.Add(fireballAnimation);
+            zerd.AddCastingAnimation(AnimationTypes.FireAttack, AbilityConstants.FireballCastTime, AbilityConstants.FireballFollowThroughTime, Execute, Casted);
         }
 
         public override void Cast()

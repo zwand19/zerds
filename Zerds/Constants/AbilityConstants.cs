@@ -34,8 +34,15 @@ namespace Zerds.Constants
         public static TimeSpan IceballCastTime => TimeSpan.FromMilliseconds(450);
         public static TimeSpan IceballFollowThroughTime => TimeSpan.FromMilliseconds(200);
         public static TimeSpan IceballCooldown = TimeSpan.FromMilliseconds(3050);
-
-        public const float IcicleKnockback = 0f;
+        
+        public const float CharmSpeed = 350f;
+        public const float CharmDistance = 700f;
+        public const float CharmManaCost = 90f;
+        public const float CharmDegeneration = 0.8f;
+        public static TimeSpan CharmCastTime => TimeSpan.FromMilliseconds(750);
+        public static TimeSpan CharmFollowThroughTime => TimeSpan.FromMilliseconds(400);
+        public static TimeSpan CharmCooldown = TimeSpan.FromMilliseconds(30000);
+        
         public const float IcicleSpeed = 650f;
         public const float IcicleDistance = 650f;
         public const float IcicleManaCost = 75f;
@@ -72,6 +79,8 @@ namespace Zerds.Constants
         public const float DragonBreathDistance = 250f;
         public const float DragonBreathManaCost = 80f;
         public const float DragonBreathDamage = 2f;
+        public static TimeSpan DragonBreathInterval = TimeSpan.FromSeconds(0.08);
+        public static TimeSpan DragonBreathDuration = TimeSpan.FromSeconds(2);
         public static TimeSpan DragonBreathCooldown = TimeSpan.FromMilliseconds(10000);
 
         public const float FrostPoundDamage = 10f;

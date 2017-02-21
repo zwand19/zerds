@@ -6,8 +6,10 @@ using Zerds.Enums;
 using System.Collections.Generic;
 using Zerds.Abilities;
 using System.Linq;
+using Zerds.Buffs;
 using Zerds.GameObjects;
 using Zerds.Items;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Zerds.Entities
 {
@@ -22,12 +24,26 @@ namespace Zerds.Entities
         public int EnemiesKilled { get; set; }
         public int LevelEnemiesKilled { get; set; }
         public Player Player { get; set; }
+        public ZerdAnimations ZerdAnimations { get; set; }
+        public Texture2D ChestTexture { get; set; }
+        public Texture2D HandTexture { get; set; }
+        public Texture2D HeadTexture { get; set; }
+        public Texture2D FeetTexture { get; set; }
+        
+        private static Vector2 _scaleVector = new Vector2(0.55f);
 
-        public Zerd(Player player, string zerdFile) : base(zerdFile, false)
+        public Zerd(Player player, Texture2D chestTexture, Texture2D handTexture, Texture2D headTexture, Texture2D feetTexture) : base(null, false)
         {
             Player = player;
-            X = 650;
-            Y = 300;
+            ChestTexture = chestTexture;
+            HandTexture = handTexture;
+            HeadTexture = headTexture;
+            FeetTexture = feetTexture;
+
+            X = Globals.ViewportBounds.Width / 2;
+            Y = Globals.ViewportBounds.Height / 2;
+            X += (int)player.PlayerIndex % 2 == 0 ? 85 : -85;
+            Y += (int)player.PlayerIndex < 2 ? -60 : 60;
             Health = GameplayConstants.ZerdStartingHealth;
             MaxHealth = Health;
             Mana = GameplayConstants.ZerdStartingMana;
@@ -40,7 +56,8 @@ namespace Zerds.Entities
             BaseSpeed = GameplayConstants.MaxZerdSpeed;
             CriticalChance = GameplayConstants.ZerdCritChance;
 
-            Animations = new AnimationList();
+            ZerdAnimations = ZerdAnimationHelpers.GetAnimations();
+
             Abilities = new List<Ability>
             {
                 new Dash(this),
@@ -49,39 +66,66 @@ namespace Zerds.Entities
                 new Iceball(this)
             };
             Inventory = new List<Item>();
+        }
 
-            var attackedAnimation = new Animation(AnimationTypes.Damaged);
-            attackedAnimation.AddFrame(new Rectangle(64 * 10, 0, 64, 64), TimeSpan.FromSeconds(0.25));
-            Animations.Add(attackedAnimation);
-            var standAnimation = new Animation(AnimationTypes.Stand);
-            standAnimation.AddFrame(new Rectangle(64 * 11, 0, 64, 64), TimeSpan.FromSeconds(0.3));
-            standAnimation.AddFrame(new Rectangle(64 * 12, 0, 64, 64), TimeSpan.FromSeconds(0.3));
-            Animations.Add(standAnimation);
-            var walkAnimation = new Animation(AnimationTypes.Move);
-            walkAnimation.AddFrame(new Rectangle(64 * 0, 0, 64, 64), TimeSpan.FromSeconds(0.3));
-            walkAnimation.AddFrame(new Rectangle(64 * 12, 0, 64, 64), TimeSpan.FromSeconds(0.3));
-            Animations.Add(walkAnimation);
+        public void AddCastingAnimation(string name, TimeSpan castTime, TimeSpan followThroughTime, Func<bool> executeFunc, Func<bool> castedFunc)
+        {
+            ZerdAnimations.AddAnimation(ZerdAnimationHelpers.GetCastingAnimation(name, castTime, followThroughTime, executeFunc, castedFunc));
+        }
+
+        public string GetCurrentAnimationType()
+        {
+            if (Knockback != null)
+                return AnimationTypes.Damaged;
+            if (Abilities.First(a => a.Type == AbilityTypes.Wand).Active)
+                return AnimationTypes.Attack;
+            if (Abilities.First(a => a.Type == AbilityTypes.Iceball).Active)
+                return AnimationTypes.FrostAttack;
+            if (Abilities.First(a => a.Type == AbilityTypes.Fireball).Active)
+                return AnimationTypes.FireAttack;
+            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Active == true)
+                return AnimationTypes.LavaBlastAttack;
+            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Active == true)
+                return AnimationTypes.FrostPoundAttack;
+            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.DragonsBreath)?.Active == true)
+                return AnimationTypes.FireBreath;
+            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.Charm)?.Active == true)
+                return AnimationTypes.Charm;
+            if (Velocity.Length() > Vector2.Zero.Length())
+                return AnimationTypes.Move;
+            return AnimationTypes.Stand;
         }
 
         public override Animation GetCurrentAnimation()
         {
-            if (Knockback != null)
-                return Animations.Get(AnimationTypes.Damaged);
-            if (Abilities.First(a => a.Type == AbilityTypes.Wand).Active)
-                return Animations.Get(AnimationTypes.Attack);
-            if (Abilities.First(a => a.Type == AbilityTypes.Iceball).Active)
-                return Animations.Get(AnimationTypes.FrostAttack);
-            if (Abilities.First(a => a.Type == AbilityTypes.Fireball).Active)
-                return Animations.Get(AnimationTypes.FireAttack);
-            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.LavaBlast)?.Active == true)
-                return Animations.Get(AnimationTypes.LavaBlastAttack);
-            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.FrostPound)?.Active == true)
-                return Animations.Get(AnimationTypes.FrostPoundAttack);
-            if (Abilities.FirstOrDefault(a => a.Type == AbilityTypes.DragonsBreath)?.Active == true)
-                return Animations.Get(AnimationTypes.FireBreath);
-            if (Velocity.Length() > Vector2.Zero.Length())
-                return Animations.Get(AnimationTypes.Move);
-            return Animations.Get(AnimationTypes.Stand);
+            return new Animation(GetCurrentAnimationType());
+        }
+
+        public override void Draw()
+        {
+            if (IsAlive) Buffs.ForEach(b => b.Draw());
+            var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
+            var animation = ZerdAnimations.Animations[GetCurrentAnimationType()];
+            if (animation.Keys.Contains(ZerdBodyPartTypes.Feet))
+                Globals.SpriteDrawer.Draw(texture: FeetTexture, sourceRectangle: animation[ZerdBodyPartTypes.Feet].CurrentRectangle,
+                    color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
+                    new Vector2(ZerdAnimationHelpers.Feet.Width / 2, ZerdAnimationHelpers.Feet.Height / 2), scale: _scaleVector);
+            if (animation.Keys.Contains(ZerdBodyPartTypes.Hands))
+                Globals.SpriteDrawer.Draw(texture: HandTexture, sourceRectangle: animation[ZerdBodyPartTypes.Hands].CurrentRectangle,
+                    color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
+                    new Vector2(ZerdAnimationHelpers.Hands.Width / 2, ZerdAnimationHelpers.Hands.Height / 2), scale: _scaleVector);
+            if (animation.Keys.Contains(ZerdBodyPartTypes.Chest))
+                Globals.SpriteDrawer.Draw(texture: ChestTexture, sourceRectangle: animation[ZerdBodyPartTypes.Chest].CurrentRectangle,
+                    color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
+                    new Vector2(ZerdAnimationHelpers.Chest.Width / 2, ZerdAnimationHelpers.Chest.Height / 2), scale: _scaleVector);
+            if (animation.Keys.Contains(ZerdBodyPartTypes.Head))
+                Globals.SpriteDrawer.Draw(texture: HeadTexture, sourceRectangle: animation[ZerdBodyPartTypes.Head].CurrentRectangle,
+                    color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
+                    new Vector2(ZerdAnimationHelpers.Head.Width / 2, ZerdAnimationHelpers.Head.Height / 2), scale: _scaleVector);
+            if (Globals.ShowHitboxes && IsAlive)
+            {
+                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
+            }
         }
 
         public override bool IsCritical(DamageTypes type, AbilityTypes ability)
@@ -91,6 +135,12 @@ namespace Zerds.Entities
                 chance += this.SkillValue(SkillType.Devastation, false) / 100;
             if (ability == AbilityTypes.Iceball)
                 chance += this.AbilityValue(AbilityUpgradeType.IceballCrit) / 100;
+            if ((ability == AbilityTypes.Iceball || ability == AbilityTypes.Fireball || ability == AbilityTypes.Wand) && Buffs.Any(b => b is RageBuff))
+            {
+                var buff = Buffs.First(b => b is RageBuff);
+                Buffs.Remove(buff);
+                chance += buff.CritChanceFactor;
+            }
             return new Random().NextDouble() < chance;
         }
 
@@ -117,6 +167,9 @@ namespace Zerds.Entities
                 Abilities.ForEach(a => a.Cancel());
             }
             Abilities.ForEach(a => a.Update(gameTime));
+            var animation = ZerdAnimations.Animations[GetCurrentAnimationType()];
+            foreach (var anim in animation.Values)
+                anim.Update(gameTime);
             base.Update(gameTime);
         }
 

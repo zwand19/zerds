@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using Zerds.Constants;
+﻿using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
-using Zerds.Graphics;
 using Zerds.Missiles;
 
 namespace Zerds.Abilities
@@ -13,11 +10,7 @@ namespace Zerds.Abilities
     {
         public LavaBlast(Zerd zerd) : base(AbilityTypes.LavaBlast, zerd, AbilityConstants.LavaBlastCooldown, AbilityConstants.LavaBlastManaCost, "lava_blast")
         {
-            var anim = new Animation(AnimationTypes.LavaBlastAttack);
-            anim.AddFrame(new Rectangle(64 * 1, 0, 64, 64), AbilityConstants.LavaBlastCastTime);
-            anim.AddFrame(new Rectangle(64 * 3, 0, 64, 64), AbilityConstants.LavaBlastFollowThroughTime, Execute);
-            anim.AddFrame(new Rectangle(64 * 3, 0, 64, 64), TimeSpan.FromSeconds(0.05), Casted);
-            zerd.Animations.Add(anim);
+            zerd.AddCastingAnimation(AnimationTypes.LavaBlastAttack, AbilityConstants.LavaBlastCastTime, AbilityConstants.LavaBlastFollowThroughTime, Execute, Casted);
         }
 
         public override void Cast()

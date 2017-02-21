@@ -1,25 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using Zerds.Buffs;
 using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
-using Zerds.Graphics;
 
 namespace Zerds.Abilities
 {
     public class FrostPound : Ability
     {
-        public FrostPound(Being being) : base(AbilityTypes.FrostPound, being, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundManaCost, "ice-punch")
+        public FrostPound(Zerd zerd) : base(AbilityTypes.FrostPound, zerd, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundManaCost, "ice-punch")
         {
-            var anim = new Animation(AnimationTypes.FrostPoundAttack);
-            anim.AddFrame(new Rectangle(64 * 8, 0, 64, 64), AbilityConstants.FrostPoundCastTime);
-            anim.AddFrame(new Rectangle(64 * 9, 0, 64, 64), AbilityConstants.FrostPoundFollowThroughTime, Execute);
-            anim.AddFrame(new Rectangle(64 * 9, 0, 64, 64), TimeSpan.FromSeconds(0.05), Casted);
-            being.Animations.Add(anim);
+            zerd.AddCastingAnimation(AnimationTypes.FrostPoundAttack, AbilityConstants.FrostPoundCastTime, AbilityConstants.FrostPoundFollowThroughTime, Execute, Casted);
         }
 
         public override void Cast()
@@ -36,9 +29,7 @@ namespace Zerds.Abilities
         {
             var damage = new DamageInstance(null, AbilityConstants.FrostPoundDamage, DamageTypes.Frost, Being,
                 AbilityTypes.FrostPound);
-            foreach (var enemy in
-                Globals.GameState.Enemies.Where(
-                    e => e.Position.DistanceBetween(Being.Position) < AbilityConstants.FrostPoundRange))
+            foreach (var enemy in Being.Enemies().Where(e => e.Position.DistanceBetween(Being.Position) < AbilityConstants.FrostPoundRange))
             {
                 damage.DamageBeing(enemy);
                 enemy.Buffs.Add(new FrozenBuff(enemy, AbilityConstants.FrostPoundFrozenLength));
