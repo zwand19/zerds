@@ -5,6 +5,8 @@
         Chasing,
         Sitting,
         Attacking,
-        Dead
+        Dead,
+        Casting,
+        Wandering
     }
 }

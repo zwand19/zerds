@@ -22,7 +22,7 @@ namespace Zerds.Entities
         public int MaxCombo { get; set; }
         public int MaxLevelCombo { get; set; }
         public int EnemiesKilled { get; set; }
-        public int LevelEnemiesKilled { get; set; }
+        public List<Enemy> LevelEnemiesKilled { get; set; }
         public Player Player { get; set; }
         public ZerdAnimations ZerdAnimations { get; set; }
         public Texture2D ChestTexture { get; set; }
@@ -55,7 +55,7 @@ namespace Zerds.Entities
             HitboxSize = 0.7f;
             BaseSpeed = GameplayConstants.MaxZerdSpeed;
             CriticalChance = GameplayConstants.ZerdCritChance;
-
+            LevelEnemiesKilled = new List<Enemy>();
             ZerdAnimations = ZerdAnimationHelpers.GetAnimations();
 
             Abilities = new List<Ability>
@@ -106,20 +106,20 @@ namespace Zerds.Entities
             if (IsAlive) Buffs.ForEach(b => b.Draw());
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var animation = ZerdAnimations.Animations[GetCurrentAnimationType()];
-            if (animation.Keys.Contains(ZerdBodyPartTypes.Feet))
-                Globals.SpriteDrawer.Draw(texture: FeetTexture, sourceRectangle: animation[ZerdBodyPartTypes.Feet].CurrentRectangle,
+            if (animation.Keys.Contains(BodyPartType.Feet))
+                Globals.SpriteDrawer.Draw(texture: FeetTexture, sourceRectangle: animation[BodyPartType.Feet].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Feet.Width / 2, ZerdAnimationHelpers.Feet.Height / 2), scale: _scaleVector);
-            if (animation.Keys.Contains(ZerdBodyPartTypes.Hands))
-                Globals.SpriteDrawer.Draw(texture: HandTexture, sourceRectangle: animation[ZerdBodyPartTypes.Hands].CurrentRectangle,
+            if (animation.Keys.Contains(BodyPartType.Hands))
+                Globals.SpriteDrawer.Draw(texture: HandTexture, sourceRectangle: animation[BodyPartType.Hands].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Hands.Width / 2, ZerdAnimationHelpers.Hands.Height / 2), scale: _scaleVector);
-            if (animation.Keys.Contains(ZerdBodyPartTypes.Chest))
-                Globals.SpriteDrawer.Draw(texture: ChestTexture, sourceRectangle: animation[ZerdBodyPartTypes.Chest].CurrentRectangle,
+            if (animation.Keys.Contains(BodyPartType.Chest))
+                Globals.SpriteDrawer.Draw(texture: ChestTexture, sourceRectangle: animation[BodyPartType.Chest].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Chest.Width / 2, ZerdAnimationHelpers.Chest.Height / 2), scale: _scaleVector);
-            if (animation.Keys.Contains(ZerdBodyPartTypes.Head))
-                Globals.SpriteDrawer.Draw(texture: HeadTexture, sourceRectangle: animation[ZerdBodyPartTypes.Head].CurrentRectangle,
+            if (animation.Keys.Contains(BodyPartType.Head))
+                Globals.SpriteDrawer.Draw(texture: HeadTexture, sourceRectangle: animation[BodyPartType.Head].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Head.Width / 2, ZerdAnimationHelpers.Head.Height / 2), scale: _scaleVector);
             if (Globals.ShowHitboxes && IsAlive)
@@ -183,7 +183,7 @@ namespace Zerds.Entities
         public void EnemyKilled(Enemy enemy)
         {
             EnemiesKilled++;
-            LevelEnemiesKilled++;
+            LevelEnemiesKilled.Add(enemy);
         }
         
         public override float SpriteRotation()

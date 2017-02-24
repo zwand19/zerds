@@ -2,13 +2,13 @@
 
 namespace Zerds.Graphics
 {
-    public struct ZerdBodyPart
+    public struct BodyPart
     {
-        public ZerdBodyPartTypes Type { get; set; }
+        public BodyPartType Type { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public ZerdBodyPart(ZerdBodyPartTypes type, int width, int height)
+        public BodyPart(BodyPartType type, int width, int height)
         {
             Type = type;
             Width = width;

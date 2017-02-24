@@ -27,7 +27,7 @@ namespace Zerds.Abilities
             else if (Being.SkillPoints(SkillType.Rewind) > 0 && !Rewound)
             {
                 if (LastLevel != Level.CurrentLevel ||
-                    Globals.GameState.TimeIntoLevel.TotalMilliseconds - LastDashMilliseconds <
+                    Level.TimeIntoLevel.TotalMilliseconds - LastDashMilliseconds <
                     Being.SkillValue(SkillType.Rewind, false) * 1000)
                 {
                     Being.X = LastPosition.X;
@@ -40,7 +40,7 @@ namespace Zerds.Abilities
 
         protected override bool Execute()
         {
-            LastDashMilliseconds = (float) Globals.GameState.TimeIntoLevel.TotalMilliseconds;
+            LastDashMilliseconds = (float)Level.TimeIntoLevel.TotalMilliseconds;
             LastLevel = Level.CurrentLevel;
             LastPosition = new Vector2(Being.Position.X, Being.Position.Y);
             Rewound = false;

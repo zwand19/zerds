@@ -9,6 +9,7 @@ namespace Zerds.AI
     {
         protected Enemy Enemy;
         protected EnemyStates State;
+        public Being Target { get; set; }
 
         protected AI(Enemy enemy)
         {

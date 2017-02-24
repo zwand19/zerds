@@ -45,7 +45,7 @@ namespace Zerds
             var left = (float)Globals.ViewportBounds.Width / 2 - width / 2.0f;
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left, top, width, height));
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border, top + border, width - border * 2, height - border * 2), new Color(0.35f, 0.35f, 0.35f));
-            var barWidth = Globals.GameState.LevelTimeRemaining.TotalMilliseconds / GameplayConstants.LevelLength.TotalMilliseconds * (width - border * 2);
+            var barWidth = Level.TimeRemaining.TotalMilliseconds / GameplayConstants.LevelLength.TotalMilliseconds * (width - border * 2);
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border, top + border, barWidth, height - border * 2), new Color(104, 40, 96));
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 4.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
             Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 2.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
@@ -55,7 +55,7 @@ namespace Zerds
 
         private static void DrawLevelText()
         {
-            var opacity = Globals.GameState.LevelTimeRemaining <= TimeSpan.Zero ? 0f : (float)Math.Sqrt((TimeSpan.FromSeconds(3) - Globals.GameState.TimeIntoLevel).TotalSeconds / 3.0f);
+            var opacity = Level.TimeRemaining <= TimeSpan.Zero ? 0f : (float)Math.Sqrt((TimeSpan.FromSeconds(3) - Level.TimeIntoLevel).TotalSeconds / 3.0f);
             if (opacity > 0f)
             {
                 var position = Globals.ViewportBounds.Center.ToVector2() + new Vector2(0, (opacity - 1f) * 80);

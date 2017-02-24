@@ -37,6 +37,11 @@ namespace Zerds.Entities
             Buffs = new List<Buff>();
         }
 
+        public virtual void LevelEnded()
+        {
+            
+        }
+
         public virtual bool IsCritical(DamageTypes type, AbilityTypes ability)
         {
             return new Random().NextDouble() < CriticalChance;

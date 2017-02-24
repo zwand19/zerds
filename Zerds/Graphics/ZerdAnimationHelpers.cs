@@ -8,18 +8,18 @@ namespace Zerds.Graphics
 {
     public static class ZerdAnimationHelpers
     {
-        public static ZerdBodyPart Feet;
-        public static ZerdBodyPart Hands;
-        public static ZerdBodyPart Head;
-        public static ZerdBodyPart Chest;
+        public static BodyPart Feet;
+        public static BodyPart Hands;
+        public static BodyPart Head;
+        public static BodyPart Chest;
 
         public static ZerdAnimations GetAnimations()
         {
             var animations = new ZerdAnimations();
-            Feet = new ZerdBodyPart(ZerdBodyPartTypes.Feet, 80, 100);
-            Hands = new ZerdBodyPart(ZerdBodyPartTypes.Hands, 100, 160);
-            Head = new ZerdBodyPart(ZerdBodyPartTypes.Head, 100, 100);
-            Chest = new ZerdBodyPart(ZerdBodyPartTypes.Chest, 110, 60);
+            Feet = new BodyPart(BodyPartType.Feet, 80, 100);
+            Hands = new BodyPart(BodyPartType.Hands, 100, 160);
+            Head = new BodyPart(BodyPartType.Head, 100, 100);
+            Chest = new BodyPart(BodyPartType.Chest, 110, 60);
 
             animations.AddAnimation(GetDamagedAnimation());
             animations.AddAnimation(GetStandAnimation());
@@ -30,12 +30,12 @@ namespace Zerds.Graphics
 
         public static void AddDragonsBreathAnimation(Zerd zerd, Func<bool> casted, Func<bool> execute, Func<bool> makeMissile)
         {
-            var animation = new Dictionary<ZerdBodyPartTypes, Animation>();
+            var animation = new Dictionary<BodyPartType, Animation>();
             var animationLength = AbilityConstants.DragonBreathDuration;
 
             var headAnimation = new Animation(AnimationTypes.FireBreath, Head);
             headAnimation.AddFrame(0, 1, animationLength);
-            animation[ZerdBodyPartTypes.Head] = headAnimation;
+            animation[BodyPartType.Head] = headAnimation;
 
             var chestAnimation = new Animation(AnimationTypes.FireBreath, Chest);
             chestAnimation.AddFrame(0, 0, TimeSpan.FromSeconds(0.04));
@@ -43,23 +43,23 @@ namespace Zerds.Graphics
             for (var i = 0; i < AbilityConstants.DragonBreathDuration.TotalSeconds / AbilityConstants.DragonBreathInterval.TotalSeconds; i++)
                 chestAnimation.AddFrame(0, 0, AbilityConstants.DragonBreathInterval, makeMissile);
             chestAnimation.AddFrame(0, 0, TimeSpan.FromSeconds(0.04), casted);
-            animation[ZerdBodyPartTypes.Chest] = chestAnimation;
+            animation[BodyPartType.Chest] = chestAnimation;
 
             zerd.ZerdAnimations.AddAnimation(animation);
         }
 
-        public static Dictionary<ZerdBodyPartTypes, Animation> GetCastingAnimation(string name, TimeSpan castTime, TimeSpan followThroughTime, Func<bool> executeFunc, Func<bool> castedFunc)
+        public static Dictionary<BodyPartType, Animation> GetCastingAnimation(string name, TimeSpan castTime, TimeSpan followThroughTime, Func<bool> executeFunc, Func<bool> castedFunc)
         {
-            var animation = new Dictionary<ZerdBodyPartTypes, Animation>();
+            var animation = new Dictionary<BodyPartType, Animation>();
             var animationLength = castTime + followThroughTime;
 
             var headAnimation = new Animation(name, Head);
             headAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Head] = headAnimation;
+            animation[BodyPartType.Head] = headAnimation;
 
             var chestAnimation = new Animation(name, Chest);
             chestAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Chest] = chestAnimation;
+            animation[BodyPartType.Chest] = chestAnimation;
 
             var handsAnimation = new Animation(name, Hands);
             var timeIntoAnimation = TimeSpan.Zero;
@@ -76,54 +76,54 @@ namespace Zerds.Graphics
             handsAnimation.AddFrame(3, 1, followThroughTime.Split(5));
             handsAnimation.AddFrame(4, 1, followThroughTime.Split(5));
             handsAnimation.AddFrame(4, 1, followThroughTime.Split(5), castedFunc);
-            animation[ZerdBodyPartTypes.Hands] = handsAnimation;
+            animation[BodyPartType.Hands] = handsAnimation;
 
             return animation;
         }
 
-        private static Dictionary<ZerdBodyPartTypes, Animation> GetDamagedAnimation()
+        private static Dictionary<BodyPartType, Animation> GetDamagedAnimation()
         {
-            var animation = new Dictionary<ZerdBodyPartTypes, Animation>();
+            var animation = new Dictionary<BodyPartType, Animation>();
             var animationLength = TimeSpan.FromSeconds(5); //irrelevant
 
             var headAnimation = new Animation(AnimationTypes.Damaged, Head);
             headAnimation.AddFrame(1, 0, animationLength);
-            animation[ZerdBodyPartTypes.Head] = headAnimation;
+            animation[BodyPartType.Head] = headAnimation;
 
             var chestAnimation = new Animation(AnimationTypes.Damaged, Chest);
             chestAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Chest] = chestAnimation;
+            animation[BodyPartType.Chest] = chestAnimation;
 
             var handAnimation = new Animation(AnimationTypes.Damaged, Hands);
             handAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Hands] = handAnimation;
+            animation[BodyPartType.Hands] = handAnimation;
 
             return animation;
         }
 
-        private static Dictionary<ZerdBodyPartTypes, Animation> GetStandAnimation()
+        private static Dictionary<BodyPartType, Animation> GetStandAnimation()
         {
-            var animation = new Dictionary<ZerdBodyPartTypes, Animation>();
+            var animation = new Dictionary<BodyPartType, Animation>();
             var animationLength = TimeSpan.FromSeconds(5); //irrelevant
 
             var headAnimation = new Animation(AnimationTypes.Stand, Head);
             headAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Head] = headAnimation;
+            animation[BodyPartType.Head] = headAnimation;
 
             var chestAnimation = new Animation(AnimationTypes.Stand, Chest);
             chestAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Chest] = chestAnimation;
+            animation[BodyPartType.Chest] = chestAnimation;
 
             var handAnimation = new Animation(AnimationTypes.Stand, Hands);
             handAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Hands] = handAnimation;
+            animation[BodyPartType.Hands] = handAnimation;
 
             return animation;
         }
 
-        private static Dictionary<ZerdBodyPartTypes, Animation> GetWalkAnimation()
+        private static Dictionary<BodyPartType, Animation> GetWalkAnimation()
         {
-            var animation = new Dictionary<ZerdBodyPartTypes, Animation>();
+            var animation = new Dictionary<BodyPartType, Animation>();
             var animationLength = TimeSpan.FromSeconds(1);
 
             var feetAnimation = new Animation(AnimationTypes.Move, Feet);
@@ -135,11 +135,11 @@ namespace Zerds.Graphics
             feetAnimation.AddFrame(0, 1, animationLength.Split(8));
             feetAnimation.AddFrame(1, 1, animationLength.Split(8));
             feetAnimation.AddFrame(0, 1, animationLength.Split(8));
-            animation[ZerdBodyPartTypes.Feet] = feetAnimation;
+            animation[BodyPartType.Feet] = feetAnimation;
 
             var headAnimation = new Animation(AnimationTypes.Move, Head);
             headAnimation.AddFrame(0, 0, animationLength);
-            animation[ZerdBodyPartTypes.Head] = headAnimation;
+            animation[BodyPartType.Head] = headAnimation;
 
             var chestAnimation = new Animation(AnimationTypes.Move, Chest);
             chestAnimation.AddFrame(0, 0, animationLength.Split(8));
@@ -150,7 +150,7 @@ namespace Zerds.Graphics
             chestAnimation.AddFrame(1, 1, animationLength.Split(8));
             chestAnimation.AddFrame(0, 2, animationLength.Split(8));
             chestAnimation.AddFrame(1, 1, animationLength.Split(8));
-            animation[ZerdBodyPartTypes.Chest] = chestAnimation;
+            animation[BodyPartType.Chest] = chestAnimation;
 
             var handAnimation = new Animation(AnimationTypes.Move, Hands);
             handAnimation.AddFrame(0, 0, animationLength.Split(8));
@@ -161,7 +161,7 @@ namespace Zerds.Graphics
             handAnimation.AddFrame(2, 2, animationLength.Split(8));
             handAnimation.AddFrame(3, 2, animationLength.Split(8));
             handAnimation.AddFrame(2, 2, animationLength.Split(8));
-            animation[ZerdBodyPartTypes.Hands] = handAnimation;
+            animation[BodyPartType.Hands] = handAnimation;
 
             return animation;
         }

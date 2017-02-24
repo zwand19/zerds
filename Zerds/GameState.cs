@@ -14,8 +14,6 @@ namespace Zerds
     public class GameState
     {
         public float GameSpeed { get; set; }
-        public TimeSpan LevelTimeRemaining { get; set; }
-        public TimeSpan TimeIntoLevel => GameplayConstants.LevelLength - LevelTimeRemaining;
         public List<Zerd> Zerds { get; set; }
         public List<Enemy> Enemies { get; set; }
         public List<Enemy> Allies { get; set; }
@@ -51,20 +49,6 @@ namespace Zerds
             Level.Initialize(players);
         }
 
-        public void StartLevel()
-        {
-            LevelTimeRemaining = GameplayConstants.LevelLength;
-            Players.ForEach(p =>
-            {
-                p.FloatingSkillPoints += GameplayConstants.FloatingPointsPerLevel;
-                p.Skills.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                p.Skills.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                p.Skills.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                if (p.Zerd != null) p.Zerd.LevelEnemiesKilled = 0;
-                if (p.Zerd != null) p.Zerd.MaxLevelCombo = 0;
-            });
-        }
-
         public void Draw()
         {
             Globals.Map.Draw();
@@ -78,9 +62,7 @@ namespace Zerds
 
         public void Update(GameTime gameTime)
         {
-            LevelTimeRemaining -= gameTime.ElapsedGameTime;
-            if (LevelTimeRemaining < TimeSpan.Zero)
-                LevelTimeRemaining = TimeSpan.Zero;
+            Level.Update(gameTime);
             Beings.ForEach(b => b.Update(gameTime));
             Enemies = Enemies.Where(e => e.IsActive).ToList();
             Enemies.ForEach(e => e.GetAI().Run(gameTime));

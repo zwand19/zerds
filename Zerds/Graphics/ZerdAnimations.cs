@@ -7,14 +7,14 @@ namespace Zerds.Graphics
 {
     public class ZerdAnimations
     {
-        public Dictionary<string, Dictionary<ZerdBodyPartTypes, Animation>> Animations { get; set; }
+        public Dictionary<string, Dictionary<BodyPartType, Animation>> Animations { get; set; }
 
         public ZerdAnimations()
         {
-            Animations = new Dictionary<string, Dictionary<ZerdBodyPartTypes, Animation>>();
+            Animations = new Dictionary<string, Dictionary<BodyPartType, Animation>>();
         }
 
-        public void AddAnimation(Dictionary<ZerdBodyPartTypes, Animation> animation)
+        public void AddAnimation(Dictionary<BodyPartType, Animation> animation)
         {
             if (Animations.Keys.Contains(animation.Values.First().Name))
                 throw new Exception("Invalid animation - already added");

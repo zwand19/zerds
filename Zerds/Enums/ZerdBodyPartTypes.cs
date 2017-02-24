@@ -1,10 +1,11 @@
 ﻿namespace Zerds.Enums
 {
-    public enum ZerdBodyPartTypes
+    public enum BodyPartType
     {
         Head,
         Feet,
         Chest,
-        Hands
+        Hands,
+        Custom
     }
 }

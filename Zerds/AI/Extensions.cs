@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.Linq;
 using Zerds.Constants;
@@ -19,6 +18,11 @@ namespace Zerds.AI
         public static void Face(this Being being, Being target)
         {
             being.Facing = new Vector2(target.Position.X - being.Position.X, -1 * (target.Position.Y - being.Position.Y)).Normalized();
+        }
+
+        public static void Face(this Being being, Point target)
+        {
+            being.Facing = new Vector2(target.X - being.Position.X, -1 * (target.Y - being.Position.Y)).Normalized();
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Zerds
             ControllerService.Initialize();
             SkillConstants.Initialize();
 
+            TextureCacheFactory.Get("Entities/Zomb-King.png");
             Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);
             _mainMenu = new MainMenu(SetupGameFunc);
 
@@ -86,7 +87,7 @@ namespace Zerds
             _state = GameStates.Game;
             for (var i=0; i < players.Count; i++)
                 if (players[i]) _players[i].JoinGame();
-            Globals.GameState.StartLevel();
+            Level.StartLevel();
             return true;
         }
 
@@ -118,7 +119,7 @@ namespace Zerds
                 case GameStates.Game:
                     _players.ForEach(p => p.Update(gameTime));
                     Globals.GameState.Update(gameTime);
-                    if (Globals.GameState.LevelTimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
+                    if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
                     {
                         _state = GameStates.Intermission;
                         _intermissionScreen = new IntermissionScreen();
@@ -131,7 +132,7 @@ namespace Zerds
                     {
                         _intermissionScreen = null;
                         _state = GameStates.Game; 
-                        Globals.GameState.StartLevel();
+                        Level.StartLevel();
                     }
                     return;
             }

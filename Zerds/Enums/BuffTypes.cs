@@ -5,6 +5,7 @@
         Sprint,
         Dash,
         Cold,
-        BlazingSpeed
+        BlazingSpeed,
+        Invulnerable
     }
 }

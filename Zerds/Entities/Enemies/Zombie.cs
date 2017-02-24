@@ -11,16 +11,16 @@ namespace Zerds.Entities.Enemies
     public class Zombie : Enemy
     {
         private const int TextureSize = 64;
-        private MeleeAI _ai;
+        private WanderAI _ai;
 
-        public Zombie() : base(EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", true)
+        public Zombie() : base(EnemyTypes.Zombie, EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", true)
         {
-            _ai = new MeleeAI(this, new Melee(this, 8, 12));
+            _ai = new WanderAI(this, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieAggroRange, EnemyConstants.ZombieWanderRange, EnemyConstants.ZombieWanderLength);
             
             HitboxSize = 0.8f;
             Width = 64;
             Height = 64;
-            AttackRange = 64;
+            AttackRange = EnemyConstants.ZombieAttackRange;
 
             Animations = new AnimationList();
             var spawnAnimation = new Animation(AnimationTypes.Spawn);

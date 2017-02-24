@@ -14,6 +14,7 @@
         FrostPound,
         Icicle,
         DragonsBreath,
-        Charm
+        Charm,
+        SkeletonKingBlast
     }
 }

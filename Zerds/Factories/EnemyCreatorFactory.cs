@@ -74,7 +74,7 @@ namespace Zerds.Factories
                 return 0;
             });
             var targetDifficulty = Level.CurrentLevel * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
-            if (enemyDifficulty < targetDifficulty && Globals.GameState.LevelTimeRemaining > TimeSpan.Zero)
+            if (enemyDifficulty < targetDifficulty && Level.TimeRemaining > TimeSpan.Zero)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());
         }
     }

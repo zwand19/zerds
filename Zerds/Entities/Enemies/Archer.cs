@@ -13,7 +13,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private RangeAI _ai;
 
-        public Archer() : base(EnemyConstants.GetArcherProperties(), "Entities/Archer.png", false)
+        public Archer() : base(EnemyTypes.Archer, EnemyConstants.GetArcherProperties(), "Entities/Archer.png", false)
         {
             _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.Arrow, EnemyConstants.ArcherArrowCooldown));
 

@@ -132,12 +132,28 @@ namespace Zerds
                 switch (_screen)
                 {
                     case Screen.LevelRecap:
-                        Globals.SpriteDrawer.DrawText($"Enemies Killed: {_player.Zerd.LevelEnemiesKilled} ({Level.EnemiesKilledGold(_player)} Gold)",
-                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 40f), 20f, Color.White);
+                        var top = 40f;
+                        if (Globals.GameState.Zerds.Count > 1)
+                        {
+                            Globals.SpriteDrawer.DrawText($"Personal Enemies Killed: {_player.Zerd.LevelEnemiesKilled.Count} ({Level.PersonalEnemiesKilledGold(_player)} Gold)",
+                                new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                            top += 60f;
+                            Globals.SpriteDrawer.DrawText($"Total Enemies Killed: {Globals.GameState.Zerds.Sum(z => z.LevelEnemiesKilled.Count)} ({Level.TotalEnemiesKilledGold(_player)} Gold)",
+                                new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                            top += 60f;
+                        }
+                        else
+                        {
+                            Globals.SpriteDrawer.DrawText($"Enemies Killed: {_player.Zerd.LevelEnemiesKilled.Count} ({Level.PersonalEnemiesKilledGold(_player)} Gold)",
+                                new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                            top += 60f;
+                        }
                         Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.MaxCombo} ({Level.ComboGold(_player)})",
-                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 100f), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 160f), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText($"Total Level Gold: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + 220f), 20f, Globals.GoldColor);
+                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText($"Total Level Gold: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Globals.GoldColor);
                         Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.Skills:

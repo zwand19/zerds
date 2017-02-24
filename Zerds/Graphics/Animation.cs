@@ -11,9 +11,9 @@ namespace Zerds.Graphics
         private TimeSpan _timeIntoAnimation;
         private AnimationFrame _lastFrame;
         public string Name { get; set; }
-        private ZerdBodyPart _bodyPart;
+        private BodyPart _bodyPart;
         
-        public Animation(string name, ZerdBodyPart bodyPart)
+        public Animation(string name, BodyPart bodyPart)
         {
             _bodyPart = bodyPart;
             Name = name;

@@ -4,13 +4,13 @@ namespace Zerds.Constants
 {
     public static class GameplayConstants
     {
-        public static TimeSpan LevelLength = TimeSpan.FromSeconds(2);
+        public static TimeSpan LevelLength = TimeSpan.FromSeconds(20);
         public static float HealthFactorPerLevel = 0.3f;
         public static float DamageFactorPerLevel = 0.12f;
         public static int StartingGold = 100;
         public static int BaseLevelGold = 135;
         public static int BonusGoldPerLevel = 15;
-        public static int GoldPerEnemy = 6;
+        public static int BaseGoldPerEnemy = 6;
         public static int BonusGoldPerEnemyPerLevel = 4;
         public static float GoldPerCombo = 2f;
         public static int AbilityUpgradeCost = 150;
@@ -18,6 +18,7 @@ namespace Zerds.Constants
 
         public const int FloatingPointsPerLevel = 30;
         public const int SkillPointsPerLevel = 3;
+        public const float AggroRangeBuffer = 15;
 
         public const float BackpedalFactor = 0.35f;
         public const float SideStepFactor = 0.65f;

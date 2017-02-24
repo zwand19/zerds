@@ -13,7 +13,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private MeleeAI _ai;
 
-        public Dog() : base(EnemyConstants.GetDogProperties(), "Entities/Dog.png", true)
+        public Dog() : base(EnemyTypes.Dog, EnemyConstants.GetDogProperties(), "Entities/Dog.png", true)
         {
             _ai = new MeleeAI(this, new Melee(this, 6, 8));
 

@@ -13,7 +13,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private RangeAI _ai;
 
-        public Demon() : base(EnemyConstants.GetDemonProperties(), "Entities/Demon.png", false)
+        public Demon() : base(EnemyTypes.Demon, EnemyConstants.GetDemonProperties(), "Entities/Demon.png", false)
         {
             _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.DemonMissile, EnemyConstants.FrostDemonMissileCooldown));
 

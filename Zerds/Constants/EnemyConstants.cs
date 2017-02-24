@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Zerds.Enums;
 
 namespace Zerds.Constants
 {
@@ -22,6 +24,25 @@ namespace Zerds.Constants
             public float CritChance { get; set; }
         }
 
+        public static Dictionary<EnemyTypes, int> EnemyGoldValues => new Dictionary<EnemyTypes, int>
+        {
+            { EnemyTypes.Archer, 10 },
+            { EnemyTypes.Demon, 40 },
+            { EnemyTypes.Dog, 6 },
+            { EnemyTypes.FrostDemon, 40 },
+            { EnemyTypes.SkeletonKing, 400 },
+            { EnemyTypes.Zombie, 4 }
+        };
+
+        public const int SkeletonKingKnockbackMillis = 500;
+        public const float SkeletonKingKnockback = 1250;
+        public const float SkeletonKingMinDamage = 35f;
+        public const float SkeletonKingMaxDamage = 50f;
+        public const float SkeletonKingBlastMissileDamage = 40f;
+        public const float SkeletonKingBlastMissileKnockback = 500f;
+        public const float SkeletonKingEnrageSpeedFactor = 1.5f;
+        public static TimeSpan SkeletonKingBlastCooldown => TimeSpan.FromSeconds(11);
+        public static TimeSpan SkeletonKingBlastMissileKnockbackLength => TimeSpan.FromMilliseconds(500);
         public static EnemyProperties GetSkeletonKingProperties()
         {
             return new EnemyProperties
@@ -35,6 +56,12 @@ namespace Zerds.Constants
             };
         }
 
+        public const float ZombieMinDamage = 8f;
+        public const float ZombieMaxDamage = 12f;
+        public const float ZombieAggroRange = 250f;
+        public const float ZombieAttackRange = 64f;
+        public const int ZombieWanderRange = 200;
+        public static TimeSpan ZombieWanderLength = TimeSpan.FromSeconds(2);
         public static EnemyProperties GetZombieProperties()
         {
             return new EnemyProperties

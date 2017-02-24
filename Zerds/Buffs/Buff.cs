@@ -55,7 +55,7 @@ namespace Zerds.Buffs
 
         public void Update(GameTime gameTime)
         {
-            Animation.Update(gameTime);
+            Animation?.Update(gameTime);
         }
 
         public void StandardDraw()

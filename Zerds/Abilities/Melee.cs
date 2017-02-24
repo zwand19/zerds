@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Factories;
@@ -13,6 +15,7 @@ namespace Zerds.Abilities
         private readonly float _maxDamage;
         private readonly float _knockbackAmount;
         private readonly int _knockbackMillis;
+        public Func<Being, List<Rectangle>> GetHitboxes { get; set; }
 
         public float Damage => Helpers.RandomInRange(_minDamage, _maxDamage);
 
@@ -36,9 +39,10 @@ namespace Zerds.Abilities
                 Being.Y - Being.Facing.Y * ((Enemy)Being).AttackRange * 0.8f - 10, 20, 20);
             var rect2 = Helpers.CreateRect(Being.X + Being.Facing.X * ((Enemy)Being).AttackRange * 0.2f - 14,
                 Being.Y - Being.Facing.Y * ((Enemy)Being).AttackRange * 0.2f - 14, 28, 28);
+            var hitboxes = GetHitboxes == null ? new List<Rectangle> {rect, rect2} : GetHitboxes(Being);
             foreach (var zerd in Being.Enemies())
             {
-                if (!zerd.Hitbox().Any(hitbox => hitbox.Intersects(rect) || hitbox.Intersects(rect2))) continue;
+                if (!zerd.Hitbox().Any(hitbox => hitboxes.Any(hitbox.Intersects))) continue;
                 var damageInstance = GetDamage();
                 damageInstance.DamageBeing(zerd);
                 return true;

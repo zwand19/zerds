@@ -5,6 +5,7 @@ using Zerds.Constants;
 using Zerds.GameObjects;
 using Zerds.Graphics;
 using Zerds.Consumables;
+using Zerds.Enums;
 
 namespace Zerds.Entities
 {
@@ -18,9 +19,11 @@ namespace Zerds.Entities
         public float AttackRange { get; set; }
         public float AttackDamage { get; set; }
         public bool Charmed => Buffs.Any(b => b is CharmBuff);
+        public EnemyTypes Type { get; set; }
 
-        protected Enemy(EnemyConstants.EnemyProperties properties, string file, bool randomSpawn) : base(file, true)
+        protected Enemy(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file, bool randomSpawn) : base(file, true)
         {
+            Type = type;
             MaxHealth = Helpers.RandomInRange(properties.MinHealth, properties.MaxHealth) * DifficultyConstants.HealthFactor *
                      (1 + Level.CurrentLevel * GameplayConstants.HealthFactorPerLevel);
             Health = MaxHealth;
