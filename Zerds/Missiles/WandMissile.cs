@@ -42,10 +42,10 @@ namespace Zerds.Missiles
             Animations.Add(moveAnimation);
 
             var dieAnimation = new Animation(AnimationTypes.Death);
-            dieAnimation.AddFrame(new Rectangle(32 * 5, 0, 32, 32), TimeSpan.FromSeconds(0.15));
-            dieAnimation.AddFrame(new Rectangle(32 * 4, 0, 32, 32), TimeSpan.FromSeconds(0.15));
-            dieAnimation.AddFrame(new Rectangle(32 * 3, 0, 32, 32), TimeSpan.FromSeconds(0.15));
-            dieAnimation.AddFrame(new Rectangle(32 * 3, 0, 32, 32), TimeSpan.FromSeconds(0.15), DeathFunc);
+            dieAnimation.AddFrame(new Rectangle(32 * 5, 0, 32, 32), TimeSpan.FromSeconds(0.07));
+            dieAnimation.AddFrame(new Rectangle(32 * 4, 0, 32, 32), TimeSpan.FromSeconds(0.07));
+            dieAnimation.AddFrame(new Rectangle(32 * 3, 0, 32, 32), TimeSpan.FromSeconds(0.07));
+            dieAnimation.AddFrame(new Rectangle(32 * 3, 0, 32, 32), TimeSpan.FromSeconds(0.07), DeathFunc);
             Animations.Add(dieAnimation);
         }
 

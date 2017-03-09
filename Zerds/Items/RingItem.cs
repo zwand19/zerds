@@ -2,7 +2,7 @@
 {
     public class RingItem : Item
     {
-        public RingItem(ItemRarities rarity) : base(rarity, "ring")
+        public RingItem(ItemRarities rarity) : base(rarity, ItemTypes.Ring, "ring")
         {
             
         }

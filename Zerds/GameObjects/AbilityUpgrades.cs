@@ -120,6 +120,43 @@ namespace Zerds.GameObjects
                 case AbilityUpgradeType.MaxHealth:
                     Texture = TextureCacheFactory.GetOnce("Icons/health-normal.png");
                     return;
+                default:
+                    throw new Exception("Unhandled upgrade type");
+            }
+        }
+
+        public override string ToString()
+        {
+            switch (Type)
+            {
+                case AbilityUpgradeType.DamageTaken:
+                    return $"-{Amount}% Damage Taken";
+                case AbilityUpgradeType.DashDistance:
+                    return $"+{Amount}% Dash Distance";
+                case AbilityUpgradeType.FireballDamage:
+                    return $"+{Amount}% Fireball Damage";
+                case AbilityUpgradeType.FireballMana:
+                    return $"-{Amount}% Fireball Mana Cost";
+                case AbilityUpgradeType.IceballCrit:
+                    return $"+{Amount}% Iceball Crit Chance";
+                case AbilityUpgradeType.IceballMana:
+                    return $"-{Amount}% Iceball Mana Cost";
+                case AbilityUpgradeType.HealthRegen:
+                    return $"+{Amount}% Health Regen";
+                case AbilityUpgradeType.ManaRegen:
+                    return $"+{Amount}% Mana Regen";
+                case AbilityUpgradeType.MaxMana:
+                    return $"+{Amount}% Max Mana";
+                case AbilityUpgradeType.LavaBlastDistance:
+                    return $"+{Amount}% Lava Blast Distance";
+                case AbilityUpgradeType.SprintSpeed:
+                    return $"+{Amount}% Sprint Speed";
+                case AbilityUpgradeType.MovementSpeed:
+                    return $"+{Amount}% Movement Speed";
+                case AbilityUpgradeType.MaxHealth:
+                    return $"+{Amount}% Max Health";
+                default:
+                    throw new Exception("Unhandled upgrade type");
             }
         }
     }

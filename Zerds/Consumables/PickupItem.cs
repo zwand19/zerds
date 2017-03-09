@@ -10,7 +10,7 @@ namespace Zerds.Consumables
     {
         public TimeSpan Duration { get; set; }
 
-        public abstract void OnPickup(Being being);
+        public abstract void OnPickup(Zerd zerd);
 
         protected PickupItem(string file, Enemy dropper,  bool cache = true) : base(file, cache)
         {
@@ -25,15 +25,18 @@ namespace Zerds.Consumables
 
         public override void Update(GameTime gameTime)
         {
-            Duration.AddWithGameSpeed(gameTime.ElapsedGameTime);
+            Duration = Duration.AddWithGameSpeed(gameTime.ElapsedGameTime);
             Speed -= GameplayConstants.PickupItemSpeedDecay * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
             if (Duration > GameplayConstants.PickupItemLength)
                 IsActive = false;
-            Globals.GameState.Zerds.ForEach(z =>
+            if (Speed <= 20f) // cant pick items up for a short bit after dropping
             {
-                if (this.Intersects(z))
-                    OnPickup(z);
-            });
+                Globals.GameState.Zerds.ForEach(z =>
+                {
+                    if (this.Intersects(z))
+                        OnPickup(z);
+                });
+            }
             base.Update(gameTime);
         }
 

@@ -5,6 +5,7 @@
 		MainMenu,
         GameSetup,
 		Game,
-        Intermission
+        Intermission,
+        PostGame
     }
 }

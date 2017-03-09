@@ -29,7 +29,7 @@ namespace Zerds.Input
         public void Update(GameTime gameTime)
         {
             var gamePadState = GamePad.GetState(PlayerIndex);
-            _remainingVibration -= gameTime.ElapsedGameTime;
+            _remainingVibration = _remainingVibration.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
             if (_remainingVibration < new TimeSpan(0, 0, 0))
                 GamePad.SetVibration(PlayerIndex, 0, 0);
             if (gamePadState.IsConnected)

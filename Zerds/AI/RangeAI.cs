@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Zerds.Abilities;
 using Zerds.Entities;
 using Zerds.Enums;
-using Zerds.Graphics;
 
 namespace Zerds.AI
 {
@@ -60,15 +59,6 @@ namespace Zerds.AI
                     Enemy.Velocity = Vector2.Zero;
                     return;
             }
-        }
-
-        public override Animation GetCurrentAnimation()
-        {
-            if (!Enemy.IsAlive)
-                return Enemy.Animations.Get(AnimationTypes.Death);
-            return !Enemy.Spawned
-                ? Enemy.Animations.Get(AnimationTypes.Spawn)
-                : Enemy.Animations.Get(State == EnemyStates.Attacking ? AnimationTypes.Attack : AnimationTypes.Move);
         }
 
         public bool Attacked()

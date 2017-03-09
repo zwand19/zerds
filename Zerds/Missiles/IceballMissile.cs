@@ -56,7 +56,7 @@ namespace Zerds.Missiles
 
         public override void Update(GameTime gameTime)
         {
-            _rotation += (float)Math.PI * 2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _rotation += (float) Math.PI * 2 * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
             base.Update(gameTime);
         }
 

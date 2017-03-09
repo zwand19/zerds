@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Zerds.Constants;
 using Zerds.Enums;
@@ -16,6 +17,8 @@ namespace Zerds.GameObjects
         public static int BleedFireHealthPercent = 8;
         public static int FrostAuraRange = 200;
         public static float IcicleKillPercent = 0.2f;
+
+        public List<SkillTree> AllSkillTrees => new List<SkillTree> {FireSkillTree, ArcaneSkillTree, FrostSkillTree};
 
         public PlayerSkills(Player player)
         {

@@ -8,6 +8,7 @@ using Zerds.Constants;
 using Zerds.Enums;
 using Zerds.Input;
 using Zerds.Factories;
+using Zerds.Items;
 
 namespace Zerds.GameObjects
 {
@@ -20,6 +21,7 @@ namespace Zerds.GameObjects
         public int FloatingSkillPoints { get; set; }
         public PlayerSkills Skills { get; set; }
         public Dictionary<AbilityUpgradeType, float> AbilityUpgrades { get; set; }
+        public List<Item> Items { get; set; }
         public int Gold { get; set; }
 
         public Player(string name, PlayerIndex playerIndex)
@@ -44,11 +46,12 @@ namespace Zerds.GameObjects
                 {AbilityUpgradeType.MaxMana, 0}
             };
             Gold = GameplayConstants.StartingGold;
+            Items = new List<Item>();
         }
 
         public void Update(GameTime gameTime)
         {
-            if (Zerd == null) return;
+            if (Zerd == null || !Zerd.IsAlive) return;
             var controller = ControllerService.Controllers[PlayerIndex];
             Zerd.ControllerUpdate(controller.LeftTrigger, controller.RightTrigger, controller.LeftStickDirection, controller.RightStickDirection);
             var buttonsPressed = ControllerService.Controllers[PlayerIndex].ButtonsPressed;
@@ -76,7 +79,7 @@ namespace Zerds.GameObjects
             }
             if (ControllerService.Controllers[PlayerIndex].RightTrigger > CodingConstants.TriggerPress && Zerd.Mana > 1)
             {
-                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float) gameTime.ElapsedGameTime.TotalSeconds *
+                Zerd.Mana -= AbilityConstants.SprintManaPerSecond * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed *
                              (1 - Zerd.SkillValue(SkillType.Sprinter, false) / 100);
                 if (!Zerd.Buffs.Any(b => b is SprintBuff))
                     Zerd.Buffs.Add(new SprintBuff(Zerd));

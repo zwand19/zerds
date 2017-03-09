@@ -45,16 +45,19 @@ namespace Zerds.Factories
             if (zerdCreator != null && zerdCreator.SkillPoints(SkillType.FrostAura) > 0 && target.DistanceBetween(zerdCreator) < PlayerSkills.FrostAuraRange)
                 damageInstance.Damage *= zerdCreator.SkillValue(SkillType.FrostAura, true);
 
+            zerdCreator?.Stats.DealtDamage(damageInstance);
+            zerdTarget?.Stats.TookDamage(damageInstance);
+
             target.Health -= damageInstance.Damage;
             if (damageInstance.Knockback != null)
                 target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(), damageInstance.Knockback.MaxDuration, damageInstance.Knockback.Speed);
             if (zerdTarget != null)
                 ControllerService.Controllers[zerdTarget.Player.PlayerIndex].VibrateController(TimeSpan.FromMilliseconds(250), 1f);
-            AddText(new DamageText(damageInstance, target));
+            if (damageInstance.Damage >= 1) AddText(new DamageText(damageInstance, target));
             if (target.Health < 0 && target.Killer == null)
             {
                 target.Killer = damageInstance.Creator;
-                zerdCreator?.EnemyKilled(target as Enemy);
+                zerdCreator?.Stats.EnemyKilled(target as Enemy);
             }
         }
     }

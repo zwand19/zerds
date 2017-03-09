@@ -78,9 +78,9 @@ namespace Zerds.Input
             return buttons;
         }
 
-        public static bool ButtonPressed(PlayerIndex playerIndex, Buttons start)
+        public static bool ButtonPressed(PlayerIndex playerIndex, Buttons button)
         {
-            return Controllers[playerIndex].ButtonsPressed.Contains(Buttons.Start);
+            return Controllers[playerIndex].ButtonsPressed.Contains(button);
         }
     }
 }

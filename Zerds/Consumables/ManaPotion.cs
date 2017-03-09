@@ -17,11 +17,10 @@ namespace Zerds.Consumables
             Animations.Add(anim);
         }
 
-        public override void OnPickup(Being being)
+        public override void OnPickup(Zerd zerd)
         {
-            if (!(being is Zerd)) return;
             IsActive = false;
-            being.Mana += being.MaxMana * GameplayConstants.ManaPotionBonus;
+            zerd.Mana += zerd.MaxMana * GameplayConstants.ManaPotionBonus;
         }
     }
 }

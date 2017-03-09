@@ -9,5 +9,6 @@ namespace Zerds.Constants
         public const int HealthBarBorder = 2;
         public const float DamageTextSpeed = 150f;
         public static TimeSpan DamageTextDuration => TimeSpan.FromMilliseconds(500);
+        public static TimeSpan ZerdDeathTime => TimeSpan.FromSeconds(2.5);
     }
 }

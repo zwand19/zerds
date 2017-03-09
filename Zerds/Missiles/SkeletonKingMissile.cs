@@ -76,7 +76,7 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromSeconds(2), Damage.Damage * 0.35f));
+            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromSeconds(2), Damage.Damage * 0.35f, AbilityTypes.SkeletonKingBlast));
         }
     }
 }

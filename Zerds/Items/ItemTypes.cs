@@ -6,7 +6,6 @@
 		Robe,
 		Wand,
 		Boots,
-		LeftRing,
-		RightRing
+		Ring
     }
 }

@@ -122,6 +122,7 @@
     <Compile Include="Buffs\InvulnerableBuff.cs" />
     <Compile Include="Buffs\RageBuff.cs" />
     <Compile Include="Constants\AbilityConstants.cs" />
+    <Compile Include="Consumables\Key.cs" />
     <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="Entities\Enemies\SkeletonKing.cs" />
     <Compile Include="Enums\ZerdBodyPartTypes.cs" />
@@ -168,16 +169,21 @@
     <Compile Include="GameObjects\Level.cs" />
     <Compile Include="GameObjects\Map.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
+    <Compile Include="GameObjects\Stats.cs" />
     <Compile Include="Graphics\ZerdAnimationHelpers.cs" />
     <Compile Include="Graphics\ZerdAnimations.cs" />
     <Compile Include="Graphics\ZerdBodyPart.cs" />
     <Compile Include="Items\BootItem.cs" />
+    <Compile Include="Items\LootHelper.cs" />
+    <Compile Include="Items\PotentialItem.cs" />
     <Compile Include="Items\RingItem.cs" />
+    <Compile Include="Consumables\TreasureChest.cs" />
     <Compile Include="Items\WandItem.cs" />
     <Compile Include="Missiles\SkeletonKingMissile.cs" />
     <Compile Include="Missiles\DragonBreathMissile.cs" />
     <Compile Include="Missiles\IcicleMissile.cs" />
     <Compile Include="Missiles\CharmMissile.cs" />
+    <Compile Include="PostGameScreen.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Input\Controller.cs" />
@@ -258,6 +264,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Buffs\ice-shield.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Consumables\key.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\archer.png">
@@ -495,6 +504,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Items\robe\novice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\treasure-chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Items\wand\adept.png">

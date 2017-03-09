@@ -24,6 +24,7 @@ namespace Zerds.Entities
         public List<Buff> Buffs { get; set; }
         public Vector2 CastPoint { get; set; }
         public Being Killer { get; set; }
+        public float Opacity { get; set; }
 
         public bool IsAlive => Health > 0;
         public bool Stunned => Buffs.Any(b => b.IsStunned);
@@ -35,6 +36,7 @@ namespace Zerds.Entities
         protected Being(string file, bool cache) : base(file, cache)
         {
             Buffs = new List<Buff>();
+            Opacity = 1;
         }
 
         public virtual void LevelEnded()
@@ -52,7 +54,8 @@ namespace Zerds.Entities
             if (IsAlive) Buffs.ForEach(b => b.Draw());
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var rect = GetCurrentAnimation().CurrentRectangle;
-            Globals.SpriteDrawer.Draw(texture: Texture, sourceRectangle: rect, color: Color.White, position: new Vector2(X, Y), rotation: angle, origin: GetCurrentAnimation().CurrentOrigin);
+            var scale = Width / rect.Width;
+            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: rect, color: Color.White * Opacity, scale: new Vector2(scale), position: new Vector2(X, Y), rotation: angle, origin: GetCurrentAnimation().CurrentOrigin);
             if (Globals.ShowHitboxes && IsAlive)
             {
                 Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
@@ -93,12 +96,9 @@ namespace Zerds.Entities
                 Buffs.ForEach(b =>
                 {
                     Speed += b.MovementSpeedFactor;
-                    Health -= b.DamagePerSecond * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (Health < 0 && Killer == null)
-                    {
-                        Killer = b.Applier;
-                        Globals.GameState.Players.FirstOrDefault(p => p.Zerd == Killer)?.Zerd.EnemyKilled(this as Enemy);
-                    }
+                    var damage = b.DamagePerSecond * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                    if (damage > 0)
+                        new DamageInstance(null, damage, b.DamageType, b.Applier, b.AbilityType, false).DamageBeing(this);
                     b.TimeRemaining = b.TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                     if (b is DashBuff && this is Zerd && ((Zerd)this).SkillPoints(SkillType.ColdWinds) > 0)
                     {
@@ -123,11 +123,11 @@ namespace Zerds.Entities
                 Health += HealthRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
                 if (this is Zerd)
                     Health += HealthRegen * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed *
-                              ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.HealthRegen];
+                              ((Zerd) this).Player.AbilityUpgrades[AbilityUpgradeType.HealthRegen] / 100;
                 Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
                 if (this is Zerd)
                     Mana += ManaRegen * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed *
-                              ((Zerd)this).Player.AbilityUpgrades[AbilityUpgradeType.ManaRegen];
+                              ((Zerd)this).Player.AbilityUpgrades[AbilityUpgradeType.ManaRegen] / 100;
 
                 if (Knockback == null)
                 {
@@ -150,7 +150,7 @@ namespace Zerds.Entities
                                     (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
                              Globals.GameState.GameSpeed;
                     }
-                    Knockback.Duration = Knockback.Duration.Subtract(gameTime.ElapsedGameTime);
+                    Knockback.Duration = Knockback.Duration.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                     if (Knockback.Duration < TimeSpan.Zero)
                         Knockback = null;
                 }

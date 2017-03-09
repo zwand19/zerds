@@ -15,7 +15,7 @@ namespace Zerds.Entities.Enemies
 
         public Zombie() : base(EnemyTypes.Zombie, EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", true)
         {
-            _ai = new WanderAI(this, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieAggroRange, EnemyConstants.ZombieWanderRange, EnemyConstants.ZombieWanderLength);
+            _ai = new WanderAI(this, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieAggroRange, EnemyConstants.ZombieWanderLength);
             
             HitboxSize = 0.8f;
             Width = 64;

@@ -2,7 +2,7 @@
 {
     public class BootItem : Item
     {
-        public BootItem(ItemRarities rarity) : base(rarity, "boots")
+        public BootItem(ItemRarities rarity) : base(rarity, ItemTypes.Boots, "boots")
         {
             
         }

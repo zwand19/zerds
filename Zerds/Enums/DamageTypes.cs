@@ -2,6 +2,7 @@
 {
     public enum DamageTypes
     {
+        Unknown,
         Magic,
         Frost,
         Fire,

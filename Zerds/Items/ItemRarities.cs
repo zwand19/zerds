@@ -6,6 +6,7 @@
         Apprentice = 2,
         Adept = 3,
         Master = 4,
-        Legend = 5
+        Legendary = 5,
+        None
     }
 }

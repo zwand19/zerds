@@ -2,7 +2,7 @@
 {
     public class WandItem : Item
     {
-        public WandItem(ItemRarities rarity) : base(rarity, "wand")
+        public WandItem(ItemRarities rarity) : base(rarity, ItemTypes.Wand, "wand")
         {
             
         }

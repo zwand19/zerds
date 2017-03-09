@@ -56,6 +56,7 @@ namespace Zerds.Menus
                 if ((PointsAvailable > 0 || _player.FloatingSkillPoints > 0) && Selected.PointsSpent < Selected.MaxPoints && PointsSpent >= Selected.Row * 5 &&
                     (Selected.Parent == null || Selected.Parent.PointsSpent == Selected.MaxPoints))
                 {
+                    _player.Zerd.Stats.SkillPointsSpent++;
                     Selected.PointsSpent++;
                     if (PointsAvailable > 0)
                         PointsAvailable--;

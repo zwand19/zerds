@@ -58,9 +58,8 @@ namespace Zerds.Constants
 
         public const float ZombieMinDamage = 8f;
         public const float ZombieMaxDamage = 12f;
-        public const float ZombieAggroRange = 250f;
+        public const float ZombieAggroRange = 325f;
         public const float ZombieAttackRange = 64f;
-        public const int ZombieWanderRange = 200;
         public static TimeSpan ZombieWanderLength = TimeSpan.FromSeconds(2);
         public static EnemyProperties GetZombieProperties()
         {

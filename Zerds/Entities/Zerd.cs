@@ -10,6 +10,7 @@ using Zerds.Buffs;
 using Zerds.GameObjects;
 using Zerds.Items;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Consumables;
 
 namespace Zerds.Entities
 {
@@ -18,11 +19,9 @@ namespace Zerds.Entities
         public string Name { get; set; }
         public List<Ability> Abilities { get; set; }
         public List<Item> Inventory { get; set; }
-        public int Combo { get; set; }
-        public int MaxCombo { get; set; }
-        public int MaxLevelCombo { get; set; }
-        public int EnemiesKilled { get; set; }
-        public List<Enemy> LevelEnemiesKilled { get; set; }
+        public List<Key> Keys { get; set; }
+        public Stats Stats { get; set; }
+        public List<TreasureChest> TreasureChests { get; set; }
         public Player Player { get; set; }
         public ZerdAnimations ZerdAnimations { get; set; }
         public Texture2D ChestTexture { get; set; }
@@ -30,7 +29,7 @@ namespace Zerds.Entities
         public Texture2D HeadTexture { get; set; }
         public Texture2D FeetTexture { get; set; }
         
-        private static Vector2 _scaleVector = new Vector2(0.55f);
+        private static readonly Vector2 BodyScaleVector = new Vector2(0.55f);
 
         public Zerd(Player player, Texture2D chestTexture, Texture2D handTexture, Texture2D headTexture, Texture2D feetTexture) : base(null, false)
         {
@@ -55,8 +54,10 @@ namespace Zerds.Entities
             HitboxSize = 0.7f;
             BaseSpeed = GameplayConstants.MaxZerdSpeed;
             CriticalChance = GameplayConstants.ZerdCritChance;
-            LevelEnemiesKilled = new List<Enemy>();
+            TreasureChests = new List<TreasureChest>();
+            Keys = new List<Key>();
             ZerdAnimations = ZerdAnimationHelpers.GetAnimations();
+            Stats = new Stats(this);
 
             Abilities = new List<Ability>
             {
@@ -75,7 +76,7 @@ namespace Zerds.Entities
 
         public string GetCurrentAnimationType()
         {
-            if (Knockback != null)
+            if (Knockback != null || !IsAlive)
                 return AnimationTypes.Damaged;
             if (Abilities.First(a => a.Type == AbilityTypes.Wand).Active)
                 return AnimationTypes.Attack;
@@ -107,21 +108,21 @@ namespace Zerds.Entities
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var animation = ZerdAnimations.Animations[GetCurrentAnimationType()];
             if (animation.Keys.Contains(BodyPartType.Feet))
-                Globals.SpriteDrawer.Draw(texture: FeetTexture, sourceRectangle: animation[BodyPartType.Feet].CurrentRectangle,
+                Globals.SpriteDrawer.Draw(FeetTexture, sourceRectangle: animation[BodyPartType.Feet].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
-                    new Vector2(ZerdAnimationHelpers.Feet.Width / 2, ZerdAnimationHelpers.Feet.Height / 2), scale: _scaleVector);
+                    new Vector2(ZerdAnimationHelpers.Feet.Width / 2, ZerdAnimationHelpers.Feet.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Hands))
-                Globals.SpriteDrawer.Draw(texture: HandTexture, sourceRectangle: animation[BodyPartType.Hands].CurrentRectangle,
+                Globals.SpriteDrawer.Draw(HandTexture, sourceRectangle: animation[BodyPartType.Hands].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
-                    new Vector2(ZerdAnimationHelpers.Hands.Width / 2, ZerdAnimationHelpers.Hands.Height / 2), scale: _scaleVector);
+                    new Vector2(ZerdAnimationHelpers.Hands.Width / 2, ZerdAnimationHelpers.Hands.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Chest))
-                Globals.SpriteDrawer.Draw(texture: ChestTexture, sourceRectangle: animation[BodyPartType.Chest].CurrentRectangle,
+                Globals.SpriteDrawer.Draw(ChestTexture, sourceRectangle: animation[BodyPartType.Chest].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
-                    new Vector2(ZerdAnimationHelpers.Chest.Width / 2, ZerdAnimationHelpers.Chest.Height / 2), scale: _scaleVector);
+                    new Vector2(ZerdAnimationHelpers.Chest.Width / 2, ZerdAnimationHelpers.Chest.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Head))
-                Globals.SpriteDrawer.Draw(texture: HeadTexture, sourceRectangle: animation[BodyPartType.Head].CurrentRectangle,
+                Globals.SpriteDrawer.Draw(HeadTexture, sourceRectangle: animation[BodyPartType.Head].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
-                    new Vector2(ZerdAnimationHelpers.Head.Width / 2, ZerdAnimationHelpers.Head.Height / 2), scale: _scaleVector);
+                    new Vector2(ZerdAnimationHelpers.Head.Width / 2, ZerdAnimationHelpers.Head.Height / 2), scale: BodyScaleVector);
             if (Globals.ShowHitboxes && IsAlive)
             {
                 Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
@@ -146,7 +147,7 @@ namespace Zerds.Entities
 
         public void ControllerUpdate(float leftTrigger, float rightTrigger, Vector2 leftStickDirection, Vector2 rightStickDirection)
         {
-            if (Stunned)
+            if (Stunned || !IsAlive)
                 return;
 
             if (Math.Abs(leftStickDirection.Length()) > CodingConstants.JoystickTolerance)
@@ -162,6 +163,13 @@ namespace Zerds.Entities
 
         public override void Update(GameTime gameTime)
         {
+            if (!IsAlive)
+            {
+                Opacity -= (float)(gameTime.ElapsedGameTime.TotalSeconds / DisplayConstants.ZerdDeathTime.TotalSeconds);
+                if (Opacity < 0)
+                    Opacity = 0;
+                return;
+            }
             if (Knockback != null)
             {
                 Abilities.ForEach(a => a.Cancel());
@@ -171,19 +179,6 @@ namespace Zerds.Entities
             foreach (var anim in animation.Values)
                 anim.Update(gameTime);
             base.Update(gameTime);
-        }
-
-        public void IncreaseCombo()
-        {
-            Combo++;
-            MaxCombo = Combo > MaxCombo ? Combo : MaxCombo;
-            MaxLevelCombo = Combo > MaxLevelCombo ? Combo : MaxLevelCombo;
-        }
-
-        public void EnemyKilled(Enemy enemy)
-        {
-            EnemiesKilled++;
-            LevelEnemiesKilled.Add(enemy);
         }
         
         public override float SpriteRotation()

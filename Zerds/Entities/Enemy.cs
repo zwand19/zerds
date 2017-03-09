@@ -6,6 +6,7 @@ using Zerds.GameObjects;
 using Zerds.Graphics;
 using Zerds.Consumables;
 using Zerds.Enums;
+using Zerds.Items;
 
 namespace Zerds.Entities
 {
@@ -66,16 +67,9 @@ namespace Zerds.Entities
 
         protected bool OnDeath()
         {
-            var chance = GameplayConstants.PotionDropChance;
-            if (Killer is Zerd)
-                chance += Killer.SkillValue(SkillType.Guzzler, false) / 100f;
-            if (!Helpers.RandomChance(chance))
-                return true;
-
-            if (Helpers.RandomChance(0.5f))
-                Globals.GameState.Items.Add(new HealthPotion(this));
-            else
-                Globals.GameState.Items.Add(new ManaPotion(this));
+            LootHelper.TryCreatePotion(this);
+            LootHelper.TryCreateTreasureChest(this);
+            LootHelper.TryCreateKey(this);
             return true;
         }
 
@@ -89,6 +83,27 @@ namespace Zerds.Entities
         protected bool OnDeathFinished()
         {
             return IsActive = false;
+        }
+
+        public int Worth()
+        {
+            switch (Type)
+            {
+                case EnemyTypes.Zombie:
+                    return 5;
+                case EnemyTypes.Dog:
+                    return 7;
+                case EnemyTypes.Demon:
+                    return 17;
+                case EnemyTypes.SkeletonKing:
+                    return 50;
+                case EnemyTypes.FrostDemon:
+                    return 17;
+                case EnemyTypes.Archer:
+                    return 8;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

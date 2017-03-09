@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Zerds.Abilities;
+using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
-using Zerds.Graphics;
 
 namespace Zerds.AI
 {
@@ -23,29 +24,29 @@ namespace Zerds.AI
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
             var target = Target ?? Enemy.GetNearestEnemy();
-            if (target == null)
-            {
-                Enemy.Velocity = Vector2.Zero;
-                State = EnemyStates.Sitting;
-                return;
-            }
             switch (State)
             {
+                case EnemyStates.Sitting:
+                    State = EnemyStates.Chasing;
+                    return;
                 case EnemyStates.Dead:
                     Enemy.Velocity = Vector2.Zero;
                     Enemy.BaseSpeed = 0;
                     return;
-                case EnemyStates.Sitting:
-                    Enemy.Velocity = Vector2.Zero;
-                    if (Enemy.Spawned && Enemy.Enemies().Any(z => z.IsAlive))
-                        State = EnemyStates.Chasing;
+                case EnemyStates.Wandering:
+                    CurrentWanderTime = CurrentWanderTime.AddWithGameSpeed(gameTime.ElapsedGameTime);
+                    Enemy.BaseSpeed = WanderSpeed;
+                    if (CurrentWanderTime > (WanderIntervalTime ?? GameplayConstants.DefaultEnemyWanderInterval))
+                        SetWanderTarget();
+                    Enemy.Velocity = Enemy.Facing.Normalized();
                     return;
                 case EnemyStates.Chasing:
-                    if (!Enemy.Enemies().Any(z => z.IsAlive))
+                    if (target == null)
                     {
-                        State = EnemyStates.Sitting;
+                        State = EnemyStates.Wandering;
                         return;
                     }
+                    CurrentWanderTime = TimeSpan.Zero;
                     if (Enemy.DistanceBetween(target) < Enemy.AttackRange)
                     {
                         Enemy.Velocity = Vector2.Zero;
@@ -58,15 +59,6 @@ namespace Zerds.AI
                     Enemy.Velocity = Vector2.Zero;
                     return;
             }
-        }
-
-        public override Animation GetCurrentAnimation()
-        {
-            if (!Enemy.IsAlive)
-                return Enemy.Animations.Get(AnimationTypes.Death);
-            return !Enemy.Spawned
-                ? Enemy.Animations.Get(AnimationTypes.Spawn)
-                : Enemy.Animations.Get(State == EnemyStates.Attacking ? AnimationTypes.Attack : AnimationTypes.Move);
         }
 
         public bool Attacked()

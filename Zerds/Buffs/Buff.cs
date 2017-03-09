@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zerds.Entities;
+using Zerds.Enums;
 using Zerds.Graphics;
 
 namespace Zerds.Buffs
@@ -23,9 +24,10 @@ namespace Zerds.Buffs
         public bool GrantsInvulnerability { get; internal set; }
         public Being Applier { get; set; }
         public bool Frozen { get; set; }
+        public AbilityTypes AbilityType { get; set; }
+        public DamageTypes DamageType { get; set; }
 
-        protected Buff(Being applier, Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0,
-            float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0,
+        protected Buff(Being applier, Being being, TimeSpan length, bool isPositive, float movementSpeedFactor = 0, float cooldownReductionFactor = 0, float healthRegenFactor = 0, float damagePerSecond = 0,
             bool frozen = false)
         {
             Length = length;
@@ -45,11 +47,7 @@ namespace Zerds.Buffs
             if (Texture == null)
                 return;
 
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
-                sourceRectangle: Animation.CurrentRectangle,
-                color: Color.White,
-                destinationRectangle: new Rectangle((int)Being.X, (int)Being.Y, (int)Being.Width, (int)Being.Height),
+            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: Animation.CurrentRectangle, color: Color.White, destinationRectangle: new Rectangle((int) Being.X, (int) Being.Y, (int) Being.Width, (int) Being.Height),
                 origin: new Vector2(Texture.Width / 2.0f, Texture.Height / 2.0f));
         }
 
@@ -63,11 +61,7 @@ namespace Zerds.Buffs
             if (Texture == null)
                 return;
 
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
-                sourceRectangle: Animation.CurrentRectangle,
-                color: Color.White,
-                position: new Vector2(Being.X, Being.Y),
+            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: Animation.CurrentRectangle, color: Color.White, position: new Vector2(Being.X, Being.Y),
                 origin: new Vector2(Being.Texture.Width / 2f, Being.Texture.Height / 2f));
         }
     }

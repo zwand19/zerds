@@ -22,6 +22,7 @@ namespace Zerds
         private MainMenu _mainMenu;
         private GameSetup _gameSetup;
         private IntermissionScreen _intermissionScreen;
+        private PostGameScreen _postGameScreen;
 
         public ZerdGame()
         {
@@ -30,6 +31,13 @@ namespace Zerds
             // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+        }
+
+        public bool GameOverFunc()
+        {
+            _state = GameStates.PostGame;
+            _postGameScreen = new PostGameScreen();
+            return true;
         }
 
         /// <summary>
@@ -45,6 +53,7 @@ namespace Zerds
             SkillConstants.Initialize();
 
             TextureCacheFactory.Get("Entities/Zomb-King.png");
+            Level.GameOverFunc = GameOverFunc;
             Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);
             _mainMenu = new MainMenu(SetupGameFunc);
 
@@ -135,6 +144,15 @@ namespace Zerds
                         Level.StartLevel();
                     }
                     return;
+                case GameStates.PostGame:
+                    _postGameScreen.Update();
+                    if (_postGameScreen.Ready)
+                    {
+                        _postGameScreen = null;
+                        _state = GameStates.MainMenu;
+                        _mainMenu = new MainMenu(SetupGameFunc);
+                    }
+                    return;
             }
             base.Update(gameTime);
         }
@@ -163,6 +181,9 @@ namespace Zerds
                 case GameStates.Intermission:
                     Globals.GameState.Draw();
                     _intermissionScreen.Draw();
+                    break;
+                case GameStates.PostGame:
+                    _postGameScreen.Draw();
                     break;
             }
         }

@@ -37,7 +37,7 @@ namespace Zerds.Missiles
                 Speed *= 0.75f;
                 IsAlive = false;
                 if (Creator is Zerd)
-                    ((Zerd) Creator).Combo = 0;
+                    ((Zerd) Creator).Stats.Combo = 0;
             }
             base.Update(gameTime);
         }
@@ -50,7 +50,7 @@ namespace Zerds.Missiles
                 foreach (var enemy in Creator.Enemies().Where(e => e.IsAlive))
                 {
                     if (!enemy.Hitbox().Any(hitbox => Hitbox().Any(hitbox.Intersects))) continue;
-                    creator.IncreaseCombo();
+                    creator.Stats.IncreaseCombo();
                     OnHit(enemy);
                     return;
                 }

@@ -82,8 +82,8 @@ namespace Zerds.Missiles
                 Speed *= 0.75f;
                 IsAlive = false;
                 if (!TargetsHit.Any())
-                    ((Zerd) Creator).Combo = 0;
-                else ((Zerd)Creator).IncreaseCombo();
+                    ((Zerd) Creator).Stats.Combo = 0;
+                else ((Zerd)Creator).Stats.IncreaseCombo();
             }
             base.Update(gameTime);
         }
@@ -109,7 +109,7 @@ namespace Zerds.Missiles
             Damage.Damage += Origin.DistanceBetween(Position) * ((Zerd)Creator).SkillValue(SkillType.Sniper, true) / 100f;
             Damage.DamageBeing(target);
             Speed *= 0.9f;
-            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.LavaBlastBurnLength), Damage.Damage * AbilityConstants.LavaBlastBurnDamagePercentage));
+            target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.LavaBlastBurnLength), Damage.Damage * AbilityConstants.LavaBlastBurnDamagePercentage, AbilityTypes.LavaBlast));
             Damage.Damage = oldDamage;
         }
     }

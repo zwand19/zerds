@@ -81,7 +81,7 @@ namespace Zerds.Missiles
             Damage.DamageBeing(target);
             IsAlive = false;
             Speed *= 0.15f;
-            target.AddBuff(new BurnBuff(Creator, target, EnemyConstants.DemonMissileBurnLength, Damage.Damage * EnemyConstants.DemonMissileBurnDamagePercentage));
+            target.AddBuff(new BurnBuff(Creator, target, EnemyConstants.DemonMissileBurnLength, Damage.Damage * EnemyConstants.DemonMissileBurnDamagePercentage, AbilityTypes.Range));
         }
     }
 }

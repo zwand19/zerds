@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Zerds.Constants;
 
 namespace Zerds.Graphics
 {
@@ -11,11 +12,20 @@ namespace Zerds.Graphics
         private TimeSpan _timeIntoAnimation;
         private AnimationFrame _lastFrame;
         public string Name { get; set; }
-        private BodyPart _bodyPart;
+        private int _width;
+        private int _height;
         
         public Animation(string name, BodyPart bodyPart)
         {
-            _bodyPart = bodyPart;
+            _width = bodyPart.Width;
+            _height = bodyPart.Height;
+            Name = name;
+        }
+
+        public Animation(string name, int width, int height)
+        {
+            _width = width;
+            _height = height;
             Name = name;
         }
 
@@ -43,7 +53,7 @@ namespace Zerds.Graphics
         /// <param name="func">Function to run when this frame is active.</param>
         public void AddFrame(int x, int y, TimeSpan duration, Func<bool> func = null)
         {
-            var rectangle = new Rectangle(x * _bodyPart.Width, y * _bodyPart.Height, _bodyPart.Width, _bodyPart.Height);
+            var rectangle = new Rectangle(x * _width, y * _height, _width, _height);
             _frames.Add(new AnimationFrame { SourceRectangle = rectangle, Duration = duration, StartFunc = func, Origin = new Vector2(rectangle.Width / 2f, rectangle.Height / 2f) });
         }
 
@@ -56,7 +66,7 @@ namespace Zerds.Graphics
         {
             var secondsIntoAnimation = _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
 
-            var remainder = Duration.TotalSeconds == 0 ? 0 : secondsIntoAnimation % Duration.TotalSeconds;
+            var remainder = Math.Abs(Duration.TotalSeconds) < CodingConstants.Tolerance ? 0 : secondsIntoAnimation % Duration.TotalSeconds;
 
             _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
         }

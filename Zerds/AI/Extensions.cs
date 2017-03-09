@@ -10,9 +10,10 @@ namespace Zerds.AI
     {
         public static Being GetNearestEnemy(this Being being)
         {
-            if (!being.Enemies().Any()) return null;
-            var distance = being.Enemies().Select(z => z.DistanceBetween(being)).Min();
-            return being.Enemies().First(z => Math.Abs(z.DistanceBetween(being) - distance) < CodingConstants.Tolerance);
+            var enemies = being.Enemies().Where(e => e.IsAlive).ToList();
+            if (!enemies.Any()) return null;
+            var distance = enemies.Select(z => z.DistanceBetween(being)).Min();
+            return enemies.First(z => Math.Abs(z.DistanceBetween(being) - distance) < CodingConstants.Tolerance);
         }
 
         public static void Face(this Being being, Being target)

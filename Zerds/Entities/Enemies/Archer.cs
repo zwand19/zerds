@@ -18,8 +18,8 @@ namespace Zerds.Entities.Enemies
             _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.Arrow, EnemyConstants.ArcherArrowCooldown));
 
             HitboxSize = 0.93f;
-            Width = 48;
-            Height = 48;
+            Width = 64;
+            Height = 64;
             AttackRange = 625;
 
             Animations = new AnimationList();

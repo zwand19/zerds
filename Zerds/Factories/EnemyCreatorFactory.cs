@@ -28,7 +28,7 @@ namespace Zerds.Factories
                 case EnemyTypes.SkeletonKing:
                     return new SkeletonKing();
             }
-            throw new ArgumentException("Unknown Enemy Type");
+            throw new ArgumentException("Unknown Enemy ItemType");
         }
 
         public static List<Enemy> CreateEnemyBatch()
@@ -57,22 +57,7 @@ namespace Zerds.Factories
 
         public static void Update(GameTime gameTime)
         {
-            var enemyDifficulty = Globals.GameState.Enemies.Sum(e =>
-            {
-                if (e is Zombie)
-                    return 5;
-                if (e is Dog)
-                    return 7;
-                if (e is Archer)
-                    return 8;
-                if (e is Demon)
-                    return 17;
-                if (e is FrostDemon)
-                    return 17;
-                if (e is SkeletonKing)
-                    return 50;
-                return 0;
-            });
+            var enemyDifficulty = Globals.GameState.Enemies.Sum(e => e.Worth());
             var targetDifficulty = Level.CurrentLevel * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
             if (enemyDifficulty < targetDifficulty && Level.TimeRemaining > TimeSpan.Zero)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());

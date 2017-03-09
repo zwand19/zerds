@@ -12,7 +12,9 @@ namespace Zerds.GameObjects
         public static Dictionary<Player, Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>> AbilityUpgrades { get; set; }
         public static int CurrentLevel { get; set; }
         public static TimeSpan TimeRemaining { get; set; }
+        public static TimeSpan TimeSinceLosing { get; set; }
         public static TimeSpan TimeIntoLevel => GameplayConstants.LevelLength - TimeRemaining;
+        public static Func<bool> GameOverFunc;
         private static bool _levelHasEnded;
 
         public static void Initialize(List<Player> players)
@@ -42,24 +44,23 @@ namespace Zerds.GameObjects
                 p.Skills.ArcaneSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
                 p.Skills.FireSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
                 p.Skills.FrostSkillTree.PointsAvailable += GameplayConstants.SkillPointsPerLevel;
-                if (p.Zerd != null) p.Zerd.MaxLevelCombo = 0;
-                if (p.Zerd != null) p.Zerd.LevelEnemiesKilled = new List<Enemy>();
+                p.Zerd?.Stats.ResetLevel();
             });
         }
 
-        public static int PersonalEnemiesKilledGold(Player player)
+        public static int KillingBlowGold(Player player)
         {
-            return player.Zerd.LevelEnemiesKilled.Sum(e => EnemyConstants.EnemyGoldValues[e.Type]);
+            return player.Zerd.Stats.LevelKillingBlows.Sum(e => EnemyConstants.EnemyGoldValues[e.Type]);
         }
 
         public static int TotalEnemiesKilledGold(Player player)
         {
-            return Globals.GameState.Zerds.Sum(z => z.LevelEnemiesKilled.Count) * (GameplayConstants.BaseGoldPerEnemy + CurrentLevel * GameplayConstants.BonusGoldPerEnemyPerLevel);
+            return Globals.GameState.Zerds.Sum(z => z.Stats.LevelKillingBlows.Count) * (GameplayConstants.BaseGoldPerEnemy + CurrentLevel * GameplayConstants.BonusGoldPerEnemyPerLevel);
         }
 
         public static int ComboGold(Player player)
         {
-            return (int) (player.Zerd.MaxLevelCombo * GameplayConstants.GoldPerCombo * player.Zerd.SkillValue(SkillType.ComboMaster, true));
+            return (int) (player.Zerd.Stats.MaxLevelCombo * GameplayConstants.GoldPerCombo * player.Zerd.SkillValue(SkillType.ComboMaster, true));
         }
 
         public static int LevelGold()
@@ -69,14 +70,16 @@ namespace Zerds.GameObjects
 
         public static int TotalLevelGold(Player player)
         {
-            return PersonalEnemiesKilledGold(player) + TotalEnemiesKilledGold(player) + ComboGold(player) + LevelGold();
+            return KillingBlowGold(player) + TotalEnemiesKilledGold(player) + ComboGold(player) + LevelGold();
         }
 
         public static void LevelComplete()
         {
             foreach (var player in Globals.GameState.Players.Where(p => p.IsPlaying))
             {
-                player.Gold += TotalLevelGold(player);
+                var gold = TotalLevelGold(player);
+                player.Zerd.Stats.GoldEarned += gold;
+                player.Gold += gold;
                 AbilityUpgrades[player] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(), AbilityUpgradeHelper.GetRandomUpgrade(),
                     AbilityUpgradeHelper.GetRandomUpgrade());
             }
@@ -85,7 +88,7 @@ namespace Zerds.GameObjects
 
         public static void Update(GameTime gameTime)
         {
-            TimeRemaining -= gameTime.ElapsedGameTime;
+            TimeRemaining = TimeRemaining.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
             if (TimeRemaining < TimeSpan.Zero)
             {
                 TimeRemaining = TimeSpan.Zero;
@@ -95,6 +98,23 @@ namespace Zerds.GameObjects
                     Globals.GameState.Beings.ForEach(b => b.LevelEnded());
                 }
             }
+            if (Globals.GameState.Zerds.Any(z => z.IsAlive))
+            {
+                TimeSinceLosing = GameplayConstants.WaitTimeAfterLosing;
+            }
+            else
+            {
+                TimeSinceLosing= TimeSinceLosing.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
+                if (TimeSinceLosing < TimeSpan.Zero)
+                    GameOver();
+            }
+        }
+
+        private static void GameOver()
+        {
+            Globals.GameState.Zerds.ForEach(z =>
+                { z.Stats.GameOver(); });
+            GameOverFunc();
         }
     }
 }
