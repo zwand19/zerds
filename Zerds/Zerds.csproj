@@ -229,6 +229,8 @@
     <Compile Include="Graphics\AnimationList.cs" />
     <Compile Include="Missiles\WandMissile.cs" />
     <Compile Include="Input\ControllerService.cs" />
+    <Compile Include="Data\SaveGameData.cs" />
+    <Compile Include="Data\XmlStorage.cs" />
     <Compile Include="ZerdGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

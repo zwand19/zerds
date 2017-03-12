@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
 using Zerds.Input;
 using Zerds.Menus;
 using Zerds.Constants;
+using Zerds.Data;
 
 namespace Zerds
 {
@@ -31,6 +33,20 @@ namespace Zerds
             // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Task.Run(async () =>
+            {
+                var data = await XmlStorage.GetData();
+                var saved = await XmlStorage.SaveData(new SaveGameData {Name = "yo"});
+                data = await XmlStorage.GetData();
+                if (data.Name == "yo")
+                {
+                    var b = "YES";
+                }
+                else
+                {
+                    var ab = "noooo";
+                }
+            });
         }
 
         public bool GameOverFunc()
@@ -150,6 +166,7 @@ namespace Zerds
                     {
                         _postGameScreen = null;
                         _state = GameStates.MainMenu;
+                        Globals.GameState = new GameState(_players);
                         _mainMenu = new MainMenu(SetupGameFunc);
                     }
                     return;

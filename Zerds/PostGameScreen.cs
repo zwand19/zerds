@@ -147,7 +147,13 @@ namespace Zerds
             else
             {
                 Globals.SpriteDrawer.DrawText(_reward.ToString(), new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, _reward.TextColor);
-                _reward.Draw(bounds.Center, 70, 70);
+                _reward.Draw(bounds.Center.X, bounds.Center.Y - 30f, 70, 70);
+                var y = bounds.Center.Y + 50f;
+                foreach (var buff in _reward.AbilityUpgrades)
+                {
+                    Globals.SpriteDrawer.DrawText(buff.ToString(), new Vector2(bounds.Center.X, y), 14f, Color.White);
+                    y += 22f;
+                }
             }
             Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(bounds.Center.X, bounds.Bottom - 50f), 20f, Globals.ContinueColor);
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Zerds.Constants;
-using Zerds.Entities;
 
 namespace Zerds.GameObjects
 {
@@ -19,6 +18,7 @@ namespace Zerds.GameObjects
 
         public static void Initialize(List<Player> players)
         {
+            _levelHasEnded = false;
             CurrentLevel = 1;
             AbilityUpgrades = new Dictionary<Player, Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>>
             {
@@ -104,7 +104,7 @@ namespace Zerds.GameObjects
             }
             else
             {
-                TimeSinceLosing= TimeSinceLosing.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
+                TimeSinceLosing = TimeSinceLosing.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                 if (TimeSinceLosing < TimeSpan.Zero)
                     GameOver();
             }

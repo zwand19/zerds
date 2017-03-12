@@ -46,9 +46,9 @@ namespace Zerds.Items
             Texture = TextureCacheFactory.GetOnce($"Items/{folder}/{iconName}");
         }
 
-        public void Draw(Point p, float width, float height)
+        public void Draw(float x, float y, float width, float height)
         {
-            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(p.X - width / 2), (int)(p.Y - height / 2), (int) width, (int) height), Color.White);
+            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(x - width / 2), (int)(y - height / 2), (int) width, (int) height), Color.White);
         }
 
         public override string ToString()
