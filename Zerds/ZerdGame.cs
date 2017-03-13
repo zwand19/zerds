@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -35,17 +36,11 @@ namespace Zerds
             Content.RootDirectory = "Content";
             Task.Run(async () =>
             {
-                var data = await XmlStorage.GetData();
+                var data = await XmlStorage.GetData<SaveGameData>();
                 var saved = await XmlStorage.SaveData(new SaveGameData {Name = "yo"});
-                data = await XmlStorage.GetData();
-                if (data.Name == "yo")
-                {
-                    var b = "YES";
-                }
-                else
-                {
-                    var ab = "noooo";
-                }
+                data = await XmlStorage.GetData<SaveGameData>();
+                string b;
+                b = data.Name == "yo" ? "YES" : "noooo";
             });
         }
 
