@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
+using Windows.UI.Core;
+using Microsoft.Xna.Framework.Input;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -34,14 +36,15 @@ namespace Zerds
             // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Task.Run(async () =>
-            {
-                var data = await XmlStorage.GetData<SaveGameData>();
-                var saved = await XmlStorage.SaveData(new SaveGameData {Name = "yo"});
-                data = await XmlStorage.GetData<SaveGameData>();
-                string b;
-                b = data.Name == "yo" ? "YES" : "noooo";
-            });
+            Windows.UI.Core.CoreWindow.GetForCurrentThread().KeyDown += OnKeyDown;
+        }
+
+        private void OnKeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            //string device = Windows.UI.Core.CoreWindow.GetForCurrentThread().GetCurrentKeyEventDeviceId();
+            //User user = Windows.System.UserDeviceAssociation.FindUserFromDeviceId(device);
+            //string displayName = (string)await user.GetPropertyAsync(KnownUserProperties.DisplayName);
+            //System.Diagnostics.Debug.WriteLine("OnKeydown:" + displayName);
         }
 
         public bool GameOverFunc()

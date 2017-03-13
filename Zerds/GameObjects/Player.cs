@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Zerds.Buffs;
 using Zerds.Constants;
+using Zerds.Data;
 using Zerds.Enums;
 using Zerds.Input;
 using Zerds.Factories;
@@ -102,6 +104,14 @@ namespace Zerds.GameObjects
             var headTexture = TextureCacheFactory.GetOnce("Zerds/bare-head.png");
             Zerd = new Entities.Zerd(this, chestTexture, handsTexture, headTexture, feetTexture);
             Globals.GameState.Zerds.Add(Zerd);
+        }
+
+        public async Task Save()
+        {
+            await Task.Run(async () =>
+            {
+                
+            });
         }
     }
 }

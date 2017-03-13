@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zerds.Consumables;
+using Zerds.Data;
 using Zerds.GameObjects;
 using Zerds.Input;
 using Zerds.Items;
@@ -223,6 +224,7 @@ namespace Zerds
 
         private void NextPlayer()
         {
+            _currentPlayer.Save();
             _playersProcessed.Add(_currentPlayer);
             _currentPlayer = Globals.GameState.Zerds.FirstOrDefault(z => !_playersProcessed.Contains(z.Player))?.Player;
             _selectedChest = _currentPlayer?.Zerd.TreasureChests.FirstOrDefault();
