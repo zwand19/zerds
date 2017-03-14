@@ -1,69 +1,91 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage;
 using Windows.System;
+using Zerds.GameObjects;
+using Zerds.Items;
 
 namespace Zerds.Data
 {
     public static class XmlStorage
     {
-        public static async Task<bool> SaveData<T>(T data)
+        private const string FileName = "abc";
+        public static SaveGameCollection SavedData { get; set; }
+
+        public static void Initialize()
+        {
+            Task.Run(async () =>
+            {
+                SavedData = await Get();
+            });
+        }
+
+        public static async Task<bool> SavePlayer(Player player)
+        {
+            try
+            {
+                if (SavedData == null)
+                    SavedData = new SaveGameCollection {Players = new List<SavedPlayer>()};
+                SavedData.Players = SavedData.Players.Where(s => s.Name != player.Name).ToList();
+                SavedData.Players.Add(new SavedPlayer(player));
+                await Save();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public static List<Item> GetPlayerInventory(string name)
+        {
+            var data = SavedData?.Players.FirstOrDefault(d => d.Name == name);
+            return data?.Inventory.Select(Item.FromSaveData).ToList();
+        }
+
+        private static async Task<SaveGameCollection> Get()
+        {
+            try
+            {
+                var serializer = new XmlSerializer(typeof(SaveGameCollection));
+
+                var storageFolder = ApplicationData.Current.LocalFolder;
+
+                var file = await storageFolder.GetFileAsync(FileName);
+                var dataReader = await FileIO.ReadTextAsync(file);
+
+                using (TextReader reader = new StringReader(dataReader))
+                {
+                    var savedDataObj = serializer.Deserialize(reader);
+                    var data = (SaveGameCollection) savedDataObj;
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                return new SaveGameCollection {Players = new List<SavedPlayer>()};
+            }
+        }
+
+        private static async Task Save()
         {
             // Create sample file; replace if exists.
             var storageFolder = ApplicationData.Current.LocalFolder;
-            var username = await GetUserName();
 
-            var file = await storageFolder.CreateFileAsync(username, CreationCollisionOption.ReplaceExisting);
-            var xmlSerializer = new XmlSerializer(data.GetType());
+            var file = await storageFolder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+            var xmlSerializer = new XmlSerializer(SavedData.GetType());
 
             using (var textWriter = new StringWriter())
             {
-                xmlSerializer.Serialize(textWriter, data);
+                xmlSerializer.Serialize(textWriter, SavedData);
                 var str = textWriter.ToString();
 
                 await FileIO.WriteTextAsync(file, str);
-                return true;
             }
-        }
-
-        public static async Task<T> GetData<T>()
-        {
-            var storageFolder = ApplicationData.Current.LocalFolder;
-            var username = await GetUserName();
-
-            var file = await storageFolder.GetFileAsync(username);
-            var data = await FileIO.ReadTextAsync(file);
-
-            var serializer = new XmlSerializer(typeof(T));
-            
-            using (TextReader reader = new StringReader(data))
-                return (T)serializer.Deserialize(reader);
-        }
-
-        private static async Task<string> GetUserName()
-        {
-            var users = await User.FindAllAsync();
-
-            var current =
-                users.FirstOrDefault(
-                    p => p.AuthenticationStatus == UserAuthenticationStatus.LocallyAuthenticated && p.Type == UserType.LocalUser);
-
-            // user may have username
-            var data = await current.GetPropertyAsync(KnownUserProperties.AccountName);
-            var displayName = (string)data;
-
-            //or may be authinticated using hotmail 
-            if (string.IsNullOrEmpty(displayName))
-            {
-                var a = (string)await current.GetPropertyAsync(KnownUserProperties.FirstName);
-                var b = (string)await current.GetPropertyAsync(KnownUserProperties.LastName);
-                displayName = string.Format("{0} {1}", a, b);
-            }
-
-            return displayName;
         }
     }
 }

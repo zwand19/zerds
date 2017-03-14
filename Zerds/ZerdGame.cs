@@ -36,15 +36,6 @@ namespace Zerds
             // ReSharper disable once ObjectCreationAsStatement
             new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Windows.UI.Core.CoreWindow.GetForCurrentThread().KeyDown += OnKeyDown;
-        }
-
-        private void OnKeyDown(CoreWindow sender, KeyEventArgs args)
-        {
-            //string device = Windows.UI.Core.CoreWindow.GetForCurrentThread().GetCurrentKeyEventDeviceId();
-            //User user = Windows.System.UserDeviceAssociation.FindUserFromDeviceId(device);
-            //string displayName = (string)await user.GetPropertyAsync(KnownUserProperties.DisplayName);
-            //System.Diagnostics.Debug.WriteLine("OnKeydown:" + displayName);
         }
 
         public bool GameOverFunc()
@@ -65,7 +56,7 @@ namespace Zerds
             TextureCacheFactory.Initialize(GraphicsDevice);
             ControllerService.Initialize();
             SkillConstants.Initialize();
-
+            XmlStorage.Initialize();
             TextureCacheFactory.Get("Entities/Zomb-King.png");
             Level.GameOverFunc = GameOverFunc;
             Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);

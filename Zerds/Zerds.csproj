@@ -130,6 +130,10 @@
     <Compile Include="Constants\GameplayConstants.cs" />
     <Compile Include="Constants\SkillConstants.cs" />
     <Compile Include="Consumables\Key.cs" />
+    <Compile Include="Data\SaveGameAbilityUpgrade.cs" />
+    <Compile Include="Data\SaveGameCollection.cs" />
+    <Compile Include="Data\SavedItem.cs" />
+    <Compile Include="Data\SaveGameSkillUpgrade.cs" />
     <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="Entities\Enemies\SkeletonKing.cs" />
     <Compile Include="Enums\ZerdBodyPartTypes.cs" />
@@ -229,7 +233,7 @@
     <Compile Include="Graphics\AnimationList.cs" />
     <Compile Include="Missiles\WandMissile.cs" />
     <Compile Include="Input\ControllerService.cs" />
-    <Compile Include="Data\SaveGameData.cs" />
+    <Compile Include="Data\SavedPlayer.cs" />
     <Compile Include="Data\XmlStorage.cs" />
     <Compile Include="ZerdGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

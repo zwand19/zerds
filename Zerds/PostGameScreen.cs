@@ -129,7 +129,7 @@ namespace Zerds
             _reward = item;
             _currentPlayer.Zerd.Keys.RemoveAt(0);
             _currentPlayer.Zerd.TreasureChests.Remove(_selectedChest);
-            _selectedChest = _currentPlayer.Zerd.TreasureChests.First();
+            _selectedChest = _currentPlayer.Zerd.TreasureChests.FirstOrDefault();
         }
 
         private Tuple<int, int> TreasureCoords(TreasureChest chest)
@@ -224,7 +224,7 @@ namespace Zerds
 
         private void NextPlayer()
         {
-            _currentPlayer.Save();
+            _currentPlayer.SaveSyncronous();
             _playersProcessed.Add(_currentPlayer);
             _currentPlayer = Globals.GameState.Zerds.FirstOrDefault(z => !_playersProcessed.Contains(z.Player))?.Player;
             _selectedChest = _currentPlayer?.Zerd.TreasureChests.FirstOrDefault();

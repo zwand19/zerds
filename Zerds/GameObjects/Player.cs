@@ -106,12 +106,10 @@ namespace Zerds.GameObjects
             Globals.GameState.Zerds.Add(Zerd);
         }
 
-        public async Task Save()
+        public void SaveSyncronous()
         {
-            await Task.Run(async () =>
-            {
-                
-            });
+            Task.Run(async () =>
+                { await XmlStorage.SavePlayer(this); });
         }
     }
 }

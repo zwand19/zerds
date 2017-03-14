@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Data;
 using Zerds.Factories;
 
 namespace Zerds.GameObjects
@@ -85,7 +86,56 @@ namespace Zerds.GameObjects
             Text1 = text1;
             Text2 = text2;
             Amount = amt;
-            switch (type)
+            SetTexture();
+        }
+
+        public AbilityUpgrade(SaveGameAbilityUpgrade u)
+        {
+            Type = (AbilityUpgradeType) u.Type;
+            Text1 = u.Text1;
+            Text2 = u.Text2;
+            Amount = u.Amount;
+            SetTexture();
+        }
+
+        public override string ToString()
+        {
+            switch (Type)
+            {
+                case AbilityUpgradeType.DamageTaken:
+                    return $"-{Amount}% Damage Taken";
+                case AbilityUpgradeType.DashDistance:
+                    return $"+{Amount}% Dash Distance";
+                case AbilityUpgradeType.FireballDamage:
+                    return $"+{Amount}% Fireball Damage";
+                case AbilityUpgradeType.FireballMana:
+                    return $"-{Amount}% Fireball Mana Cost";
+                case AbilityUpgradeType.IceballCrit:
+                    return $"+{Amount}% Iceball Crit Chance";
+                case AbilityUpgradeType.IceballMana:
+                    return $"-{Amount}% Iceball Mana Cost";
+                case AbilityUpgradeType.HealthRegen:
+                    return $"+{Amount}% Health Regen";
+                case AbilityUpgradeType.ManaRegen:
+                    return $"+{Amount}% Mana Regen";
+                case AbilityUpgradeType.MaxMana:
+                    return $"+{Amount}% Max Mana";
+                case AbilityUpgradeType.LavaBlastDistance:
+                    return $"+{Amount}% Lava Blast Distance";
+                case AbilityUpgradeType.SprintSpeed:
+                    return $"+{Amount}% Sprint Speed";
+                case AbilityUpgradeType.MovementSpeed:
+                    return $"+{Amount}% Movement Speed";
+                case AbilityUpgradeType.MaxHealth:
+                    return $"+{Amount}% Max Health";
+                default:
+                    throw new Exception("Unhandled upgrade type");
+            }
+        }
+
+        private void SetTexture()
+        {
+            switch (Type)
             {
                 case AbilityUpgradeType.DamageTaken:
                     Texture = TextureCacheFactory.GetOnce("Icons/viking-shield.png");
@@ -120,41 +170,6 @@ namespace Zerds.GameObjects
                 case AbilityUpgradeType.MaxHealth:
                     Texture = TextureCacheFactory.GetOnce("Icons/health-normal.png");
                     return;
-                default:
-                    throw new Exception("Unhandled upgrade type");
-            }
-        }
-
-        public override string ToString()
-        {
-            switch (Type)
-            {
-                case AbilityUpgradeType.DamageTaken:
-                    return $"-{Amount}% Damage Taken";
-                case AbilityUpgradeType.DashDistance:
-                    return $"+{Amount}% Dash Distance";
-                case AbilityUpgradeType.FireballDamage:
-                    return $"+{Amount}% Fireball Damage";
-                case AbilityUpgradeType.FireballMana:
-                    return $"-{Amount}% Fireball Mana Cost";
-                case AbilityUpgradeType.IceballCrit:
-                    return $"+{Amount}% Iceball Crit Chance";
-                case AbilityUpgradeType.IceballMana:
-                    return $"-{Amount}% Iceball Mana Cost";
-                case AbilityUpgradeType.HealthRegen:
-                    return $"+{Amount}% Health Regen";
-                case AbilityUpgradeType.ManaRegen:
-                    return $"+{Amount}% Mana Regen";
-                case AbilityUpgradeType.MaxMana:
-                    return $"+{Amount}% Max Mana";
-                case AbilityUpgradeType.LavaBlastDistance:
-                    return $"+{Amount}% Lava Blast Distance";
-                case AbilityUpgradeType.SprintSpeed:
-                    return $"+{Amount}% Sprint Speed";
-                case AbilityUpgradeType.MovementSpeed:
-                    return $"+{Amount}% Movement Speed";
-                case AbilityUpgradeType.MaxHealth:
-                    return $"+{Amount}% Max Health";
                 default:
                     throw new Exception("Unhandled upgrade type");
             }

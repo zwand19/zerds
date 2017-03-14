@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Data;
 using Zerds.Factories;
 using Zerds.GameObjects;
 
@@ -19,6 +21,7 @@ namespace Zerds.Items
         {
             Rarity = rarity;
             Type = type;
+            SkillUpgrades = new List<SkillUpgrade>();
             AbilityUpgrades = new List<AbilityUpgrade>();
             for (var i = 0; i < (int) rarity; i++)
                 AbilityUpgrades.Add(AbilityUpgradeHelper.GetRandomUpgrade());
@@ -64,5 +67,32 @@ namespace Zerds.Items
                         ? new Color(180, 255, 180)
                         : Rarity == ItemRarities.Adept ? new Color(180, 180, 255) : Rarity == ItemRarities.Master ? new Color(200, 180, 245) : new Color(255, 205, 180);
 
+        public static Item FromSaveData(SavedItem savedItem)
+        {
+            Item item;
+            switch ((ItemTypes)savedItem.Type)
+            {
+                case ItemTypes.Hood:
+                    item = new HoodItem((ItemRarities)savedItem.Rarity);
+                    break;
+                case ItemTypes.Robe:
+                    item = new RobeItem((ItemRarities)savedItem.Rarity);
+                    break;
+                case ItemTypes.Wand:
+                    item = new WandItem((ItemRarities)savedItem.Rarity);
+                    break;
+                case ItemTypes.Boots:
+                    item = new BootItem((ItemRarities)savedItem.Rarity);
+                    break;
+                case ItemTypes.Ring:
+                    item = new RingItem((ItemRarities)savedItem.Rarity);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unknown saved item type");
+            }
+            item.AbilityUpgrades = savedItem.AbilityUpgrades.Select(u => new AbilityUpgrade(u)).ToList();
+            item.SkillUpgrades = savedItem.SkillUpgrades.Select(u => new SkillUpgrade(u)).ToList();
+            return item;
+        }
     }
 }
