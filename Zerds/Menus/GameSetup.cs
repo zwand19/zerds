@@ -131,22 +131,23 @@ namespace Zerds.Menus
                         break;
                     case Stage.SelectingPlayer:
                         Globals.SpriteDrawer.DrawText(_selectedName, _bounds.Center.ToVector2(), 20f, Globals.ContinueColor);
-                        Globals.SpriteDrawer.DrawText("<", new Vector2(_bounds.Left + 20f, _bounds.Center.Y), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText(">", new Vector2(_bounds.Right + 20f, _bounds.Center.Y), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText("<", new Vector2(_bounds.Left + 30f, _bounds.Center.Y), 20f, Color.White);
+                        Globals.SpriteDrawer.DrawText(">", new Vector2(_bounds.Right - 30f, _bounds.Center.Y), 20f, Color.White);
                         break;
                     case Stage.Waiting:
                         Globals.SpriteDrawer.DrawText(playersAreJoining ? "Waiting for others" : "Press Start to Begin.", c.ToVector2(), 20f, Color.White);
                         break;
                     case Stage.CreatingPlayer:
-                        if (_nameSelectorIndex == 0 && _firstNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.FirstNames[_firstNameIndex - 1], new Vector2(_bounds.Center.X - 70f, _bounds.Center.Y - 40f), 20f, new Color(Color.White, 100));
+                        Globals.SpriteDrawer.DrawText("Create Your Name", new Vector2(_bounds.Center.X, _bounds.Top + 40f),  20f, Color.White);
+                        if (_nameSelectorIndex == 0 && _firstNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.FirstNames[_firstNameIndex - 1], new Vector2(_bounds.Center.X - 70f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
                         Globals.SpriteDrawer.DrawText(_setup.FirstNames[_firstNameIndex], new Vector2(_bounds.Center.X - 70f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 0 ? 255 : 180));
-                        if (_nameSelectorIndex == 0 && _firstNameIndex < _setup.FirstNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.FirstNames[_firstNameIndex - 1], new Vector2(_bounds.Center.X - 70f, _bounds.Center.Y + 40f), 20f, new Color(Color.White, 100));
-                        if (_nameSelectorIndex == 1 && _middleNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex - 1], new Vector2(_bounds.Center.X, _bounds.Center.Y - 40f), 20f, new Color(Color.White, 100));
+                        if (_nameSelectorIndex == 0 && _firstNameIndex < _setup.FirstNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.FirstNames[_firstNameIndex + 1], new Vector2(_bounds.Center.X - 70f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
+                        if (_nameSelectorIndex == 1 && _middleNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex - 1], new Vector2(_bounds.Center.X, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
                         Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex], new Vector2(_bounds.Center.X, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 1 ? 255 : 180));
-                        if (_nameSelectorIndex == 1 && _middleNameIndex < _setup.MiddleNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex - 1], new Vector2(_bounds.Center.X, _bounds.Center.Y + 40f), 20f, new Color(Color.White, 100));
-                        if (_nameSelectorIndex == 2 && _lastNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.LastNames[_lastNameIndex - 1], new Vector2(_bounds.Center.X + 70f, _bounds.Center.Y - 40f), 20f, new Color(Color.White, 100));
+                        if (_nameSelectorIndex == 1 && _middleNameIndex < _setup.MiddleNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex + 1], new Vector2(_bounds.Center.X, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
+                        if (_nameSelectorIndex == 2 && _lastNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.LastNames[_lastNameIndex - 1], new Vector2(_bounds.Center.X + 70f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
                         Globals.SpriteDrawer.DrawText(_setup.LastNames[_lastNameIndex], new Vector2(_bounds.Center.X + 70f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 2 ? 255 : 180));
-                        if (_nameSelectorIndex == 2 && _lastNameIndex < _setup.LastNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.LastNames[_lastNameIndex - 1], new Vector2(_bounds.Center.X + 70f, _bounds.Center.Y + 40f), 20f, new Color(Color.White, 100));
+                        if (_nameSelectorIndex == 2 && _lastNameIndex < _setup.LastNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.LastNames[_lastNameIndex + 1], new Vector2(_bounds.Center.X + 70f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
                         break;
                     case Stage.PickingGear:
                         break;
@@ -169,6 +170,10 @@ namespace Zerds.Menus
                             SelectPlayer();
                             return;
                         case Stage.CreatingPlayer:
+                            if (_nameSelectorIndex < 2)
+                                _nameSelectorIndex++;
+                            else
+                                CreatePlayer();
                             break;
                         case Stage.PickingGear:
                             break;
@@ -188,8 +193,15 @@ namespace Zerds.Menus
                             _step = Stage.NotJoined;
                             return;
                         case Stage.CreatingPlayer:
-                            _step = Stage.SelectingPlayer;
-                            _selectedName = _setup.PlayerNames.First();
+                            if (_nameSelectorIndex > 0)
+                            {
+                                _nameSelectorIndex--;
+                            }
+                            else
+                            {
+                                _step = Stage.SelectingPlayer;
+                                _selectedName = _setup.PlayerNames.First();
+                            }
                             return;
                         case Stage.PickingGear:
                             _step = Stage.SelectingPlayer;
@@ -203,11 +215,46 @@ namespace Zerds.Menus
                             throw new ArgumentOutOfRangeException();
                     }
                 }
-                    
+                if (buttonsPressed.Contains(Buttons.LeftThumbstickUp))
+                {
+                    switch (_step)
+                    {
+                        case Stage.CreatingPlayer:
+                            if (_nameSelectorIndex == 0 && _firstNameIndex > 0) _firstNameIndex--;
+                            if (_nameSelectorIndex == 1 && _middleNameIndex > 0) _middleNameIndex--;
+                            if (_nameSelectorIndex == 2 && _lastNameIndex > 0) _lastNameIndex--;
+                            break;
+                        case Stage.NotJoined:
+                        case Stage.SelectingPlayer:
+                        case Stage.PickingGear:
+                        case Stage.Waiting:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                if (buttonsPressed.Contains(Buttons.LeftThumbstickDown))
+                {
+                    switch (_step)
+                    {
+                        case Stage.CreatingPlayer:
+                            if (_nameSelectorIndex == 0 && _firstNameIndex < _setup.FirstNames.Count - 1) _firstNameIndex++;
+                            if (_nameSelectorIndex == 1 && _middleNameIndex < _setup.MiddleNames.Count - 1) _middleNameIndex++;
+                            if (_nameSelectorIndex == 2 && _lastNameIndex < _setup.LastNames.Count - 1) _lastNameIndex++;
+                            break;
+                        case Stage.NotJoined:
+                        case Stage.SelectingPlayer:
+                        case Stage.PickingGear:
+                        case Stage.Waiting:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
                 if (buttonsPressed.Contains(Buttons.Start))
                     _setup.StartGame();
             }
-
             public bool IsPlaying => _step == Stage.Waiting;
             public bool IsJoining => _step != Stage.NotJoined && _step != Stage.Waiting;
 
@@ -225,6 +272,12 @@ namespace Zerds.Menus
                     _items = XmlStorage.GetPlayerInventory(_selectedName);
                 }
             }
+
+            private void CreatePlayer()
+            {
+                _step = Stage.PickingGear;
+            }
+
 
             private enum Stage
             {

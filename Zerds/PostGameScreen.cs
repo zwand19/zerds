@@ -211,13 +211,15 @@ namespace Zerds
 
         private void DrawTreasureChestInfo()
         {
-            if (_selectedChest == null) return;
-            var top = _treasureInfoBounds.Top + MenuPadding;
-            Globals.SpriteDrawer.DrawText("Chest Info", new Vector2(_treasureInfoBounds.Center.X, top), 24f, Color.White);
-            Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
-            Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
-            Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
-            Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[3] * 100:##.#}% Chance of no item", new Vector2(_treasureInfoBounds.Center.X, top + 150f), 18f, Color.White);
+            if (_selectedChest != null)
+            {
+                var top = _treasureInfoBounds.Top + MenuPadding;
+                Globals.SpriteDrawer.DrawText("Chest Info", new Vector2(_treasureInfoBounds.Center.X, top), 24f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[3] * 100:##.#}% Chance of no item", new Vector2(_treasureInfoBounds.Center.X, top + 150f), 18f, Color.White);
+            }
             var msg = DoneOpeningTreasure ? "Press Start to Continue" : "Press A to unlock";
             Globals.SpriteDrawer.DrawText(msg, new Vector2(_treasureInfoBounds.Center.X, _treasureInfoBounds.Bottom - MenuPadding - 40f), 20f, Globals.ContinueColor);
         }
