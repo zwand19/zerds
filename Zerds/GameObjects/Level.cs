@@ -50,7 +50,7 @@ namespace Zerds.GameObjects
 
         public static int KillingBlowGold(Player player)
         {
-            return player.Zerd.Stats.LevelKillingBlows.Sum(e => EnemyConstants.EnemyGoldValues[e.Type]);
+            return player.Zerd.Stats.LevelKillingBlows.Sum(e => e == null || !EnemyConstants.EnemyGoldValues.ContainsKey(e.Type) ? 0 : EnemyConstants.EnemyGoldValues[e.Type]);
         }
 
         public static int TotalEnemiesKilledGold(Player player)
@@ -70,7 +70,14 @@ namespace Zerds.GameObjects
 
         public static int TotalLevelGold(Player player)
         {
-            return KillingBlowGold(player) + TotalEnemiesKilledGold(player) + ComboGold(player) + LevelGold();
+            var gold = KillingBlowGold(player) + TotalEnemiesKilledGold(player) + ComboGold(player) + LevelGold();
+            if (player.Zerd.Stats.PerfectRound)
+                gold += GameplayConstants.PerfectRoundBonus;
+            else if (player.Zerd.Stats.NoMissRound)
+                gold += GameplayConstants.NoMissesBonus;
+            else if (player.Zerd.Stats.CleanRound)
+                gold += GameplayConstants.CleanRoundBonus;
+            return gold;
         }
 
         public static void LevelComplete()

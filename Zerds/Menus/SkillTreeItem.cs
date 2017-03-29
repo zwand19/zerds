@@ -55,12 +55,12 @@ namespace Zerds.Menus
             });
         }
 
-        public void Draw(Rectangle bounds, bool selected)
+        public void Draw(Rectangle bounds, bool selected, bool available)
         {
             var pos = GetPosition(bounds);
             if (selected)
                 Globals.SpriteDrawer.DrawRect(new Rectangle(pos.X - Border, pos.Y - Border, Size + Border * 2, Size + Border * 2), Color.White);
-            Globals.SpriteDrawer.Draw(Texture, new Rectangle(pos.X, pos.Y, Size, Size), Color.White);
+            Globals.SpriteDrawer.Draw(Texture, new Rectangle(pos.X, pos.Y, Size, Size), Color.White * (available ? 1f : 0.5f));
         }
 
         private Point GetPosition(Rectangle bounds, int? row = null, int? col = null)

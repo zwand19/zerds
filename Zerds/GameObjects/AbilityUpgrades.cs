@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
+using Zerds.Constants;
 using Zerds.Data;
 using Zerds.Factories;
 
@@ -7,68 +8,73 @@ namespace Zerds.GameObjects
 {
     public static class AbilityUpgradeHelper
     {
-        public static int DashDistanceUpgrade => (int) Helpers.RandomInRange(4f, 9f);
-        public static int SprintSpeedUpgrade => (int) Helpers.RandomInRange(3f, 7f);
-        public static int FireballManaUpgrade => (int) Helpers.RandomInRange(3f, 7f);
-        public static int FireballDamageUpgrade => (int)Helpers.RandomInRange(3f, 6f);
-        public static int IceballManaUpgrade => (int) Helpers.RandomInRange(2f, 5f);
-        public static int IceballCritUpgrade => (int)Helpers.RandomInRange(2f, 5f);
-        public static int LavaBlastDistanceUpgrade => (int) Helpers.RandomInRange(7f, 13f);
-        public static int MovementSpeedUpgrade => (int) Helpers.RandomInRange(2f, 4f);
-        public static int DamageTakenUpgrade => (int) Helpers.RandomInRange(1f, 4f);
-        public static int HealthRegenUpgrade => (int) Helpers.RandomInRange(4f, 8f);
-        public static int ManaRegenUpgrade => (int)Helpers.RandomInRange(4f, 7f);
-        public static int MaxHealthUpgrade => (int)Helpers.RandomInRange(5f, 8f);
-        public static int MaxManaUpgrade => (int)Helpers.RandomInRange(4f, 7f);
+        public static float DashDistanceUpgrade => Helpers.RandomInRange(4f, 9f);
+        public static float SprintSpeedUpgrade => Helpers.RandomInRange(3f, 7f);
+        public static float FireballManaUpgrade => Helpers.RandomInRange(4f, 7f);
+        public static float FireballDamageUpgrade => Helpers.RandomInRange(3f, 6f);
+        public static float IceballManaUpgrade => Helpers.RandomInRange(2f, 5f);
+        public static float IceballCritUpgrade => Helpers.RandomInRange(2f, 5f);
+        public static float LavaBlastDistanceUpgrade => Helpers.RandomInRange(8f, 13f);
+        public static float MovementSpeedUpgrade => Helpers.RandomInRange(2f, 4f);
+        public static float DamageTakenUpgrade => Helpers.RandomInRange(1f, 4f);
+        public static float HealthRegenUpgrade => Helpers.RandomInRange(4f, 8f);
+        public static float ManaRegenUpgrade => Helpers.RandomInRange(4f, 7f);
+        public static float MaxHealthUpgrade => Helpers.RandomInRange(5f, 8f);
+        public static float MaxManaUpgrade => Helpers.RandomInRange(4f, 7f);
 
-        public static AbilityUpgrade GetRandomUpgrade()
+        public static AbilityUpgrade GetRandomUpgrade(bool forItem = false)
         {
-            var upgrade = new Random().Next(13);
+            var upgrade = Globals.Random.Next(13);
             int amt;
             switch (upgrade)
             {
                 case 0:
-                    amt = DashDistanceUpgrade;
+                    amt = AmountIncludingSource(DashDistanceUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.DashDistance, "Increase the distance", $"of dash by {amt}%", amt);
                 case 1:
-                    amt = SprintSpeedUpgrade;
+                    amt = AmountIncludingSource(SprintSpeedUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.SprintSpeed, "Increase your sprint", $"speed by {amt}%", amt);
                 case 2:
-                    amt = FireballManaUpgrade;
+                    amt = AmountIncludingSource(FireballManaUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.FireballMana, "Reduce the mana cost", $"of fireball by {amt}%", amt);
                 case 3:
-                    amt = FireballDamageUpgrade;
+                    amt = AmountIncludingSource(FireballDamageUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.FireballDamage, "Increase the damage", $"of fireball by {amt}%", amt);
                 case 4:
-                    amt = IceballCritUpgrade;
+                    amt = AmountIncludingSource(IceballCritUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.IceballCrit, "Increase the crit chance", $"of iceball by {amt}%", amt);
                 case 5:
-                    amt = IceballManaUpgrade;
+                    amt = AmountIncludingSource(IceballManaUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.IceballMana, "Reduce the mana cost" , $"of iceball by {amt}%", amt);
                 case 6:
-                    amt = LavaBlastDistanceUpgrade;
+                    amt = AmountIncludingSource(LavaBlastDistanceUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.LavaBlastDistance, "Increase the range", $"of lava blast by {amt}%", amt);
                 case 7:
-                    amt = MovementSpeedUpgrade;
-                    return new AbilityUpgrade(AbilityUpgradeType.MovementSpeed, "Increase your movement speed", $"while not sprinting by {amt}%", amt);
+                    amt = AmountIncludingSource(MovementSpeedUpgrade, forItem);
+                    return new AbilityUpgrade(AbilityUpgradeType.MovementSpeed, "Increase your speed", $"while not sprinting by {amt}%", amt);
                 case 8:
-                    amt = DamageTakenUpgrade;
+                    amt = AmountIncludingSource(DamageTakenUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.DamageTaken, "Reduce all damage", $"taken by {amt}%", amt);
                 case 9:
-                    amt = HealthRegenUpgrade;
+                    amt = AmountIncludingSource(HealthRegenUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.HealthRegen, "Increase health regen", $"by {amt}%", amt);
                 case 10:
-                    amt = ManaRegenUpgrade;
+                    amt = AmountIncludingSource(ManaRegenUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.HealthRegen, "Increase mana regen", $"by {amt}%", amt);
                 case 11:
-                    amt = MaxHealthUpgrade;
+                    amt = AmountIncludingSource(MaxHealthUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.MaxHealth, "Increase max health", $"by {amt}%", amt);
                 case 12:
-                    amt = MaxManaUpgrade;
+                    amt = AmountIncludingSource(MaxManaUpgrade, forItem);
                     return new AbilityUpgrade(AbilityUpgradeType.MaxHealth, "Increase max mana", $"by {amt}%", amt);
                 default:
                     throw new Exception("Invalid upgrade");
             }
+        }
+
+        private static int AmountIncludingSource(double amt, bool forItem)
+        {
+            return (int)(forItem ? amt * GameplayConstants.ItemAbilityUpgradeFactor : amt);
         }
     }
 

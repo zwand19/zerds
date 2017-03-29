@@ -147,14 +147,17 @@ namespace Zerds
             }
             else
             {
-                Globals.SpriteDrawer.DrawText(_reward.ToString(), new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, _reward.TextColor);
-                _reward.Draw(bounds.Center.X, bounds.Center.Y - 30f, 70, 70);
-                var y = bounds.Center.Y + 50f;
+                Globals.SpriteDrawer.DrawText(_reward.Name, new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, _reward.TextColor);
+                _reward.Draw(bounds.Center.X, bounds.Center.Y - 70f, 70, 70);
+                var y = bounds.Center.Y + 10f;
                 foreach (var buff in _reward.AbilityUpgrades)
                 {
                     Globals.SpriteDrawer.DrawText(buff.ToString(), new Vector2(bounds.Center.X, y), 14f, Color.White);
                     y += 22f;
                 }
+                Globals.SpriteDrawer.DrawText(_reward.Description1(), new Vector2(bounds.Center.X, y), 14f, Color.White);
+                y += 22;
+                Globals.SpriteDrawer.DrawText(_reward.Description2(), new Vector2(bounds.Center.X, y), 14f, Color.White);
             }
             Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(bounds.Center.X, bounds.Bottom - 50f), 20f, Globals.ContinueColor);
         }
@@ -215,9 +218,9 @@ namespace Zerds
             {
                 var top = _treasureInfoBounds.Top + MenuPadding;
                 Globals.SpriteDrawer.DrawText("Chest Info", new Vector2(_treasureInfoBounds.Center.X, top), 24f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item}", new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
+                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
                 Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[3] * 100:##.#}% Chance of no item", new Vector2(_treasureInfoBounds.Center.X, top + 150f), 18f, Color.White);
             }
             var msg = DoneOpeningTreasure ? "Press Start to Continue" : "Press A to unlock";

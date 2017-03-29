@@ -47,11 +47,11 @@ namespace Zerds.Constants
         {
             return new EnemyProperties
             {
-                MinHealth = GetHealth(8f),
+                MinHealth = GetHealth(15.5f),
                 HealthRegen = BaseRegen * 3f,
-                MinSpeed = BaseSpeed * 0.75f,
-                MaxHealth = GetHealth(8f),
-                MaxSpeed = BaseSpeed * 0.75f,
+                MinSpeed = BaseSpeed * 0.825f,
+                MaxHealth = GetHealth(15.5f),
+                MaxSpeed = BaseSpeed * 0.825f,
                 CritChance = 0f
             };
         }
@@ -80,9 +80,9 @@ namespace Zerds.Constants
             {
                 MinHealth = GetHealth(1.1f),
                 HealthRegen = BaseRegen * 2,
-                MinSpeed = BaseSpeed * 0.75f,
+                MinSpeed = BaseSpeed * 0.6f,
                 MaxHealth = GetHealth(1.4f),
-                MaxSpeed = BaseSpeed * 0.9f,
+                MaxSpeed = BaseSpeed * 0.75f,
                 CritChance = 0.2f
             };
         }
@@ -99,11 +99,11 @@ namespace Zerds.Constants
                 CritChance = 0.25f
             };
         }
-        public const float ArcherArrowSpeed = 675f;
+        public const float ArcherArrowSpeed = 425f;
         public const float ArcherArrowLength = 850f;
         public const float ArcherArrowKnockback = 100f;
         public static TimeSpan ArcherArrowKnockbackLength => TimeSpan.FromMilliseconds(300);
-        public static TimeSpan ArcherArrowCooldown => TimeSpan.FromMilliseconds(1250);
+        public static TimeSpan ArcherArrowCooldown => TimeSpan.FromMilliseconds(2250);
 
         public static EnemyProperties GetDemonProperties()
         {

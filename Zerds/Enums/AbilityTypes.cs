@@ -15,6 +15,7 @@
         Icicle,
         DragonsBreath,
         Charm,
-        SkeletonKingBlast
+        SkeletonKingBlast,
+        Thorns
     }
 }

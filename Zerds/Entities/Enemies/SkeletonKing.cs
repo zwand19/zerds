@@ -17,9 +17,9 @@ namespace Zerds.Entities.Enemies
         {
             _ai = new SkeletonKingAI(this, new Melee(this, EnemyConstants.SkeletonKingMinDamage, EnemyConstants.SkeletonKingMaxDamage, null, EnemyConstants.SkeletonKingKnockback, EnemyConstants.SkeletonKingKnockbackMillis), new SkeletonKingBlast(this));
 
-            HitboxSize = 0.95f;
-            Width = 128;
-            Height = 128;
+            HitboxSize = 0.8f;
+            Width = 312;
+            Height = 312;
             AttackRange = 130;
             Spawned = true;
 
@@ -147,12 +147,12 @@ namespace Zerds.Entities.Enemies
             foreach (var zerd in Globals.GameState.Zerds)
             {
                 var z1 = new Zombie();
-                var v = new Vector2(50, 0).Rotate(new Random().Next(360));
+                var v = new Vector2(50, 0).Rotate(Globals.Random.Next(360));
                 z1.X = zerd.X + v.X;
                 z1.Y = zerd.Y + v.Y;
                 z1.GetAI().Target = zerd;
                 var z2 = new Zombie();
-                v = new Vector2(50, 0).Rotate(new Random().Next(360));
+                v = new Vector2(50, 0).Rotate(Globals.Random.Next(360));
                 z2.X = zerd.X + v.X;
                 z2.Y = zerd.Y + v.Y;
                 z2.GetAI().Target = zerd;

@@ -33,7 +33,7 @@ namespace Zerds.Factories
 
         public static List<Enemy> CreateEnemyBatch()
         {
-            var rand = new Random().NextDouble();
+            var rand = Globals.Random.NextDouble();
             switch (Level.CurrentLevel)
             {
                 case 1:
@@ -58,7 +58,25 @@ namespace Zerds.Factories
         public static void Update(GameTime gameTime)
         {
             var enemyDifficulty = Globals.GameState.Enemies.Sum(e => e.Worth());
-            var targetDifficulty = Level.CurrentLevel * 10 * (0.6 + Globals.GameState.Players.Count(p => p.IsPlaying) * 0.4);
+            float playerFactor;
+            switch (Globals.GameState.Zerds.Count)
+            {
+                case 1:
+                    playerFactor = 1f;
+                    break;
+                case 2:
+                    playerFactor = 1.6f;
+                    break;
+                case 3:
+                    playerFactor = 2.5f;
+                    break;
+                case 4:
+                    playerFactor = 3.6f;
+                    break;
+                default:
+                    throw new ArgumentException(nameof(playerFactor));
+            }
+            var targetDifficulty = Level.CurrentLevel * 10 * playerFactor;
             if (enemyDifficulty < targetDifficulty && Level.TimeRemaining > TimeSpan.Zero)
                 Globals.GameState.Enemies.AddRange(CreateEnemyBatch());
         }

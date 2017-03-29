@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,7 @@ namespace Zerds
         public static ContentManager ContentManager { get; internal set; }
         public static Dictionary<FontTypes, SpriteFont> Fonts { get; set; }
         public static Map Map { get; set; }
+        public static Random Random { get; set; }
 
         public static void Initialize()
         {
@@ -25,6 +27,7 @@ namespace Zerds
             Fonts = new Dictionary<FontTypes, SpriteFont>();
             ContinueColor = new Color(80, 220, 100);
             GoldColor = new Color(255, 215, 0);
+            Random = new Random();
         }
 
         public static void LoadFont(string fileName, FontTypes type)

@@ -21,7 +21,7 @@ namespace Zerds.GameObjects
             Damage = damage * (1 + GameplayConstants.DamageFactorPerLevel * Level.CurrentLevel);
             DamageType = type;
             Creator = creator;
-            var variance = (float)new Random().NextDouble() * GameplayConstants.DamageVariance + 1.0f - GameplayConstants.DamageVariance / 2;
+            var variance = (float)Globals.Random.NextDouble() * GameplayConstants.DamageVariance + 1.0f - GameplayConstants.DamageVariance / 2;
             Damage *= variance;
             if (Creator.IsCritical(DamageType, ability))
             {

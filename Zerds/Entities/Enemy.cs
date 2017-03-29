@@ -34,7 +34,7 @@ namespace Zerds.Entities
             ManaRegen = properties.ManaRegen * DifficultyConstants.ManaFactor;
             BaseSpeed = Helpers.RandomInRange(properties.MinSpeed, properties.MaxSpeed) * DifficultyConstants.SpeedFactor;
             CriticalChance = properties.CritChance;
-            var random = new Random();
+            var random = Globals.Random;
             if (randomSpawn)
             {
                 X = random.Next(Globals.ViewportBounds.Width);

@@ -10,7 +10,7 @@ namespace Zerds
 {
     public static class Helpers
     {
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = Globals.Random;
 
         public static bool RandomChance(float chance)
         {

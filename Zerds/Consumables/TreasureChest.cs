@@ -59,7 +59,7 @@ namespace Zerds.Consumables
         private void AddItem(Enemy dropper, double baseChanceFactor)
         {
             ItemRarities rarity;
-            var chance = new Random().NextDouble();
+            var chance = Globals.Random.NextDouble();
             if (dropper == null)
                 rarity = ItemRarities.Novice; // base treasure chest always available to open
             else if (chance < GameplayConstants.ItemRarityChances[ItemRarities.Novice])
@@ -72,7 +72,7 @@ namespace Zerds.Consumables
                 rarity = ItemRarities.Master;
             else rarity = ItemRarities.Legendary;
 
-            chance = new Random().NextDouble();
+            chance = Globals.Random.NextDouble();
             if (dropper == null)
                 PotentialItems.Add(null);
             else if (chance < 1 / 5f)
@@ -84,7 +84,7 @@ namespace Zerds.Consumables
             else if (chance < 4 / 5f)
                 PotentialItems.Add(new PotentialItem(new WandItem(rarity), baseChanceFactor));
             else
-                PotentialItems.Add(new PotentialItem(new RingItem(rarity), baseChanceFactor));
+                PotentialItems.Add(new PotentialItem(new GloveItem(rarity), baseChanceFactor));
         }
     }
 }

@@ -36,13 +36,13 @@ namespace Zerds.Items
 
         private void SetChances(double min, double max, double chanceFactor)
         {
-            Chance = new Random().NextDouble() * (max - min) + min;
+            Chance = Globals.Random.NextDouble() * (max - min) + min;
             Chance *= chanceFactor;
         }
 
         public Item Process()
         {
-            var chance = new Random().NextDouble();
+            var chance = Globals.Random.NextDouble();
             return chance > Chance ? null : Item;
         }
     }

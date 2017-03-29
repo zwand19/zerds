@@ -23,7 +23,7 @@ namespace Zerds.AI
                 return;
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
-            var target = Enemy.GetNearestEnemy();
+            var target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
             if (target == null)
             {
                 Enemy.Velocity = Vector2.Zero;

@@ -14,6 +14,7 @@ using Zerds.Input;
 using Zerds.Menus;
 using Zerds.Constants;
 using Zerds.Data;
+using Zerds.Items;
 
 namespace Zerds
 {
@@ -74,6 +75,7 @@ namespace Zerds
             Globals.ContentManager = Content;
             Globals.SpriteDrawer = new SpriteBatch(GraphicsDevice);
             Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
+            Globals.Initialize();
             _players = new List<Player>
             {
                 new Player("Player One", PlayerIndex.One),
@@ -82,7 +84,6 @@ namespace Zerds
                 new Player("Player Four", PlayerIndex.Four)
             };
             Globals.GameState = new GameState(_players);
-            Globals.Initialize();
             Globals.LoadFont("Pericles", FontTypes.Pericles);
             HUD.Initialize(GraphicsDevice);
         }
@@ -95,12 +96,16 @@ namespace Zerds
             return true;
         }
 
-        private bool PlayGameFunc(List<bool> players)
+        private bool PlayGameFunc(List<Tuple<bool, string, List<Item>, List<Item>>> players)
         {
             _gameSetup = null;
             _state = GameStates.Game;
-            for (var i=0; i < players.Count; i++)
-                if (players[i]) _players[i].JoinGame();
+            for (var i = 0; i < players.Count; i++)
+            {
+                _players[i].Name = players[i].Item2;
+                _players[i].Items = players[i].Item4;
+                if (players[i].Item1) _players[i].JoinGame(players[i].Item3);
+            }
             Level.StartLevel();
             return true;
         }
@@ -121,46 +126,53 @@ namespace Zerds
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            ControllerService.Update(gameTime);
-            switch (_state)
+            try
             {
-                case GameStates.MainMenu:
-                    _mainMenu.Update();
-                    break;
-                case GameStates.GameSetup:
-                    _gameSetup.Update();
-                    break;
-                case GameStates.Game:
-                    _players.ForEach(p => p.Update(gameTime));
-                    Globals.GameState.Update(gameTime);
-                    if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
-                    {
-                        _state = GameStates.Intermission;
-                        _intermissionScreen = new IntermissionScreen();
-                        Level.LevelComplete();
-                    }
-                    break;
-                case GameStates.Intermission:
-                    _intermissionScreen.Update();
-                    if (_intermissionScreen.Ready)
-                    {
-                        _intermissionScreen = null;
-                        _state = GameStates.Game; 
-                        Level.StartLevel();
-                    }
-                    return;
-                case GameStates.PostGame:
-                    _postGameScreen.Update();
-                    if (_postGameScreen.Ready)
-                    {
-                        _postGameScreen = null;
-                        _state = GameStates.MainMenu;
-                        Globals.GameState = new GameState(_players);
-                        _mainMenu = new MainMenu(SetupGameFunc);
-                    }
-                    return;
+                ControllerService.Update(gameTime);
+                switch (_state)
+                {
+                    case GameStates.MainMenu:
+                        _mainMenu.Update();
+                        break;
+                    case GameStates.GameSetup:
+                        _gameSetup.Update();
+                        break;
+                    case GameStates.Game:
+                        _players.ForEach(p => p.Update(gameTime));
+                        Globals.GameState.Update(gameTime);
+                        if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
+                        {
+                            _state = GameStates.Intermission;
+                            _intermissionScreen = new IntermissionScreen();
+                            Level.LevelComplete();
+                        }
+                        break;
+                    case GameStates.Intermission:
+                        _intermissionScreen.Update();
+                        if (_intermissionScreen.Ready)
+                        {
+                            _intermissionScreen = null;
+                            _state = GameStates.Game;
+                            Level.StartLevel();
+                        }
+                        return;
+                    case GameStates.PostGame:
+                        _postGameScreen.Update();
+                        if (_postGameScreen.Ready)
+                        {
+                            _postGameScreen = null;
+                            _state = GameStates.MainMenu;
+                            Globals.GameState = new GameState(_players);
+                            _mainMenu = new MainMenu(SetupGameFunc);
+                        }
+                        return;
+                }
+                base.Update(gameTime);
             }
-            base.Update(gameTime);
+            catch (Exception e)
+            {
+                var a = 5;
+            }
         }
 
         /// <summary>
@@ -169,28 +181,35 @@ namespace Zerds
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
-            GraphicsDevice.Clear(Color.Black);
-
-            switch (_state)
+            try
             {
-                case GameStates.MainMenu:
-                    _mainMenu.Draw();
-                    break;
-                case GameStates.GameSetup:
-                    _gameSetup.Draw();
-                    break;
-                case GameStates.Game:
-                    Globals.GameState.Draw();
-                    HUD.Draw();
-                    break;
-                case GameStates.Intermission:
-                    Globals.GameState.Draw();
-                    _intermissionScreen.Draw();
-                    break;
-                case GameStates.PostGame:
-                    _postGameScreen.Draw();
-                    break;
+                Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
+                GraphicsDevice.Clear(Color.Black);
+
+                switch (_state)
+                {
+                    case GameStates.MainMenu:
+                        _mainMenu.Draw();
+                        break;
+                    case GameStates.GameSetup:
+                        _gameSetup.Draw();
+                        break;
+                    case GameStates.Game:
+                        Globals.GameState.Draw();
+                        HUD.Draw();
+                        break;
+                    case GameStates.Intermission:
+                        Globals.GameState.Draw();
+                        _intermissionScreen.Draw();
+                        break;
+                    case GameStates.PostGame:
+                        _postGameScreen.Draw();
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                var a = 5;
             }
         }
     }

@@ -14,6 +14,7 @@ namespace Zerds.Input
         public Vector2 RightStickDirection { get; set; }
         public float LeftTrigger { get; set; }
         public float RightTrigger { get; set; }
+        public bool LeftStickIn { get; set; }
 
         private TimeSpan _remainingVibration;
 
@@ -40,6 +41,7 @@ namespace Zerds.Input
                 RightStickDirection = new Vector2(gamePadState.ThumbSticks.Right.X, gamePadState.ThumbSticks.Right.Y);
                 LeftTrigger = gamePadState.Triggers.Left;
                 RightTrigger = gamePadState.Triggers.Right;
+                LeftStickIn = gamePadState.Buttons.LeftStick == ButtonState.Pressed;
             }
             else
             {

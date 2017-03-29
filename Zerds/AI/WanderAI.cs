@@ -28,7 +28,7 @@ namespace Zerds.AI
                 return;
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
-            var target = Target ?? Enemy.GetNearestEnemy();
+            var target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
             if (target == null)
                 State = EnemyStates.Wandering;
             switch (State)

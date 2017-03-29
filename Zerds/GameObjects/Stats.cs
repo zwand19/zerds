@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Zerds.Entities;
 using Zerds.Enums;
 
@@ -17,19 +16,19 @@ namespace Zerds.GameObjects
         public int GoldEarned { get; set; }
         public int AbilityUpgradesPurchased { get; set; }
         public int SkillPointsSpent { get; set; }
-
-        private readonly Zerd _zerd;
-
-        public Stats(Zerd zerd)
-        {
-            _zerd = zerd;
-        }
+        public bool CleanRound { get; set; }
+        public bool NoMisses { get; set; }
 
         public void ResetLevel()
         {
             MaxLevelCombo = 0;
             LevelKillingBlows = new List<Enemy>();
+            CleanRound = true;
+            NoMisses = true;
         }
+
+        public bool PerfectRound => CleanRound && NoMisses && MaxLevelCombo >= 10;
+        public bool NoMissRound => NoMisses && MaxLevelCombo >= 10;
 
         public void IncreaseCombo()
         {
@@ -60,6 +59,13 @@ namespace Zerds.GameObjects
         {
             if (damageInstance.DamageType == DamageTypes.Unknown) return;
             DamageTaken += damageInstance.Damage;
+            CleanRound = false;
+        }
+
+        public void Missed()
+        {
+            NoMisses = false;
+            Combo = 0;
         }
     }
 }

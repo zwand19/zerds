@@ -7,10 +7,6 @@ namespace Zerds.Constants
         public const float DashBonus = 600f;
         public static TimeSpan DashCooldown = TimeSpan.FromSeconds(8);
         public static TimeSpan DashLength => new TimeSpan(0, 0, 0, 0, 300);
-        
-        public const float SprintBonus = 175f;
-        public static TimeSpan SprintLength => new TimeSpan(0, 0, 2);
-        public const float SprintManaPerSecond = 15f;
 
         public static float ColdSpeedFactor = -150f;
 
@@ -64,12 +60,13 @@ namespace Zerds.Constants
         public static TimeSpan FireballCooldown = TimeSpan.FromMilliseconds(3250);
 
         public const float LavaBlastKnockback = 420f;
-        public const float LavaBlastSpeed = 325f;
-        public const float LavaBlastDistance = 450f;
+        public const float LavaBlastSpeed = 280f;
+        public const float LavaBlastDistance = 280f;
         public const float LavaBlastManaCost = 80f;
         public const float LavaBlastBurnLength = 3000f;
-        public const float LavaBlastBurnDamagePercentage = 0.1f;
-        public const float LavaBlastDamage = 14f;
+        public const float LavaBlastBurnDamagePercentage = 0.08f;
+        public const float LavaBlastDamage = 13f;
+        public const float LavaBlastDistanceLossPerHit = 15f;
         public static TimeSpan LavaBlastKnockbackLength => TimeSpan.FromMilliseconds(400);
         public static TimeSpan LavaBlastCastTime => TimeSpan.FromMilliseconds(1250);
         public static TimeSpan LavaBlastFollowThroughTime => TimeSpan.FromMilliseconds(200);

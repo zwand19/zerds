@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Zerds.Constants;
 using Zerds.Input;
 
 namespace Zerds.Menus
@@ -19,12 +18,19 @@ namespace Zerds.Menus
             Items = items;
         }
 
-        public void Update()
+        public void Update(PlayerIndex? index = null)
         {
-            CheckController(ControllerService.Controllers[PlayerIndex.One]);
-            CheckController(ControllerService.Controllers[PlayerIndex.Two]);
-            CheckController(ControllerService.Controllers[PlayerIndex.Three]);
-            CheckController(ControllerService.Controllers[PlayerIndex.Four]);
+            if (index == null)
+            {
+                CheckController(ControllerService.Controllers[PlayerIndex.One]);
+                CheckController(ControllerService.Controllers[PlayerIndex.Two]);
+                CheckController(ControllerService.Controllers[PlayerIndex.Three]);
+                CheckController(ControllerService.Controllers[PlayerIndex.Four]);
+            }
+            else
+            {
+                CheckController(ControllerService.Controllers[index.Value]);
+            }
         }
 
         public void CheckController(Controller controller)

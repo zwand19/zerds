@@ -39,7 +39,7 @@ namespace Zerds.AI
         protected virtual void SetWanderTarget()
         {
             CurrentWanderTime = TimeSpan.Zero;
-            var ran = new Random();
+            var ran = Globals.Random;
             var x = Enemy.Position.X + ran.Next(-50, 50);
             if (x < 150)
                 x = 150;

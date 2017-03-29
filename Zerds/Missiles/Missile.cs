@@ -37,7 +37,7 @@ namespace Zerds.Missiles
                 Speed *= 0.75f;
                 IsAlive = false;
                 if (Creator is Zerd)
-                    ((Zerd) Creator).Stats.Combo = 0;
+                    ((Zerd) Creator).Stats.Missed();
             }
             base.Update(gameTime);
         }

@@ -83,33 +83,52 @@ namespace Zerds
             return r1.Hitbox().Any(hitbox => r2.Hitbox().Any(hitbox.Intersects));
         }
 
-        public static void DrawTextLeftAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize,
-            FontTypes type = FontTypes.Pericles, Color? color = null)
+        public static void DrawTextLeftAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
+            var size = font.MeasureString(text);
             var scale = fontSize / 50f;
+            var y = (position - scale * size / 2).Y;
             var fontColor = color ?? Color.Black;
-            Globals.SpriteDrawer.DrawString(font, text, position, fontColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            Globals.SpriteDrawer.DrawString(font, text, new Vector2(position.X, y), fontColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        }
+
+        public static void DrawTextRightAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        {
+            var font = Globals.Fonts[type];
+            var size = font.MeasureString(text);
+            var scale = fontSize / 50f;
+            var x = (position - scale * size).X;
+            spriteBatch.DrawTextLeftAlign(text, new Vector2(x, position.Y), fontSize, color, type);
         }
 
         public static void DrawText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
-            spriteBatch.DrawTextLeftAlign(text, position - fontSize * size / 100f, fontSize, type, color);
+            var scale = fontSize / 50f;
+            var x = (position - scale * size / 2).X;
+            spriteBatch.DrawTextLeftAlign(text, new Vector2(x, position.Y), fontSize, color, type);
         }
 
         public static void DrawWrappedText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, float maxWidth, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
-            spriteBatch.DrawTextLeftAlign(text.Wrap(maxWidth, fontSize), position - fontSize * size / 100f, fontSize, type, color);
+            var scale = fontSize / 50f;
+            var x = (position - scale * size / 2).X;
+            spriteBatch.DrawTextLeftAlign(text.Wrap(maxWidth, fontSize), new Vector2(x, position.Y), fontSize, color, type);
         }
 
         public static void DrawRect(this SpriteBatch spriteBatch, Rectangle rect, Color? color = null)
         {
             var colorVal = color ?? Color.Black;
             spriteBatch.Draw(Globals.WhiteTexture, rect, colorVal);
+        }
+
+        public static Rectangle BorderRect(this Rectangle rect, int borderSize)
+        {
+            return new Rectangle(rect.Left - borderSize, rect.Top - borderSize, rect.Width + borderSize * 2, rect.Height + borderSize * 2);
         }
 
         public static TimeSpan SubtractWithGameSpeed(this TimeSpan t1, TimeSpan t2)

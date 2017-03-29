@@ -6,6 +6,6 @@
 		Robe,
 		Wand,
 		Boots,
-		Ring
+		Glove
     }
 }

@@ -16,7 +16,7 @@ namespace Zerds.Consumables
         {
             X = dropper.X;
             Y = dropper.Y;
-            Velocity = new Vector2(1, 0).Rotate(new Random().Next(360));
+            Velocity = new Vector2(1, 0).Rotate(Globals.Random.Next(360));
             Speed = GameplayConstants.PickupItemSpeed;
             Duration = TimeSpan.Zero;
             if (Math.Abs(Width) < CodingConstants.Tolerance) Width = GameplayConstants.DefaultItemSize;

@@ -67,7 +67,7 @@ namespace Zerds.Graphics
             var frame = 0;
             while (timeIntoAnimation < castTime)
             {
-                handsAnimation.AddFrame((frame++ % 4) + 1, 0, handSpeed);
+                handsAnimation.AddFrame(frame++ % 4 + 1, 0, handSpeed);
                 timeIntoAnimation += handSpeed;
             }
             handsAnimation.AddFrame(0, 1, followThroughTime.Split(5), executeFunc);

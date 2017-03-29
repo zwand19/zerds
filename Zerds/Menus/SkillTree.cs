@@ -35,16 +35,18 @@ namespace Zerds.Menus
         {
             Selected = Selected ?? Items.First();
             Items.ForEach(i => i.DrawDependencies(bounds));
-            Items.ForEach(i => i.Draw(bounds, Selected == i));
+            Items.ForEach(i =>
+            {
+                var available = PointsSpent >= i.Row * 5 && (i.Parent == null || i.Parent.PointsSpent == i.Parent.MaxPoints);
+                i.Draw(bounds, Selected == i, available);
+            });
             Globals.SpriteDrawer.DrawRect(new Rectangle(bounds.X, bounds.Y + bounds.Height - InfoHeight, bounds.Width, InfoHeight), new Color(new Color(180, 180, 180), 0.75f));
             Globals.SpriteDrawer.DrawText(Selected.Title, new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 30), 24f, Color.Black);
             Globals.SpriteDrawer.DrawText($"{Selected.PointsSpent} / {Selected.MaxPoints}", new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 80f), 20f);
             Globals.SpriteDrawer.DrawText(Selected.Description.Wrap(bounds.Width - Padding * 2, 16f), new Vector2(bounds.X + bounds.Width / 2, bounds.Bottom - InfoHeight + 180f), 16f);
-            var skillPts = (_player.FloatingSkillPoints) + (Name == "Fire"
-                ? _player.Skills.FireSkillTree.PointsAvailable
-                : Name == "Frost" ? _player.Skills.FrostSkillTree.PointsAvailable : _player.Skills.ArcaneSkillTree.PointsAvailable);
-            Globals.SpriteDrawer.DrawText($"Pts Available: {skillPts} ({_player.FloatingSkillPoints} Floating)",
-                new Vector2(bounds.Center.X, bounds.Y + 30f), 15f, Color.White);
+            var skillPts = _player.FloatingSkillPoints +
+                           (Name == "Fire" ? _player.Skills.FireSkillTree.PointsAvailable : Name == "Frost" ? _player.Skills.FrostSkillTree.PointsAvailable : _player.Skills.ArcaneSkillTree.PointsAvailable);
+            Globals.SpriteDrawer.DrawText($"Pts Available: {skillPts} ({_player.FloatingSkillPoints} Floating)", new Vector2(bounds.Center.X, bounds.Y + 30f), 15f, Color.White);
         }
 
         public void Update()
@@ -54,7 +56,7 @@ namespace Zerds.Menus
             if (ControllerService.Controllers[_player.PlayerIndex].IsPressed(Buttons.A))
             {
                 if ((PointsAvailable > 0 || _player.FloatingSkillPoints > 0) && Selected.PointsSpent < Selected.MaxPoints && PointsSpent >= Selected.Row * 5 &&
-                    (Selected.Parent == null || Selected.Parent.PointsSpent == Selected.MaxPoints))
+                    (Selected.Parent == null || Selected.Parent.PointsSpent == Selected.Parent.MaxPoints))
                 {
                     _player.Zerd.Stats.SkillPointsSpent++;
                     Selected.PointsSpent++;

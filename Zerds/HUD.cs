@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
+using Zerds.Abilities;
 using Zerds.Constants;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -19,11 +20,23 @@ namespace Zerds
         private static int PlayerHealthBarWidth => PlayerHudWidth - PlayerImageHeight - Border * 3;
         private static int PlayerHealthBarHeight => (PlayerImageHeight - PlayerHudBarsSeparator) / 2;
         private static Texture2D _witchTexture;
+        private static Texture2D _aBtnTexture;
+        private static Texture2D _bBtnTexture;
+        private static Texture2D _xBtnTexture;
+        private static Texture2D _yBtnTexture;
+        private static Texture2D _rtBtnTexture;
+        private static Texture2D _rbBtnTexture;
         private static Color _healthBarBackColor;
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
             _witchTexture = TextureCacheFactory.GetOnce("HUD/witch-icon.png");
+            _aBtnTexture = TextureCacheFactory.GetOnce("HUD/a_button.png");
+            _bBtnTexture = TextureCacheFactory.GetOnce("HUD/b_button.png");
+            _xBtnTexture = TextureCacheFactory.GetOnce("HUD/x_button.png");
+            _yBtnTexture = TextureCacheFactory.GetOnce("HUD/y_button.png");
+            _rtBtnTexture = TextureCacheFactory.GetOnce("HUD/rt_button.png");
+            _rbBtnTexture = TextureCacheFactory.GetOnce("HUD/rb_button.png");
             _healthBarBackColor = new Color(0.35f, 0.35f, 0.35f);
         }
 
@@ -82,6 +95,7 @@ namespace Zerds
                                         Globals.ViewportBounds.Height - PlayerHudPadding - PlayerHudHeight);
                     break;
             }
+            // Player HUD
             Globals.SpriteDrawer.DrawRect(new Rectangle(position.X, position.Y, PlayerHudWidth, PlayerHudHeight));
             Globals.SpriteDrawer.Draw(_witchTexture,
                 new Rectangle(position.X + Border, position.Y + Border, PlayerImageHeight, PlayerImageHeight), Color.White);
@@ -101,12 +115,43 @@ namespace Zerds
                     (int) (PlayerHealthBarWidth * player.Zerd.ManaPercentage), PlayerHealthBarHeight),
                 new Color(0.25f, 0.25f, 0.55f));
             // Ability Icons
-            var iconPosition = new Vector2(position.X, position.Y + PlayerHudHeight + 8);
-            foreach (var ability in player.Zerd.Abilities.Where(a => a.DrawIcon))
-            {
-                Globals.SpriteDrawer.Draw(ability.IconTexture(), Helpers.CreateRect(iconPosition.X, iconPosition.Y, 32, 32), Color.White);
-                iconPosition = iconPosition.Move(40);
-            }
+            DrawIcon<Wand>(player, position, 0, 0);
+            DrawIcon<Fireball>(player, position, 40, 0);
+            DrawIcon<Iceball>(player, position, 80, 0);
+            DrawIcon<Dash>(player, position, 120, 0);
+            DrawIcon<Charm>(player, position, 160, 0);
+            var secondRowOffset = player.PlayerIndex == PlayerIndex.One || player.PlayerIndex == PlayerIndex.Two ? 40 : -40;
+            DrawIcon<FrostPound>(player, position, 0, secondRowOffset);
+            DrawIcon<DragonBreath>(player, position, 40, secondRowOffset);
+            DrawIcon<Icicle>(player, position, 80, secondRowOffset);
+            DrawIcon<LavaBlast>(player, position, 120, secondRowOffset);
+            // Button icons
+            DrawButtonIcon<FrostPound>(_aBtnTexture, player, position, 0);
+            DrawButtonIcon<DragonBreath>(_xBtnTexture, player, position, 40);
+            DrawButtonIcon<Icicle>(_bBtnTexture, player, position, 80);
+            DrawButtonIcon<LavaBlast>(_yBtnTexture, player, position, 120);
+            if (player.Zerd.Abilities.Any(a => a is Charm)) DrawButtonIcon(_rbBtnTexture, player, position, 160);
+        }
+
+        private static void DrawIcon<T>(Player p, Point position, int x, int y)
+        {
+            var abil = p.Zerd.Abilities.FirstOrDefault(i => i is T);
+            if (abil == null) return;
+            Globals.SpriteDrawer.Draw(abil.IconTexture(), Helpers.CreateRect(x + position.X, y + position.Y + PlayerHudHeight + 8, 32, 32), Color.White);
+        }
+
+        private static void DrawButtonIcon<T>(Texture2D t, Player p, Point position, int x)
+        {
+            var secondRowOffset = p.PlayerIndex == PlayerIndex.One || p.PlayerIndex == PlayerIndex.Two ? 40 : -40;
+            var abil = p.Zerd.Abilities.FirstOrDefault(i => i is T);
+            var offset = abil == null ? secondRowOffset : secondRowOffset * 2;
+            Globals.SpriteDrawer.Draw(t, Helpers.CreateRect(x + position.X, offset + position.Y + PlayerHudHeight + 8, 32, 32), Color.White * 0.75f);
+        }
+
+        private static void DrawButtonIcon(Texture2D t, Player p, Point position, int x)
+        {
+            var secondRowOffset = p.PlayerIndex == PlayerIndex.One || p.PlayerIndex == PlayerIndex.Three ? 40 : -40;
+            Globals.SpriteDrawer.Draw(t, Helpers.CreateRect(x + position.X, secondRowOffset + position.Y + PlayerHudHeight + 8, 32, 32), Color.White * 0.75f);
         }
     }
 }

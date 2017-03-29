@@ -23,7 +23,7 @@ namespace Zerds.Missiles
             Origin = p;
             Distance = AbilityConstants.FireballDistance;
             Speed = AbilityConstants.FireballSpeed;
-            Velocity = Creator.Facing.Normalized().Rotate(new Random().Next(11) - 5);
+            Velocity = Creator.Facing.Normalized().Rotate(Globals.Random.Next(11) - 5);
 
             Animations = new AnimationList();
             var moveAnimation = new Animation(AnimationTypes.Move);

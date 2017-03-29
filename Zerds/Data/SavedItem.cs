@@ -19,8 +19,17 @@ namespace Zerds.Data
         [XmlElement(ElementName = "Rarity")]
         public int Rarity { get; set; }
 
-        [XmlElement(ElementName = "Name")]
+        [XmlElement(ElementName = "Type")]
         public int Type { get; set; }
+
+        [XmlElement(ElementName = "Name")]
+        public string Name { get; set; }
+
+        [XmlElement(ElementName = "AnimationFile")]
+        public string AnimationFile { get; set; }
+
+        [XmlElement(ElementName = "SaveString")]
+        public string SaveString { get; set; }
 
         public SavedItem()
         {
@@ -31,6 +40,9 @@ namespace Zerds.Data
         {
             Rarity = (int)item.Rarity;
             Type = (int)item.Type;
+            Name = item.Name;
+            AnimationFile = item.AnimationFile;
+            SaveString = item.ToSaveString();
             AbilityUpgrades =
                 item.AbilityUpgrades.Select(
                     a => new SaveGameAbilityUpgrade {Amount = a.Amount, Text1 = a.Text1, Text2 = a.Text2, Type = (int) a.Type}).ToList();

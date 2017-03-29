@@ -16,6 +16,8 @@ namespace Zerds.Items
         public Texture2D Texture { get; set; }
         public ItemRarities Rarity { get; set; }
         public ItemTypes Type { get; set; }
+        public string AnimationFile { get; set; }
+        public string Name { get; set; }
 
         protected Item(ItemRarities rarity, ItemTypes type, string folder)
         {
@@ -24,7 +26,7 @@ namespace Zerds.Items
             SkillUpgrades = new List<SkillUpgrade>();
             AbilityUpgrades = new List<AbilityUpgrade>();
             for (var i = 0; i < (int) rarity; i++)
-                AbilityUpgrades.Add(AbilityUpgradeHelper.GetRandomUpgrade());
+                AbilityUpgrades.Add(AbilityUpgradeHelper.GetRandomUpgrade(true));
             string iconName;
             switch (rarity)
             {
@@ -49,14 +51,9 @@ namespace Zerds.Items
             Texture = TextureCacheFactory.GetOnce($"Items/{folder}/{iconName}");
         }
 
-        public void Draw(float x, float y, float width, float height)
+        public void Draw(float x, float y, float width, float height, float opacity = 1f)
         {
-            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(x - width / 2), (int)(y - height / 2), (int) width, (int) height), Color.White);
-        }
-
-        public override string ToString()
-        {
-            return $"{Rarity} {Type}";
+            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(x - width / 2), (int)(y - height / 2), (int) width, (int) height), Color.White * opacity);
         }
 
         public Color TextColor
@@ -66,6 +63,11 @@ namespace Zerds.Items
                     : Rarity == ItemRarities.Apprentice
                         ? new Color(180, 255, 180)
                         : Rarity == ItemRarities.Adept ? new Color(180, 180, 255) : Rarity == ItemRarities.Master ? new Color(200, 180, 245) : new Color(255, 205, 180);
+
+        public abstract string Description1();
+        public abstract string Description2();
+        public abstract string ToSaveString();
+        public abstract void LoadSaveString(string str);
 
         public static Item FromSaveData(SavedItem savedItem)
         {
@@ -84,15 +86,20 @@ namespace Zerds.Items
                 case ItemTypes.Boots:
                     item = new BootItem((ItemRarities)savedItem.Rarity);
                     break;
-                case ItemTypes.Ring:
-                    item = new RingItem((ItemRarities)savedItem.Rarity);
+                case ItemTypes.Glove:
+                    item = new GloveItem((ItemRarities)savedItem.Rarity);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown saved item type");
+                    throw new ArgumentOutOfRangeException(nameof(savedItem));
             }
+            item.LoadSaveString(savedItem.SaveString);
+            item.AnimationFile = savedItem.AnimationFile;
             item.AbilityUpgrades = savedItem.AbilityUpgrades.Select(u => new AbilityUpgrade(u)).ToList();
             item.SkillUpgrades = savedItem.SkillUpgrades.Select(u => new SkillUpgrade(u)).ToList();
+            item.Name = savedItem.Name;
             return item;
         }
+
+        public abstract string InformalName();
     }
 }

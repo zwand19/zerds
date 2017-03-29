@@ -11,6 +11,7 @@ using Zerds.GameObjects;
 using Zerds.Items;
 using Microsoft.Xna.Framework.Graphics;
 using Zerds.Consumables;
+using Zerds.Factories;
 
 namespace Zerds.Entities
 {
@@ -28,36 +29,53 @@ namespace Zerds.Entities
         public Texture2D HandTexture { get; set; }
         public Texture2D HeadTexture { get; set; }
         public Texture2D FeetTexture { get; set; }
-        
+        public int Deaths { get; set; }
+        public int TeammateDeaths { get; set; }
+
         private static readonly Vector2 BodyScaleVector = new Vector2(0.55f);
 
-        public Zerd(Player player, Texture2D chestTexture, Texture2D handTexture, Texture2D headTexture, Texture2D feetTexture) : base(null, false)
+        public Zerd(Player player, List<Item> gear) : base(null, false)
         {
             Player = player;
-            ChestTexture = chestTexture;
-            HandTexture = handTexture;
-            HeadTexture = headTexture;
-            FeetTexture = feetTexture;
+            ChestTexture = TextureCacheFactory.GetOnce(gear.First(g => g.Type == ItemTypes.Robe).AnimationFile);
+            FeetTexture = TextureCacheFactory.GetOnce(gear.First(g => g.Type == ItemTypes.Boots).AnimationFile);
+            HandTexture = TextureCacheFactory.GetOnce(gear.First(g => g.Type == ItemTypes.Glove).AnimationFile);
+            HeadTexture = TextureCacheFactory.GetOnce(gear.First(g => g.Type == ItemTypes.Hood).AnimationFile);
+            gear.ForEach(i =>
+            {
+                i.AbilityUpgrades.ForEach(a => player.AbilityUpgrades[a.Type] += a.Amount);
+                i.SkillUpgrades.ForEach(s =>
+                {
+                    var skill = player.Skills.AllSkillTrees.SelectMany(t => t.Items).FirstOrDefault(item => item.Type == s.Type);
+                    if (skill != null)
+                    {
+                        skill.PointsSpent = Math.Min(skill.PointsSpent + s.UpgradeAmount, skill.MaxPoints);
+                    }
+                });
+            });
+            Inventory = gear;
 
             X = Globals.ViewportBounds.Width / 2;
             Y = Globals.ViewportBounds.Height / 2;
             X += (int)player.PlayerIndex % 2 == 0 ? 85 : -85;
             Y += (int)player.PlayerIndex < 2 ? -60 : 60;
             Health = GameplayConstants.ZerdStartingHealth;
+            Health *= 1 + Inventory.SelectMany(i => i.AbilityUpgrades).Where(i => i.Type == AbilityUpgradeType.MaxHealth).Sum(i => i.Amount)/ 100f;
             MaxHealth = Health;
             Mana = GameplayConstants.ZerdStartingMana;
+            Mana *= 1 + Inventory.SelectMany(i => i.AbilityUpgrades).Where(i => i.Type == AbilityUpgradeType.MaxMana).Sum(i => i.Amount) / 100f;
             MaxMana = Mana;
             HealthRegen = GameplayConstants.ZerdStartingHealthRegen;
             ManaRegen = GameplayConstants.ZerdStartingManaRegen;
             Width = 64;
             Height = 64;
             HitboxSize = 0.7f;
-            BaseSpeed = GameplayConstants.MaxZerdSpeed;
+            BaseSpeed = BootItem.Speed;
             CriticalChance = GameplayConstants.ZerdCritChance;
             TreasureChests = new List<TreasureChest>();
             Keys = new List<Key>();
             ZerdAnimations = ZerdAnimationHelpers.GetAnimations();
-            Stats = new Stats(this);
+            Stats = new Stats();
 
             Abilities = new List<Ability>
             {
@@ -66,7 +84,6 @@ namespace Zerds.Entities
                 new Wand(this),
                 new Iceball(this)
             };
-            Inventory = new List<Item>();
         }
 
         public void AddCastingAnimation(string name, TimeSpan castTime, TimeSpan followThroughTime, Func<bool> executeFunc, Func<bool> castedFunc)
@@ -142,7 +159,7 @@ namespace Zerds.Entities
                 Buffs.Remove(buff);
                 chance += buff.CritChanceFactor;
             }
-            return new Random().NextDouble() < chance;
+            return Globals.Random.NextDouble() < chance;
         }
 
         public void ControllerUpdate(float leftTrigger, float rightTrigger, Vector2 leftStickDirection, Vector2 rightStickDirection)
@@ -185,5 +202,11 @@ namespace Zerds.Entities
         {
             return 1f * (float)Math.PI / 2f;
         }
+
+        public BootItem BootItem => Inventory.First(i => i is BootItem) as BootItem;
+        public RobeItem RobeItem => Inventory.First(i => i is RobeItem) as RobeItem;
+        public WandItem WandItem => Inventory.First(i => i is WandItem) as WandItem;
+        public HoodItem HoodItem => Inventory.First(i => i is HoodItem) as HoodItem;
+        public GloveItem GloveItem => Inventory.First(i => i is GloveItem) as GloveItem;
     }
 }

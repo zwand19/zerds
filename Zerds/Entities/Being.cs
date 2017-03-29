@@ -46,7 +46,7 @@ namespace Zerds.Entities
 
         public virtual bool IsCritical(DamageTypes type, AbilityTypes ability)
         {
-            return new Random().NextDouble() < CriticalChance;
+            return Globals.Random.NextDouble() < CriticalChance;
         }
 
         public override void Draw()

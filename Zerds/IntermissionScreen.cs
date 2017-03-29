@@ -22,7 +22,8 @@ namespace Zerds
             FrostSkills,
             ArcaneSkills,
             AbilityUpgrade,
-            Potion
+            Potion,
+            Dead
         }
 
         public IntermissionScreen()
@@ -42,7 +43,7 @@ namespace Zerds
             private readonly Rectangle _bounds;
             private readonly PlayerIndex _index;
             public bool Ready { get; private set; }
-            private Screen _screen;
+            public Screen Screen { get; private set; }
             private readonly MenuList _mainMenu;
             private MenuList _abilityUpgradeMenu;
 
@@ -56,8 +57,9 @@ namespace Zerds
                 _index = index;
                 _player = Globals.GameState.Players.First(p => p.PlayerIndex == index);
                 Ready = !_player.IsPlaying;
+                Screen = !_player.IsPlaying || _player.Zerd.IsAlive ? Screen.LevelRecap : Screen.Dead;
                 var width = (Globals.ViewportBounds.Width - MenuSidePadding * 2 - QuadrantPadding * 3) / 4;
-                var height = (Globals.ViewportBounds.Height - MenuTopPadding * 2);
+                var height = Globals.ViewportBounds.Height - MenuTopPadding * 2;
                 _bounds = Helpers.CreateRect(MenuSidePadding, MenuTopPadding, width, height);
                 switch (_index)
                 {
@@ -75,17 +77,17 @@ namespace Zerds
                 {
                     new MenuListItem("Fire", () =>
                     {
-                        _screen = Screen.FireSkills;
+                        Screen = Screen.FireSkills;
                         return true;
                     }),
                     new MenuListItem("Frost", () =>
                     {
-                        _screen = Screen.FrostSkills;
+                        Screen = Screen.FrostSkills;
                         return true;
                     }),
                     new MenuListItem("Arcane", () =>
                     {
-                        _screen = Screen.ArcaneSkills;
+                        Screen = Screen.ArcaneSkills;
                         return true;
                     }),
                     new MenuListItem($"Ability Upgrade ({GameplayConstants.AbilityUpgradeCost} gold)", BuyAbilityUpgrade),
@@ -110,7 +112,7 @@ namespace Zerds
                 Level.AbilityUpgrades[_player] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(),
                     AbilityUpgradeHelper.GetRandomUpgrade(),
                     AbilityUpgradeHelper.GetRandomUpgrade());
-                _screen = Screen.AbilityUpgrade;
+                Screen = Screen.AbilityUpgrade;
                 return true;
             }
 
@@ -129,10 +131,10 @@ namespace Zerds
                     Globals.SpriteDrawer.DrawText("Ready!", _bounds.Center.ToVector2(), 20f, Color.White);
                     return;
                 }
-                switch (_screen)
+                var top = 40f;
+                switch (Screen)
                 {
                     case Screen.LevelRecap:
-                        var top = 40f;
                         if (Globals.GameState.Zerds.Count > 1)
                         {
                             Globals.SpriteDrawer.DrawText($"Killing Blows: {_player.Zerd.Stats.LevelKillingBlows.Count} ({Level.KillingBlowGold(_player)} Gold)",
@@ -148,9 +150,23 @@ namespace Zerds
                                 new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
-                        Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.Stats.MaxLevelCombo} ({Level.ComboGold(_player)} Gold)",
-                            new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.Stats.MaxLevelCombo} ({Level.ComboGold(_player)} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
+                        if (_player.Zerd.Stats.PerfectRound)
+                        {
+                            Globals.SpriteDrawer.DrawText($"Perfect Round ({GameplayConstants.PerfectRoundBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                        }
+                        else if (_player.Zerd.Stats.NoMissRound)
+                        {
+                            Globals.SpriteDrawer.DrawText($"No Misses ({GameplayConstants.NoMissesBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                        }
+                        else if (_player.Zerd.Stats.CleanRound)
+                        {
+                            Globals.SpriteDrawer.DrawText($"Clean Round ({GameplayConstants.CleanRoundBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                        }
                         Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
                         Globals.SpriteDrawer.DrawText($"Total: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Globals.GoldColor);
@@ -184,6 +200,29 @@ namespace Zerds
                         return;
                     case Screen.Potion:
                         return;
+                    case Screen.Dead:
+                        Globals.SpriteDrawer.DrawText("You Were Slain!", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText("Revival Penalty For You:", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Max Health", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Damage", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        top += 60f;
+                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Speed", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        top += 60f;
+                        if (Globals.GameState.Zerds.Count > 1)
+                        {
+                            Globals.SpriteDrawer.DrawText("Revival Penalty For Teammates:", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Max Health", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Damage", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            top += 60f;
+                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Speed", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        }
+                        Globals.SpriteDrawer.DrawText("Press Start to Revive", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 17f, Globals.ContinueColor);
+                        return;
                 }
             }
 
@@ -199,12 +238,31 @@ namespace Zerds
             public void Update()
             {
                 if (ControllerService.Controllers[_index].IsPressed(Buttons.Start))
-                    Ready = true;
+                {
+                    switch (Screen)
+                    {
+                        case Screen.Skills:
+                        case Screen.FireSkills:
+                        case Screen.FrostSkills:
+                        case Screen.ArcaneSkills:
+                            Ready = true;
+                            break;
+                        case Screen.LevelRecap:
+                        case Screen.AbilityUpgrade:
+                        case Screen.Potion:
+                            break;
+                        case Screen.Dead:
+                            Revive();
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
                 if (ControllerService.Controllers[_index].IsPressed(Buttons.A))
                 {
-                    if (_screen == Screen.LevelRecap)
+                    if (Screen == Screen.LevelRecap)
                     {
-                        _screen = Screen.AbilityUpgrade;
+                        Screen = Screen.AbilityUpgrade;
                         _abilityUpgradeMenu = new MenuList(new List<MenuListItem>
                         {
                             new MenuListItem("", () => UpgradeSelect(Level.AbilityUpgrades[_player].Item1)),
@@ -216,19 +274,19 @@ namespace Zerds
                 }
                 if (ControllerService.Controllers[_index].IsPressed(Buttons.B))
                 {
-                    switch (_screen)
+                    switch (Screen)
                     {
                         case Screen.ArcaneSkills:
                         case Screen.FireSkills:
                         case Screen.FrostSkills:
-                            _screen = Screen.Skills;
+                            Screen = Screen.Skills;
                             break;
-                    }   
+                    }
                 }
-                switch (_screen)
+                switch (Screen)
                 {
                     case Screen.Skills:
-                        _mainMenu.Update();
+                        _mainMenu.Update(_index);
                         return;
                     case Screen.FireSkills:
                         _player.Skills.FireSkillTree.Update();
@@ -240,7 +298,7 @@ namespace Zerds
                         _player.Skills.ArcaneSkillTree.Update();
                         return;
                     case Screen.AbilityUpgrade:
-                        _abilityUpgradeMenu.Update();
+                        _abilityUpgradeMenu.Update(_index);
                         return;
                 }
             }
@@ -249,7 +307,7 @@ namespace Zerds
             {
                 _player.Zerd.Stats.AbilityUpgradesPurchased++;
                 _player.AbilityUpgrades[upgrade.Type] += (100 - _player.AbilityUpgrades[upgrade.Type]) * upgrade.Amount / 100;
-                _screen = Screen.Skills;
+                Screen = Screen.Skills;
                 switch (upgrade.Type)
                 {
                     case AbilityUpgradeType.MaxHealth:
@@ -263,6 +321,30 @@ namespace Zerds
                     default:
                         return true;
                 }
+            }
+
+            private void Revive()
+            {
+                Globals.GameState.Zerds.ForEach(z =>
+                {
+                    if (z == _player.Zerd)
+                    {
+                        z.BaseSpeed *= 1 - DifficultyConstants.RevivalSelfPenalty / 100f;
+                        z.MaxHealth *= 1 - DifficultyConstants.RevivalSelfPenalty / 100f;
+                        z.Health = z.MaxHealth;
+                        z.Mana = z.MaxMana;
+                        z.Deaths++;
+                    }
+                    else
+                    {
+                        z.BaseSpeed *= 1 - DifficultyConstants.RevivalTeammatePenalty / 100f;
+                        z.MaxHealth *= 1 - DifficultyConstants.RevivalTeammatePenalty / 100f;
+                        z.Health = z.MaxHealth;
+                        z.Mana = z.MaxMana;
+                        z.TeammateDeaths++;
+                    }
+                });
+                Screen = Screen.LevelRecap;
             }
         }
 
@@ -278,6 +360,6 @@ namespace Zerds
             _quadrants.ForEach(q => q.Update());
         }
 
-        public bool Ready => _quadrants.All(q => q.Ready);
+        public bool Ready => _quadrants.All(q => q.Ready || q.Screen == Screen.Dead);
     }
 }

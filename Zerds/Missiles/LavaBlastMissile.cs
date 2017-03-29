@@ -47,18 +47,18 @@ namespace Zerds.Missiles
             Animations.Add(moveAnimation);
 
             var deathAnimation = new Animation(AnimationTypes.Death);
-            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.06));
-            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.91f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.82f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.73f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.64f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.55f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.46f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.37f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.28f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.19f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.06), () => { Opacity = 0.1f; return true; });
-            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.06), DeathFunc);
+            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.03));
+            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.91f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.82f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 0, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.73f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.64f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.55f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.46f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 1, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.37f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 0, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.28f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 1, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.19f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 2, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.03), () => { Opacity = 0.1f; return true; });
+            deathAnimation.AddFrame(new Rectangle(120 * 3, 120 * 2, 120, 120), TimeSpan.FromSeconds(0.03), DeathFunc);
             Animations.Add(deathAnimation);
         }
 
@@ -82,7 +82,7 @@ namespace Zerds.Missiles
                 Speed *= 0.75f;
                 IsAlive = false;
                 if (!TargetsHit.Any())
-                    ((Zerd) Creator).Stats.Combo = 0;
+                    ((Zerd) Creator).Stats.Missed();
                 else ((Zerd)Creator).Stats.IncreaseCombo();
             }
             base.Update(gameTime);
@@ -104,11 +104,11 @@ namespace Zerds.Missiles
         {
             if (TargetsHit.Contains(target))
                 return;
+            Distance -= AbilityConstants.LavaBlastDistanceLossPerHit;
             TargetsHit.Add(target);
             var oldDamage = Damage.Damage;
             Damage.Damage += Origin.DistanceBetween(Position) * ((Zerd)Creator).SkillValue(SkillType.Sniper, true) / 100f;
             Damage.DamageBeing(target);
-            Speed *= 0.9f;
             target.AddBuff(new BurnBuff(Creator, target, TimeSpan.FromMilliseconds(AbilityConstants.LavaBlastBurnLength), Damage.Damage * AbilityConstants.LavaBlastBurnDamagePercentage, AbilityTypes.LavaBlast));
             Damage.Damage = oldDamage;
         }

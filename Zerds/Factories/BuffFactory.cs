@@ -17,7 +17,7 @@ namespace Zerds.Factories
                     being.Buffs.Add(new DashBuff(being, AbilityConstants.DashBonus * (1 + ((Zerd) being).Player.AbilityUpgrades[AbilityUpgradeType.DashDistance] / 100f)));
                     return;
                 case BuffTypes.Sprint:
-                    being.Buffs.Add(new SprintBuff(being));
+                    being.Buffs.Add(new SprintBuff(being, ((Zerd) being).BootItem.SprintBonus));
                     return;
                 case BuffTypes.BlazingSpeed:
                     if (being.SkillPoints(SkillType.BlazingSpeed) > 0)

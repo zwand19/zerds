@@ -6,6 +6,7 @@ using Zerds.Enums;
 using Zerds.Constants;
 using System.Collections.Generic;
 using Zerds.Buffs;
+using Zerds.Entities.Enemies;
 
 namespace Zerds.Missiles
 {
@@ -58,6 +59,7 @@ namespace Zerds.Missiles
 
         public override void OnHit(Being target)
         {
+            if (target is SkeletonKing) return;
             target.Buffs.Add(new CharmBuff(Creator, target));
             Globals.GameState.Enemies.Remove(target as Enemy);
             Globals.GameState.Allies.Add(target as Enemy);

@@ -13,7 +13,7 @@ namespace Zerds.Factories
     {
         public static Func<DamageText, bool> AddText { get; set; }
 
-        public static void DamageBeing(this DamageInstance damageInstance, Being target)
+        public static void DamageBeing(this DamageInstance damageInstance, Being target, bool firstCall = true)
         {
             var zerdCreator = damageInstance.Creator as Zerd;
             var zerdTarget = target as Zerd;
@@ -45,12 +45,33 @@ namespace Zerds.Factories
             if (zerdCreator != null && zerdCreator.SkillPoints(SkillType.FrostAura) > 0 && target.DistanceBetween(zerdCreator) < PlayerSkills.FrostAuraRange)
                 damageInstance.Damage *= zerdCreator.SkillValue(SkillType.FrostAura, true);
 
+            // Gloves
+            if (zerdCreator != null && zerdCreator.GloveItem.SpellDamage > 0)
+                damageInstance.Damage *= 1 + zerdCreator.GloveItem.SpellDamage / 100f;
+
+            // Deaths
+            if (zerdCreator != null)
+            {
+                for (var i = 0; i < zerdCreator.Deaths; i++)
+                    damageInstance.Damage *= 1 - DifficultyConstants.RevivalSelfPenalty;
+                for (var i = 0; i < zerdCreator.TeammateDeaths; i++)
+                    damageInstance.Damage *= 1 - DifficultyConstants.RevivalTeammatePenalty;
+            }
+
             zerdCreator?.Stats.DealtDamage(damageInstance);
             zerdTarget?.Stats.TookDamage(damageInstance);
 
             target.Health -= damageInstance.Damage;
             if (damageInstance.Knockback != null)
-                target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(), damageInstance.Knockback.MaxDuration, damageInstance.Knockback.Speed);
+            {
+                // Reduce knockback based on robe item
+                if (zerdTarget?.RobeItem.KnockbackReduction > 0.01)
+                {
+                    damageInstance.Knockback.Duration = TimeSpan.FromMilliseconds(damageInstance.Knockback.MaxDuration.TotalMilliseconds * (1 - zerdTarget.RobeItem.KnockbackReduction));
+                    damageInstance.Knockback.Speed *= 1 - zerdTarget.RobeItem.KnockbackReduction;
+                }
+                target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(), damageInstance.Knockback.Duration, damageInstance.Knockback.Speed);
+            }
             if (zerdTarget != null)
                 ControllerService.Controllers[zerdTarget.Player.PlayerIndex].VibrateController(TimeSpan.FromMilliseconds(250), 1f);
             if (damageInstance.Damage >= 1) AddText(new DamageText(damageInstance, target));
@@ -58,6 +79,13 @@ namespace Zerds.Factories
             {
                 target.Killer = damageInstance.Creator;
                 zerdCreator?.Stats.EnemyKilled(target as Enemy);
+            }
+
+            // Return Damage
+            if (firstCall && zerdTarget != null && damageInstance.Creator != target && zerdTarget.RobeItem.Thorns > 0)
+            {
+                var dmg = new DamageInstance(null, zerdTarget.RobeItem.Thorns, DamageTypes.Physical, zerdTarget, AbilityTypes.Thorns, false);
+                dmg.DamageBeing(damageInstance.Creator, false);
             }
         }
     }

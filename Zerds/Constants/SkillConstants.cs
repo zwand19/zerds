@@ -80,7 +80,7 @@ namespace Zerds.Constants
                 {SkillType.DeepBurn, new SkillInfo(7f)},
                 {SkillType.FireballExplosion, new SkillInfo(5f)},
                 {SkillType.Exposure, new SkillInfo(2f)},
-                {SkillType.Sniper, new SkillInfo(5f)},
+                {SkillType.Sniper, new SkillInfo(1f)},
                 {SkillType.ColdWinds, new SkillInfo(0.4f)},
                 {SkillType.BlazingSpeed, new SkillInfo(2f)},
                 {SkillType.BleedFire, new SkillInfo(4f)},
