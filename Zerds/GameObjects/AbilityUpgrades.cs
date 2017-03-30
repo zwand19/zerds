@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Zerds.Constants;
 using Zerds.Data;
@@ -21,6 +22,19 @@ namespace Zerds.GameObjects
         public static float ManaRegenUpgrade => Helpers.RandomInRange(4f, 7f);
         public static float MaxHealthUpgrade => Helpers.RandomInRange(5f, 8f);
         public static float MaxManaUpgrade => Helpers.RandomInRange(4f, 7f);
+
+
+        public static Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade> GetRandomUpgrades()
+        {
+            var upgrade = GetRandomUpgrade();
+            var upgrade2 = GetRandomUpgrade();
+            var upgrade3 = GetRandomUpgrade();
+            while (upgrade2.Type == upgrade.Type)
+                upgrade2 = GetRandomUpgrade();
+            while (upgrade3.Type == upgrade.Type || upgrade3.Type == upgrade2.Type)
+                upgrade3 = GetRandomUpgrade();
+            return new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(upgrade, upgrade2, upgrade3);
+        }
 
         public static AbilityUpgrade GetRandomUpgrade(bool forItem = false)
         {

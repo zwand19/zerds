@@ -109,9 +109,7 @@ namespace Zerds
                 if (_player.Gold < GameplayConstants.AbilityUpgradeCost)
                     return false;
                 _player.Gold -= GameplayConstants.AbilityUpgradeCost;
-                Level.AbilityUpgrades[_player] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(),
-                    AbilityUpgradeHelper.GetRandomUpgrade(),
-                    AbilityUpgradeHelper.GetRandomUpgrade());
+                Level.AbilityUpgrades[_player] = AbilityUpgradeHelper.GetRandomUpgrades();
                 Screen = Screen.AbilityUpgrade;
                 return true;
             }

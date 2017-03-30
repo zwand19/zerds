@@ -50,18 +50,18 @@ namespace Zerds.Constants
 
         public static Dictionary<ItemRarities, float> ItemRarityChances => new Dictionary<ItemRarities, float>
         {
-            {ItemRarities.Novice, 0.4f},
-            {ItemRarities.Apprentice, 0.68f },
-            {ItemRarities.Adept, 0.85f },
-            {ItemRarities.Master, 0.95f },
+            {ItemRarities.Novice, 0.42f},
+            {ItemRarities.Apprentice, 0.72f },
+            {ItemRarities.Adept, 0.88f },
+            {ItemRarities.Master, 0.96f },
             {ItemRarities.Legendary, 1f }
         };
 
         public const float SecondItemChanceFactor = 0.5f;
         public const float ThirdItemChanceFactor = 0.25f;
-        public const float BaseTreasureDropChance = 0.01f;//0.0015f;
-        public const float TreasureDropChancePerLevel = 0.005f;//0.001f;
-        public const float KeyDropChance = 0.01f;//0.0015f;
+        public const float BaseTreasureDropChance = 0.02f;//0.0015f;
+        public const float TreasureDropChancePerLevel = 0.01f;//0.001f;
+        public const float KeyDropChance = 0.025f;//0.0015f;
         public const float PotionDropChance = 0.25f;
         public const float ItemDropBaseEnemyWorth = 10f; // scale chances of dropping potions/items based on this enemy worth
         public const float PickupItemSpeed = 80f;

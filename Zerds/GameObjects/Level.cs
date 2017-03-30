@@ -29,8 +29,7 @@ namespace Zerds.GameObjects
             };
             players.ForEach(p =>
             {
-                AbilityUpgrades[p] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(), AbilityUpgradeHelper.GetRandomUpgrade(),
-                    AbilityUpgradeHelper.GetRandomUpgrade());
+                AbilityUpgrades[p] = AbilityUpgradeHelper.GetRandomUpgrades();
             });
         }
 
@@ -87,8 +86,7 @@ namespace Zerds.GameObjects
                 var gold = TotalLevelGold(player);
                 player.Zerd.Stats.GoldEarned += gold;
                 player.Gold += gold;
-                AbilityUpgrades[player] = new Tuple<AbilityUpgrade, AbilityUpgrade, AbilityUpgrade>(AbilityUpgradeHelper.GetRandomUpgrade(), AbilityUpgradeHelper.GetRandomUpgrade(),
-                    AbilityUpgradeHelper.GetRandomUpgrade());
+                AbilityUpgrades[player] = AbilityUpgradeHelper.GetRandomUpgrades();
             }
             CurrentLevel++;
         }

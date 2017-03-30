@@ -8,6 +8,7 @@ using Zerds.Constants;
 using System.Collections.Generic;
 using Zerds.Factories;
 using Zerds.Buffs;
+using Zerds.Entities.Enemies;
 
 namespace Zerds.Missiles
 {
@@ -62,7 +63,7 @@ namespace Zerds.Missiles
 
         public override void OnHit(Being target)
         {
-            if (target.HealthPercentage < PlayerSkills.IcicleKillPercent)
+            if (target.HealthPercentage < PlayerSkills.IcicleKillPercent && !(target is SkeletonKing))
                 target.Health = 0;
             Damage.DamageBeing(target);
             IsActive = false;

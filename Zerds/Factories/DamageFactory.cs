@@ -82,7 +82,7 @@ namespace Zerds.Factories
             }
 
             // Return Damage
-            if (firstCall && zerdTarget != null && damageInstance.Creator != target && zerdTarget.RobeItem.Thorns > 0)
+            if (firstCall && zerdTarget != null && damageInstance.Damage > 1 && zerdTarget.RobeItem.Thorns > 0 && damageInstance.Creator != target)
             {
                 var dmg = new DamageInstance(null, zerdTarget.RobeItem.Thorns, DamageTypes.Physical, zerdTarget, AbilityTypes.Thorns, false);
                 dmg.DamageBeing(damageInstance.Creator, false);
