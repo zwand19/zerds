@@ -26,7 +26,12 @@ namespace Zerds
         {
             return (float)Random.NextDouble() * (max - min) + min;
         }
-        
+
+        public static int RandomIntInRange(int min, int max)
+        {
+            return new Random().Next(min, max);
+        }
+
         public static int SkillPoints(this Being being, SkillType type)
         {
             var zerd = being as Zerd;

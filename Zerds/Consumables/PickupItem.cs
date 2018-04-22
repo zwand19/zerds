@@ -42,15 +42,14 @@ namespace Zerds.Consumables
 
         public override void Draw()
         {
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
+            this.DrawGameObject(
                 sourceRectangle: GetCurrentAnimation().CurrentRectangle,
                 color: Color.White,
                 destinationRectangle: Helpers.CreateRect(X, Y, Width, Height),
                 origin: new Vector2(Width / 2f, Height / 2f));
             if (Globals.ShowHitboxes)
             {
-                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Pink));
+                Hitbox().ForEach(r => Globals.WhiteTexture.Draw(r, Color.Pink));
             }
         }
 

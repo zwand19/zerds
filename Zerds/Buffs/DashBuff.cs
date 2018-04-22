@@ -38,8 +38,7 @@ namespace Zerds.Buffs
             if (_initialPosition.DistanceBetween(Being.PositionVector) < offset)
                 return;
 
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
+            Texture.Draw(
                 sourceRectangle: Animation.CurrentRectangle,
                 color: Color.White * alpha,
                 position: new Vector2(Being.X, Being.Y),

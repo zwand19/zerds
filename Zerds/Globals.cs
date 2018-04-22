@@ -19,6 +19,7 @@ namespace Zerds
         public static Dictionary<FontTypes, SpriteFont> Fonts { get; set; }
         public static Map Map { get; set; }
         public static Random Random { get; set; }
+        public static Camera Camera { get; set; }
 
         public static void Initialize()
         {
@@ -28,6 +29,7 @@ namespace Zerds
             ContinueColor = new Color(80, 220, 100);
             GoldColor = new Color(255, 215, 0);
             Random = new Random();
+            Camera = new Camera();
         }
 
         public static void LoadFont(string fileName, FontTypes type)

@@ -44,25 +44,16 @@ namespace Zerds.Buffs
 
         public virtual void Draw()
         {
-            if (Texture == null)
-                return;
-
-            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: Animation.CurrentRectangle, color: Color.White, destinationRectangle: new Rectangle((int) Being.X, (int) Being.Y, (int) Being.Width, (int) Being.Height),
+            Texture?.Draw(
+                sourceRectangle: Animation.CurrentRectangle,
+                color: Color.White,
+                destinationRectangle: new Rectangle((int) Being.X, (int) Being.Y, (int) Being.Width, (int) Being.Height),
                 origin: new Vector2(Texture.Width / 2.0f, Texture.Height / 2.0f));
         }
 
         public void Update(GameTime gameTime)
         {
             Animation?.Update(gameTime);
-        }
-
-        public void StandardDraw()
-        {
-            if (Texture == null)
-                return;
-
-            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: Animation.CurrentRectangle, color: Color.White, position: new Vector2(Being.X, Being.Y),
-                origin: new Vector2(Being.Texture.Width / 2f, Being.Texture.Height / 2f));
         }
     }
 }

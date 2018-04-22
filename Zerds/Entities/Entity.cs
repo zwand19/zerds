@@ -7,7 +7,7 @@ using Zerds.Graphics;
 
 namespace Zerds.Entities
 {
-    public abstract class Entity
+    public abstract class Entity : GameObject
     {
         public float Speed { get; set; }
         public float HitboxSize = 1f;
@@ -15,15 +15,7 @@ namespace Zerds.Entities
         public Vector2 Velocity { get; set; }
         public Vector2 Facing { get; set; }
         public AnimationList Animations { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
-        public Texture2D Texture { get; set; }
-        public abstract void Draw();
         public abstract List<Rectangle> Hitbox();
-        public Point Position => new Point((int)X, (int)Y);
-        public Vector2 PositionVector => new Vector2(X, Y);
 
         protected Entity(string file, bool cache)
         {

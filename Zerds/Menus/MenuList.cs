@@ -22,18 +22,18 @@ namespace Zerds.Menus
         {
             if (index == null)
             {
-                CheckController(ControllerService.Controllers[PlayerIndex.One]);
-                CheckController(ControllerService.Controllers[PlayerIndex.Two]);
-                CheckController(ControllerService.Controllers[PlayerIndex.Three]);
-                CheckController(ControllerService.Controllers[PlayerIndex.Four]);
+                CheckInputDevice(InputService.InputDevices[PlayerIndex.One]);
+                CheckInputDevice(InputService.InputDevices[PlayerIndex.Two]);
+                CheckInputDevice(InputService.InputDevices[PlayerIndex.Three]);
+                CheckInputDevice(InputService.InputDevices[PlayerIndex.Four]);
             }
             else
             {
-                CheckController(ControllerService.Controllers[index.Value]);
+                CheckInputDevice(InputService.InputDevices[index.Value]);
             }
         }
 
-        public void CheckController(Controller controller)
+        public void CheckInputDevice(InputDevice controller)
         {
             var buttonsPressed = controller.ButtonsPressed;
             if (buttonsPressed.Contains(Buttons.A))
@@ -49,7 +49,7 @@ namespace Zerds.Menus
             for (var i = 0; i < Items.Count; i++)
             {
                 var text = _selectedIndex == i ? $"> {Items[i].Text}" : Items[i].Text;
-                Globals.SpriteDrawer.DrawTextLeftAlign(text, position, fontSize, color: _selectedIndex == i ? selectedColor : fontColor);
+                text.DrawLeftAlign(position, fontSize, color: _selectedIndex == i ? selectedColor : fontColor);
                 position.Y += spacing;
             }
         }

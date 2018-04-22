@@ -83,7 +83,7 @@ namespace Zerds
             return r1.Hitbox().Any(hitbox => r2.Hitbox().Any(hitbox.Intersects));
         }
 
-        public static void DrawTextLeftAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        public static void DrawLeftAlign(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
@@ -93,37 +93,37 @@ namespace Zerds
             Globals.SpriteDrawer.DrawString(font, text, new Vector2(position.X, y), fontColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
-        public static void DrawTextRightAlign(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        public static void DrawRightAlign(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
             var scale = fontSize / 50f;
             var x = (position - scale * size).X;
-            spriteBatch.DrawTextLeftAlign(text, new Vector2(x, position.Y), fontSize, color, type);
+            text.DrawLeftAlign(new Vector2(x, position.Y), fontSize, color, type);
         }
 
-        public static void DrawText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        public static void Draw(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
             var scale = fontSize / 50f;
             var x = (position - scale * size / 2).X;
-            spriteBatch.DrawTextLeftAlign(text, new Vector2(x, position.Y), fontSize, color, type);
+            text.DrawLeftAlign(new Vector2(x, position.Y), fontSize, color, type);
         }
 
-        public static void DrawWrappedText(this SpriteBatch spriteBatch, string text, Vector2 position, float fontSize, float maxWidth, Color? color = null, FontTypes type = FontTypes.Pericles)
+        public static void DrawWrapped(this string text, Vector2 position, float fontSize, float maxWidth, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             var font = Globals.Fonts[type];
             var size = font.MeasureString(text);
             var scale = fontSize / 50f;
             var x = (position - scale * size / 2).X;
-            spriteBatch.DrawTextLeftAlign(text.Wrap(maxWidth, fontSize), new Vector2(x, position.Y), fontSize, color, type);
+            text.Wrap(maxWidth, fontSize).DrawLeftAlign(new Vector2(x, position.Y), fontSize, color, type);
         }
 
-        public static void DrawRect(this SpriteBatch spriteBatch, Rectangle rect, Color? color = null)
+        public static void Draw(this Rectangle rect, Color? color = null)
         {
             var colorVal = color ?? Color.Black;
-            spriteBatch.Draw(Globals.WhiteTexture, rect, colorVal);
+            Globals.SpriteDrawer.Draw(Globals.WhiteTexture, rect, colorVal);
         }
 
         public static Rectangle BorderRect(this Rectangle rect, int borderSize)
@@ -194,6 +194,92 @@ namespace Zerds
             }
 
             return sb.ToString();
+        }
+
+        public static void DrawGameText(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
+        {
+            var font = Globals.Fonts[type];
+            var size = font.MeasureString(text);
+            var scale = fontSize / 50f;
+            var scaledX = (position - scale * size / 2).X;
+            var x = scaledX - Globals.Camera.X;
+            var y = position.Y - Globals.Camera.Y;
+            // Only draw if on screen
+            if (x > Globals.Camera.LeftDrawBound && x < Globals.Camera.RightDrawBound && y > Globals.Camera.TopDrawBound && y < Globals.Camera.BottomDrawBound)
+                text.DrawLeftAlign(new Vector2(x, y), fontSize, color, type);
+        }
+
+        public static void DrawGameObject(this GameObject obj, Rectangle sourceRectangle, Color color, Rectangle? destinationRectangle = null, Vector2? scale = null, float rotation = 0, Vector2? origin = null)
+        {
+            // Only draw if on screen
+            if (obj.X > Globals.Camera.LeftDrawBound && obj.X < Globals.Camera.RightDrawBound && obj.Y > Globals.Camera.TopDrawBound && obj.Y < Globals.Camera.BottomDrawBound)
+            {
+                if (destinationRectangle.HasValue)
+                {
+                    Globals.SpriteDrawer.Draw(
+                      texture: obj.Texture,
+                      sourceRectangle: sourceRectangle,
+                      destinationRectangle: new Rectangle((int)(obj.X - Globals.Camera.ScreenLeft), (int)(obj.Y - Globals.Camera.ScreenTop), destinationRectangle.Value.Width, destinationRectangle.Value.Height),
+                      color: color,
+                      origin: origin,
+                      scale: scale,
+                      rotation: rotation);
+                }
+                else
+                {
+                    Globals.SpriteDrawer.Draw(
+                      texture: obj.Texture,
+                      sourceRectangle: sourceRectangle,
+                      position: new Vector2(obj.X - Globals.Camera.ScreenLeft, obj.Y - Globals.Camera.ScreenTop),
+                      color: color,
+                      origin: origin,
+                      scale: scale,
+                      rotation: rotation);
+                }
+            }
+        }
+
+        public static void Draw(this Texture2D texture, Rectangle? sourceRectangle = null, Color? color = null, Vector2? position = null, Rectangle? destinationRectangle = null, Vector2? scale = null, float rotation = 0, Vector2? origin = null)
+        {
+            var x = destinationRectangle?.X ?? position.Value.X;
+            var y = destinationRectangle?.Y ?? position.Value.Y;
+            // Only draw if on screen
+            if (x > Globals.Camera.LeftDrawBound && x < Globals.Camera.RightDrawBound && y > Globals.Camera.TopDrawBound && y < Globals.Camera.BottomDrawBound)
+            {
+                if (position.HasValue)
+                {
+                    Globals.SpriteDrawer.Draw(
+                        texture: texture,
+                          sourceRectangle: sourceRectangle,
+                          position: new Vector2(x - Globals.Camera.ScreenLeft, y - Globals.Camera.ScreenTop),
+                          color: color,
+                          origin: origin,
+                          scale: scale,
+                          rotation: rotation);
+                } else
+                {
+                    Globals.SpriteDrawer.Draw(
+                        texture: texture,
+                          sourceRectangle: sourceRectangle,
+                          destinationRectangle: new Rectangle((int)(x - Globals.Camera.ScreenLeft), (int)(y - Globals.Camera.ScreenTop), destinationRectangle.Value.Width, destinationRectangle.Value.Height),
+                          color: color,
+                          origin: origin,
+                          scale: scale,
+                          rotation: rotation);
+                }
+            }
+        }
+
+        public static void Draw(this Texture2D texture, Rectangle destinationRectangle, Color color)
+        {
+            // Only draw if on screen
+            if (destinationRectangle.Right > Globals.Camera.LeftDrawBound && destinationRectangle.Left < Globals.Camera.RightDrawBound && destinationRectangle.Bottom > Globals.Camera.TopDrawBound && destinationRectangle.Top < Globals.Camera.BottomDrawBound)
+            {
+                Globals.SpriteDrawer.Draw(
+                    texture: texture,
+                    destinationRectangle: new Rectangle((int)(destinationRectangle.X - Globals.Camera.ScreenLeft), (int)(destinationRectangle.Y - Globals.Camera.ScreenTop), destinationRectangle.Width, destinationRectangle.Height),
+                    color: color);
+            }
         }
     }
 }

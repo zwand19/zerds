@@ -73,7 +73,7 @@ namespace Zerds.Factories
                 target.Knockback = new Knockback((target.PositionVector - damageInstance.Creator.PositionVector).Normalized(), damageInstance.Knockback.Duration, damageInstance.Knockback.Speed);
             }
             if (zerdTarget != null)
-                ControllerService.Controllers[zerdTarget.Player.PlayerIndex].VibrateController(TimeSpan.FromMilliseconds(250), 1f);
+                InputService.Vibrate(zerdTarget.Player.PlayerIndex, TimeSpan.FromMilliseconds(250), 1f);
             if (damageInstance.Damage >= 1) AddText(new DamageText(damageInstance, target));
             if (target.Health < 0 && target.Killer == null)
             {

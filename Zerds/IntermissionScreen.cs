@@ -116,17 +116,16 @@ namespace Zerds
 
             public void Draw()
             {
-                Globals.SpriteDrawer.DrawRect(_bounds, new Color(Color.Black, 0.75f));
-                Globals.SpriteDrawer.DrawRect(new Rectangle(_bounds.X + MenuBorder, _bounds.Y + MenuBorder, _bounds.Width - 2 * MenuBorder, _bounds.Height - 2 * MenuBorder),
-                    new Color(new Color(40, 40, 40), 0.65f));
+                _bounds.Draw(new Color(Color.Black, 0.75f));
+                new Rectangle(_bounds.X + MenuBorder, _bounds.Y + MenuBorder, _bounds.Width - 2 * MenuBorder, _bounds.Height - 2 * MenuBorder).Draw(new Color(new Color(40, 40, 40), 0.65f));
                 if (!_player.IsPlaying)
                 {
-                    Globals.SpriteDrawer.DrawText("Press A to join.", _bounds.Center.ToVector2(), 20f, Color.White);
+                    "Press A to join.".Draw(_bounds.Center.ToVector2(), 20f, Color.White);
                     return;
                 }
                 if (Ready)
                 {
-                    Globals.SpriteDrawer.DrawText("Ready!", _bounds.Center.ToVector2(), 20f, Color.White);
+                    "Ready!".Draw(_bounds.Center.ToVector2(), 20f, Color.White);
                     return;
                 }
                 var top = 40f;
@@ -135,49 +134,48 @@ namespace Zerds
                     case Screen.LevelRecap:
                         if (Globals.GameState.Zerds.Count > 1)
                         {
-                            Globals.SpriteDrawer.DrawText($"Killing Blows: {_player.Zerd.Stats.LevelKillingBlows.Count} ({Level.KillingBlowGold(_player)} Gold)",
-                                new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"Killing Blows: {_player.Zerd.Stats.LevelKillingBlows.Count} ({Level.KillingBlowGold(_player)} Gold)".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
-                            Globals.SpriteDrawer.DrawText($"Team Kills: {Globals.GameState.Zerds.Sum(z => z.Stats.LevelKillingBlows.Count)} ({Level.TotalEnemiesKilledGold(_player)} Gold)",
+                            $"Team Kills: {Globals.GameState.Zerds.Sum(z => z.Stats.LevelKillingBlows.Count)} ({Level.TotalEnemiesKilledGold(_player)} Gold)".Draw(
                                 new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
                         else
                         {
-                            Globals.SpriteDrawer.DrawText($"Enemies Killed: {_player.Zerd.Stats.LevelKillingBlows.Count} ({Level.TotalEnemiesKilledGold(_player) + Level.KillingBlowGold(_player)} Gold)",
+                            $"Enemies Killed: {_player.Zerd.Stats.LevelKillingBlows.Count} ({Level.TotalEnemiesKilledGold(_player) + Level.KillingBlowGold(_player)} Gold)".Draw(
                                 new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
-                        Globals.SpriteDrawer.DrawText($"Max Combo: {_player.Zerd.Stats.MaxLevelCombo} ({Level.ComboGold(_player)} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        $"Max Combo: {_player.Zerd.Stats.MaxLevelCombo} ({Level.ComboGold(_player)} Gold)".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
                         if (_player.Zerd.Stats.PerfectRound)
                         {
-                            Globals.SpriteDrawer.DrawText($"Perfect Round ({GameplayConstants.PerfectRoundBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"Perfect Round ({GameplayConstants.PerfectRoundBonus} Gold)".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
                         else if (_player.Zerd.Stats.NoMissRound)
                         {
-                            Globals.SpriteDrawer.DrawText($"No Misses ({GameplayConstants.NoMissesBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"No Misses ({GameplayConstants.NoMissesBonus} Gold)".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
                         else if (_player.Zerd.Stats.CleanRound)
                         {
-                            Globals.SpriteDrawer.DrawText($"Clean Round ({GameplayConstants.CleanRoundBonus} Gold)", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"Clean Round ({GameplayConstants.CleanRoundBonus} Gold)".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
                         }
-                        Globals.SpriteDrawer.DrawText($"Level Bonus: {Level.LevelGold()} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        $"Level Bonus: {Level.LevelGold()} Gold".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
-                        Globals.SpriteDrawer.DrawText($"Total: {Level.TotalLevelGold(_player)} Gold", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Globals.GoldColor);
-                        Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 17f, Globals.ContinueColor);
+                        $"Total: {Level.TotalLevelGold(_player)} Gold".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Globals.GoldColor);
+                        "Press A to Continue".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 17f, Globals.ContinueColor);
                         return;
                     case Screen.Skills:
-                        Globals.SpriteDrawer.DrawText($"Gold: {_player.Gold}", new Vector2(_bounds.Center.X, _bounds.Top + 25f), 17f, Globals.GoldColor);
+                        $"Gold: {_player.Gold}".Draw(new Vector2(_bounds.Center.X, _bounds.Top + 25f), 17f, Globals.GoldColor);
                         _mainMenu.Items[0].Text = $"Fire (Pts To Spend: {_player.Skills.FireSkillTree.PointsAvailable})";
                         _mainMenu.Items[1].Text = $"Frost (Pts To Spend: {_player.Skills.FrostSkillTree.PointsAvailable})";
                         _mainMenu.Items[2].Text = $"Arcane (Pts To Spend: {_player.Skills.ArcaneSkillTree.PointsAvailable})";
-                        Globals.SpriteDrawer.DrawText($"Floating Points: {_player.FloatingSkillPoints}", new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 17f, Color.White);
+                        $"Floating Points: {_player.FloatingSkillPoints}".Draw(new Vector2(_bounds.Center.X, _bounds.Bottom - 70f), 17f, Color.White);
                         _mainMenu.Draw(new Vector2(_bounds.X + 20, _bounds.Y + 70), 17f, 50f, Color.White, new Color(200, 200, 200));
-                        Globals.SpriteDrawer.DrawText("Press Start when ready.", new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
+                        "Press Start when ready.".Draw(new Vector2(_bounds.Center.X, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.FireSkills:
                         _player.Skills.FireSkillTree.Draw(_bounds);
@@ -189,53 +187,53 @@ namespace Zerds
                         _player.Skills.ArcaneSkillTree.Draw(_bounds);
                         return;
                     case Screen.AbilityUpgrade:
-                        Globals.SpriteDrawer.DrawText("UPGRADE", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Top + 40f), 40f, Color.White);
+                        "UPGRADE".Draw(new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Top + 40f), 40f, Color.White);
                         var height = (_bounds.Height - 180) / 3;
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item1, new Rectangle(_bounds.Left + 20, _bounds.Top + 100, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[0]);
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item2, new Rectangle(_bounds.Left + 20, _bounds.Top + height + 110, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[1]);
                         DrawAbilityUpgrade(Level.AbilityUpgrades[_player].Item3, new Rectangle(_bounds.Left + 20, _bounds.Top + 2 * height + 120, _bounds.Width - 40, height), _abilityUpgradeMenu.Selected == _abilityUpgradeMenu.Items[2]);
-                        Globals.SpriteDrawer.DrawText("Press A to Choose", new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
+                        "Press A to Choose".Draw(new Vector2(_bounds.Left + _bounds.Width / 2, _bounds.Bottom - 30f), 20f, Globals.ContinueColor);
                         return;
                     case Screen.Potion:
                         return;
                     case Screen.Dead:
-                        Globals.SpriteDrawer.DrawText("You Were Slain!", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
+                        "You Were Slain!".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 20f, Color.White);
                         top += 60f;
-                        Globals.SpriteDrawer.DrawText("Revival Penalty For You:", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        "Revival Penalty For You:".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
-                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Max Health", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        $"-{DifficultyConstants.RevivalSelfPenalty}% Max Health".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
-                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Damage", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        $"-{DifficultyConstants.RevivalSelfPenalty}% Damage".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
-                        Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalSelfPenalty}% Speed", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                        $"-{DifficultyConstants.RevivalSelfPenalty}% Speed".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         top += 60f;
                         if (Globals.GameState.Zerds.Count > 1)
                         {
-                            Globals.SpriteDrawer.DrawText("Revival Penalty For Teammates:", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            "Revival Penalty For Teammates:".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
-                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Max Health", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"-{DifficultyConstants.RevivalTeammatePenalty}% Max Health".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
-                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Damage", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"-{DifficultyConstants.RevivalTeammatePenalty}% Damage".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                             top += 60f;
-                            Globals.SpriteDrawer.DrawText($"-{DifficultyConstants.RevivalTeammatePenalty}% Speed", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
+                            $"-{DifficultyConstants.RevivalTeammatePenalty}% Speed".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Top + top), 17f, Color.White);
                         }
-                        Globals.SpriteDrawer.DrawText("Press Start to Revive", new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 17f, Globals.ContinueColor);
+                        "Press Start to Revive".Draw(new Vector2(_bounds.X + _bounds.Width / 2.0f, _bounds.Bottom - 40f), 17f, Globals.ContinueColor);
                         return;
                 }
             }
 
             private void DrawAbilityUpgrade(AbilityUpgrade upgrade, Rectangle bounds, bool selected)
             {
-                Globals.SpriteDrawer.DrawRect(bounds, selected ? Color.White : new Color(30, 30, 30));
-                Globals.SpriteDrawer.DrawRect(new Rectangle(bounds.Left + 8, bounds.Top + 8, bounds.Width - 16, bounds.Height - 16));
+                bounds.Draw(selected ? Color.White : new Color(30, 30, 30));
+                new Rectangle(bounds.Left + 8, bounds.Top + 8, bounds.Width - 16, bounds.Height - 16).Draw();
                 Globals.SpriteDrawer.Draw(upgrade.Texture, new Rectangle(bounds.Center.X - 32, bounds.Top + 20, 64, 64), color: Color.White);
-                Globals.SpriteDrawer.DrawText(upgrade.Text1, new Vector2(bounds.Center.X, bounds.Center.Y + 30), 16f, Color.White);
-                Globals.SpriteDrawer.DrawText(upgrade.Text2, new Vector2(bounds.Center.X, bounds.Center.Y + 56), 16f, Color.White);
+                upgrade.Text1.Draw(new Vector2(bounds.Center.X, bounds.Center.Y + 30), 16f, Color.White);
+                upgrade.Text2.Draw(new Vector2(bounds.Center.X, bounds.Center.Y + 56), 16f, Color.White);
             }
 
             public void Update()
             {
-                if (ControllerService.Controllers[_index].IsPressed(Buttons.Start))
+                if (InputService.InputDevices[_index].IsPressed(Buttons.Start))
                 {
                     switch (Screen)
                     {
@@ -256,7 +254,7 @@ namespace Zerds
                             throw new ArgumentOutOfRangeException();
                     }
                 }
-                if (ControllerService.Controllers[_index].IsPressed(Buttons.A))
+                if (InputService.InputDevices[_index].IsPressed(Buttons.A))
                 {
                     if (Screen == Screen.LevelRecap)
                     {
@@ -270,7 +268,7 @@ namespace Zerds
                         return; // return so we don't call _abilityUpgradeMenu.Update and purchase an ability
                     }
                 }
-                if (ControllerService.Controllers[_index].IsPressed(Buttons.B))
+                if (InputService.InputDevices[_index].IsPressed(Buttons.B))
                 {
                     switch (Screen)
                     {

@@ -19,7 +19,7 @@ namespace Zerds.Abilities
 
         public float Damage => Helpers.RandomInRange(_minDamage, _maxDamage);
 
-        public Melee(Being being, float minDamage, float maxDamage, TimeSpan? cooldown = null, float knockback = 250f, int knockbackMillis = 250) : base(AbilityTypes.Melee, being, cooldown ?? TimeSpan.Zero, 0, "")
+        public Melee(Being being, float minDamage, float maxDamage, TimeSpan? cooldown = null, float knockback = 250f, int knockbackMillis = 250) : base(AbilityTypes.Melee, being, cooldown ?? TimeSpan.Zero, TimeSpan.Zero, 0, "")
         {
             _minDamage = minDamage;
             _maxDamage = maxDamage;

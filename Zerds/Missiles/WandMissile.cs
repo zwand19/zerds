@@ -59,7 +59,7 @@ namespace Zerds.Missiles
         {
             if (!_spawned)
                 return Animations.Get(AnimationTypes.Spawn);
-            return Animations.Get(Origin.DistanceBetween(Position) > Distance ? AnimationTypes.Death : AnimationTypes.Move);
+            return Animations.Get(Origin.DistanceBetween(Position) > Distance  || HitWall ? AnimationTypes.Death : AnimationTypes.Move);
         }
 
         public override List<Rectangle> Hitbox()

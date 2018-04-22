@@ -8,7 +8,7 @@ namespace Zerds.Abilities
 {
     public class LavaBlast : Ability
     {
-        public LavaBlast(Zerd zerd) : base(AbilityTypes.LavaBlast, zerd, AbilityConstants.LavaBlastCooldown, AbilityConstants.LavaBlastManaCost, "lava_blast")
+        public LavaBlast(Zerd zerd) : base(AbilityTypes.LavaBlast, zerd, AbilityConstants.LavaBlastCooldown, AbilityConstants.LavaBlastCastTime, AbilityConstants.LavaBlastManaCost, "lava_blast")
         {
             zerd.AddCastingAnimation(AnimationTypes.LavaBlastAttack, AbilityConstants.LavaBlastCastTime, AbilityConstants.LavaBlastFollowThroughTime, Execute, Casted);
         }

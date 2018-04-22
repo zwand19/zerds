@@ -8,7 +8,7 @@ namespace Zerds.Abilities
 {
     public class Sprint : Ability
     {
-        public Sprint(Being being) : base(AbilityTypes.Sprint, being, TimeSpan.Zero, 0f, "")
+        public Sprint(Being being) : base(AbilityTypes.Sprint, being, TimeSpan.Zero, TimeSpan.Zero, 0f, "")
         {
 
         }

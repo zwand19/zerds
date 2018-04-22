@@ -12,6 +12,7 @@ using Zerds.Items;
 using Microsoft.Xna.Framework.Graphics;
 using Zerds.Consumables;
 using Zerds.Factories;
+using Zerds.Input;
 
 namespace Zerds.Entities
 {
@@ -55,8 +56,8 @@ namespace Zerds.Entities
             });
             Inventory = gear;
 
-            X = Globals.ViewportBounds.Width / 2;
-            Y = Globals.ViewportBounds.Height / 2;
+            X = Globals.Map.StartingPosition.X;
+            Y = Globals.Map.StartingPosition.Y;
             X += (int)player.PlayerIndex % 2 == 0 ? 85 : -85;
             Y += (int)player.PlayerIndex < 2 ? -60 : 60;
             Health = GameplayConstants.ZerdStartingHealth;
@@ -125,24 +126,24 @@ namespace Zerds.Entities
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var animation = ZerdAnimations.Animations[GetCurrentAnimationType()];
             if (animation.Keys.Contains(BodyPartType.Feet))
-                Globals.SpriteDrawer.Draw(FeetTexture, sourceRectangle: animation[BodyPartType.Feet].CurrentRectangle,
+                FeetTexture.Draw(sourceRectangle: animation[BodyPartType.Feet].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Feet.Width / 2, ZerdAnimationHelpers.Feet.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Hands))
-                Globals.SpriteDrawer.Draw(HandTexture, sourceRectangle: animation[BodyPartType.Hands].CurrentRectangle,
+                HandTexture.Draw(sourceRectangle: animation[BodyPartType.Hands].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Hands.Width / 2, ZerdAnimationHelpers.Hands.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Chest))
-                Globals.SpriteDrawer.Draw(ChestTexture, sourceRectangle: animation[BodyPartType.Chest].CurrentRectangle,
+                ChestTexture.Draw(sourceRectangle: animation[BodyPartType.Chest].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Chest.Width / 2, ZerdAnimationHelpers.Chest.Height / 2), scale: BodyScaleVector);
             if (animation.Keys.Contains(BodyPartType.Head))
-                Globals.SpriteDrawer.Draw(HeadTexture, sourceRectangle: animation[BodyPartType.Head].CurrentRectangle,
+                HeadTexture.Draw(sourceRectangle: animation[BodyPartType.Head].CurrentRectangle,
                     color: Color.White, position: new Vector2(X, Y), rotation: angle, origin:
                     new Vector2(ZerdAnimationHelpers.Head.Width / 2, ZerdAnimationHelpers.Head.Height / 2), scale: BodyScaleVector);
             if (Globals.ShowHitboxes && IsAlive)
             {
-                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
+                Hitbox().ForEach(r => Globals.WhiteTexture.Draw(r, Color.Green));
             }
         }
 
@@ -174,6 +175,11 @@ namespace Zerds.Entities
             if (leftTrigger > CodingConstants.TriggerPress && Velocity.Length() > 0)
             {
                 Facing = Facing.Rotate(180);
+            }
+            if (InputService.InputDevices[Player.PlayerIndex] is Keyboard)
+            {
+                if (rightStickDirection != Vector2.Zero)
+                    Facing = rightStickDirection;
             }
             Velocity = leftStickDirection;
         }

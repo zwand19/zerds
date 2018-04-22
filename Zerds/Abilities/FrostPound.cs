@@ -10,7 +10,7 @@ namespace Zerds.Abilities
 {
     public class FrostPound : Ability
     {
-        public FrostPound(Zerd zerd) : base(AbilityTypes.FrostPound, zerd, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundManaCost, "ice-punch")
+        public FrostPound(Zerd zerd) : base(AbilityTypes.FrostPound, zerd, AbilityConstants.FrostPoundCooldown, AbilityConstants.FrostPoundCastTime, AbilityConstants.FrostPoundManaCost, "ice-punch")
         {
             zerd.AddCastingAnimation(AnimationTypes.FrostPoundAttack, AbilityConstants.FrostPoundCastTime, AbilityConstants.FrostPoundFollowThroughTime, Execute, Casted);
         }

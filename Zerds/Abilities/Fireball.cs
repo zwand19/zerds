@@ -9,7 +9,7 @@ namespace Zerds.Abilities
 {
     public class Fireball : Ability
     {
-        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballManaCost, "fireball")
+        public Fireball(Zerd zerd) : base(AbilityTypes.Fireball, zerd, AbilityConstants.FireballCooldown, AbilityConstants.FireballCastTime, AbilityConstants.FireballManaCost, "fireball")
         {
             zerd.AddCastingAnimation(AnimationTypes.FireAttack, AbilityConstants.FireballCastTime, AbilityConstants.FireballFollowThroughTime, Execute, Casted);
         }

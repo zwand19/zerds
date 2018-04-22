@@ -3,10 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.System;
-using Windows.UI.Core;
-using Microsoft.Xna.Framework.Input;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.GameObjects;
@@ -54,8 +50,10 @@ namespace Zerds
         /// </summary>
         protected override void Initialize()
         {
+            Globals.SpriteDrawer = new SpriteBatch(GraphicsDevice);
+            Globals.Initialize();
             TextureCacheFactory.Initialize(GraphicsDevice);
-            ControllerService.Initialize();
+            InputService.Initialize();
             SkillConstants.Initialize();
             XmlStorage.Initialize();
             TextureCacheFactory.Get("Entities/Zomb-King.png");
@@ -73,9 +71,7 @@ namespace Zerds
         protected override void LoadContent()
         {
             Globals.ContentManager = Content;
-            Globals.SpriteDrawer = new SpriteBatch(GraphicsDevice);
             Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
-            Globals.Initialize();
             _players = new List<Player>
             {
                 new Player("Player One", PlayerIndex.One),
@@ -128,7 +124,7 @@ namespace Zerds
         {
             try
             {
-                ControllerService.Update(gameTime);
+                InputService.Update(gameTime);
                 switch (_state)
                 {
                     case GameStates.MainMenu:

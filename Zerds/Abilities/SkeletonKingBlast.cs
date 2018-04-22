@@ -9,7 +9,7 @@ namespace Zerds.Abilities
 {
     public class SkeletonKingBlast : Ability
     {
-        public SkeletonKingBlast(Enemy being) : base(AbilityTypes.SkeletonKingBlast, being, EnemyConstants.SkeletonKingBlastCooldown, 0, "")
+        public SkeletonKingBlast(Enemy being) : base(AbilityTypes.SkeletonKingBlast, being, EnemyConstants.SkeletonKingBlastCooldown, TimeSpan.Zero, 0, "")
         {
             Cooldown = EnemyConstants.SkeletonKingBlastCooldown;
         }

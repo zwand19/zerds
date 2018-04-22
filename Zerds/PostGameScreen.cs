@@ -70,7 +70,7 @@ namespace Zerds
         {
             if (_currentPlayer == null)
                 return;
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.A))
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.A))
             {
                 if (_confirmedReward)
                     ProcessTreasureSelection();
@@ -80,7 +80,7 @@ namespace Zerds
 
             if (!_confirmedReward) return;
 
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.Start) && DoneOpeningTreasure)
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.Start) && DoneOpeningTreasure)
             {
                 NextPlayer();
                 return;
@@ -90,13 +90,13 @@ namespace Zerds
 
             var coords = TreasureCoords(_selectedChest);
             TreasureChest chest = null;
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickRight))
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickRight))
                 chest = _currentPlayer.Zerd.TreasureChests.FirstOrDefault(t => TreasureCoords(t).Item1 == coords.Item1 + 1 && TreasureCoords(t).Item2 == coords.Item2);
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickLeft))
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickLeft))
                 chest = _currentPlayer.Zerd.TreasureChests.FirstOrDefault(t => TreasureCoords(t).Item1 == coords.Item1 - 1 && TreasureCoords(t).Item2 == coords.Item2);
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickUp))
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickUp))
                 chest = _currentPlayer.Zerd.TreasureChests.FirstOrDefault(t => TreasureCoords(t).Item1 == coords.Item1 && TreasureCoords(t).Item2 == coords.Item2 - 1);
-            if (ControllerService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickDown))
+            if (InputService.ButtonPressed(_currentPlayer.PlayerIndex, Buttons.LeftThumbstickDown))
                 chest = _currentPlayer.Zerd.TreasureChests.FirstOrDefault(t => TreasureCoords(t).Item1 == coords.Item1 && TreasureCoords(t).Item2 == coords.Item2 + 1);
 
             _selectedChest = chest ?? _selectedChest;
@@ -104,11 +104,11 @@ namespace Zerds
 
         public void Draw()
         {
-            Globals.Map.Draw();
             Globals.SpriteDrawer.Begin(blendState: BlendState.AlphaBlend);
-            Globals.SpriteDrawer.DrawRect(_recapBounds, new Color(Color.Black, 0.75f));
-            Globals.SpriteDrawer.DrawRect(_treasureBounds, new Color(Color.Black, 0.75f));
-            Globals.SpriteDrawer.DrawRect(_treasureInfoBounds, new Color(Color.Black, 0.75f));
+            Globals.Map.Draw();
+            _recapBounds.Draw(new Color(Color.Black, 0.75f));
+            _treasureBounds.Draw(new Color(Color.Black, 0.75f));
+            _treasureInfoBounds.Draw(new Color(Color.Black, 0.75f));
             _currentPlayer.Zerd.Draw();
             DrawPlayerStats();
             DrawKeys();
@@ -140,40 +140,40 @@ namespace Zerds
         private void DrawReward()
         {
             var bounds = Helpers.CreateRect(Globals.ViewportBounds.Width / 2 - 200, Globals.ViewportBounds.Height / 2 - 200, 400, 400);
-            Globals.SpriteDrawer.DrawRect(bounds, Color.Black);
+            bounds.Draw(Color.Black);
             if (_reward == null)
             {
-                Globals.SpriteDrawer.DrawText("This chest is empty.", new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, Color.White);
+                "This chest is empty.".Draw(new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, Color.White);
             }
             else
             {
-                Globals.SpriteDrawer.DrawText(_reward.Name, new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, _reward.TextColor);
+                _reward.Name.Draw(new Vector2(bounds.Center.X, bounds.Top + 50f), 20f, _reward.TextColor);
                 _reward.Draw(bounds.Center.X, bounds.Center.Y - 70f, 70, 70);
                 var y = bounds.Center.Y + 10f;
                 foreach (var buff in _reward.AbilityUpgrades)
                 {
-                    Globals.SpriteDrawer.DrawText(buff.ToString(), new Vector2(bounds.Center.X, y), 14f, Color.White);
+                    buff.ToString().Draw(new Vector2(bounds.Center.X, y), 14f, Color.White);
                     y += 22f;
                 }
-                Globals.SpriteDrawer.DrawText(_reward.Description1(), new Vector2(bounds.Center.X, y), 14f, Color.White);
+                _reward.Description1().Draw(new Vector2(bounds.Center.X, y), 14f, Color.White);
                 y += 22;
-                Globals.SpriteDrawer.DrawText(_reward.Description2(), new Vector2(bounds.Center.X, y), 14f, Color.White);
+                _reward.Description2().Draw(new Vector2(bounds.Center.X, y), 14f, Color.White);
             }
-            Globals.SpriteDrawer.DrawText("Press A to Continue", new Vector2(bounds.Center.X, bounds.Bottom - 50f), 20f, Globals.ContinueColor);
+            "Press A to Continue".Draw(new Vector2(bounds.Center.X, bounds.Bottom - 50f), 20f, Globals.ContinueColor);
         }
 
         private void DrawPlayerStats()
         {
             const float spacing = 60f;
             var top = _recapBounds.Top + MenuPadding + Globals.GameState.Zerds.First().Height + spacing;
-            Globals.SpriteDrawer.DrawText($"Killed on Level {Level.CurrentLevel}", new Vector2(_recapBounds.Center.X, top), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Killing Blows: {_currentPlayer.Zerd.Stats.KillingBlows}", new Vector2(_recapBounds.Center.X, top + spacing), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Damage Dealt: {Math.Floor(_currentPlayer.Zerd.Stats.DamageDealt)}", new Vector2(_recapBounds.Center.X, top + spacing * 2), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Damage Taken: {Math.Floor(_currentPlayer.Zerd.Stats.DamageTaken)}", new Vector2(_recapBounds.Center.X, top + spacing * 3), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Largest Combo: {_currentPlayer.Zerd.Stats.MaxCombo}", new Vector2(_recapBounds.Center.X, top + spacing * 4), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Gold Earned: {_currentPlayer.Zerd.Stats.GoldEarned}", new Vector2(_recapBounds.Center.X, top + spacing * 5), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Skill Points Spent: {_currentPlayer.Zerd.Stats.SkillPointsSpent}", new Vector2(_recapBounds.Center.X, top + spacing * 6), 20f, Color.White);
-            Globals.SpriteDrawer.DrawText($"Ability Upgrades Bought: {_currentPlayer.Zerd.Stats.AbilityUpgradesPurchased}", new Vector2(_recapBounds.Center.X, top + spacing * 7), 20f, Color.White);
+            $"Killed on Level {Level.CurrentLevel}".Draw(new Vector2(_recapBounds.Center.X, top), 20f, Color.White);
+            $"Killing Blows: {_currentPlayer.Zerd.Stats.KillingBlows}".Draw(new Vector2(_recapBounds.Center.X, top + spacing), 20f, Color.White);
+            $"Damage Dealt: {Math.Floor(_currentPlayer.Zerd.Stats.DamageDealt)}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 2), 20f, Color.White);
+            $"Damage Taken: {Math.Floor(_currentPlayer.Zerd.Stats.DamageTaken)}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 3), 20f, Color.White);
+            $"Largest Combo: {_currentPlayer.Zerd.Stats.MaxCombo}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 4), 20f, Color.White);
+            $"Gold Earned: {_currentPlayer.Zerd.Stats.GoldEarned}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 5), 20f, Color.White);
+            $"Skill Points Spent: {_currentPlayer.Zerd.Stats.SkillPointsSpent}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 6), 20f, Color.White);
+            $"Ability Upgrades Bought: {_currentPlayer.Zerd.Stats.AbilityUpgradesPurchased}".Draw(new Vector2(_recapBounds.Center.X, top + spacing * 7), 20f, Color.White);
         }
 
         private void DrawKeys()
@@ -217,14 +217,14 @@ namespace Zerds
             if (_selectedChest != null)
             {
                 var top = _treasureInfoBounds.Top + MenuPadding;
-                Globals.SpriteDrawer.DrawText("Chest Info", new Vector2(_treasureInfoBounds.Center.X, top), 24f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item.InformalName()}", new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
-                Globals.SpriteDrawer.DrawText($"{_selectedChest.Chances()[3] * 100:##.#}% Chance of no item", new Vector2(_treasureInfoBounds.Center.X, top + 150f), 18f, Color.White);
+                "Chest Info".Draw(new Vector2(_treasureInfoBounds.Center.X, top), 24f, Color.White);
+                $"{_selectedChest.Chances()[0] * 100:##.#}% Chance of {_selectedChest.PotentialItems[0].Item.InformalName()}".Draw(new Vector2(_treasureInfoBounds.Center.X, top + 50f), 18f, Color.White);
+                $"{_selectedChest.Chances()[1] * 100:##.#}% Chance of {_selectedChest.PotentialItems[1].Item.InformalName()}".Draw(new Vector2(_treasureInfoBounds.Center.X, top + 100f), 18f, Color.White);
+                $"{_selectedChest.Chances()[2] * 100:##.#}% Chance of {_selectedChest.PotentialItems[2].Item.InformalName()}".Draw(new Vector2(_treasureInfoBounds.Center.X, top + 200f), 18f, Color.White);
+                $"{_selectedChest.Chances()[3] * 100:##.#}% Chance of no item".Draw(new Vector2(_treasureInfoBounds.Center.X, top + 150f), 18f, Color.White);
             }
             var msg = DoneOpeningTreasure ? "Press Start to Continue" : "Press A to unlock";
-            Globals.SpriteDrawer.DrawText(msg, new Vector2(_treasureInfoBounds.Center.X, _treasureInfoBounds.Bottom - MenuPadding - 40f), 20f, Globals.ContinueColor);
+            msg.Draw(new Vector2(_treasureInfoBounds.Center.X, _treasureInfoBounds.Bottom - MenuPadding - 40f), 20f, Globals.ContinueColor);
         }
 
         private void NextPlayer()

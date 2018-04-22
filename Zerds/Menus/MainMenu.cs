@@ -29,7 +29,7 @@ namespace Zerds.Menus
             Globals.Map.Draw();
             Globals.SpriteDrawer.Draw(Globals.WhiteTexture, Globals.ViewportBounds, new Color(0, 0, 0, 0.75f));
             _menu.Draw(new Vector2(150, 300), 30f, 100f, Color.White, new Color(0.6f, 0.6f, 0.9f));
-            Globals.SpriteDrawer.DrawText("ZERDS", new Vector2(Globals.ViewportBounds.Width / 2.0f, 150), 50f, color: Color.White);
+            "ZERDS".Draw(new Vector2(Globals.ViewportBounds.Width / 2.0f, 150), 50f, color: Color.White);
             Globals.SpriteDrawer.End();
         }
     }

@@ -136,6 +136,9 @@
     <Compile Include="Data\SaveGameSkillUpgrade.cs" />
     <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="Entities\Enemies\SkeletonKing.cs" />
+    <Compile Include="Entities\GameObject.cs" />
+    <Compile Include="Enums\MapSectionTypes.cs" />
+    <Compile Include="Enums\TileTypes.cs" />
     <Compile Include="Enums\ZerdBodyPartTypes.cs" />
     <Compile Include="GameObjects\AbilityUpgrades.cs" />
     <Compile Include="Entities\Enemies\Demon.cs" />
@@ -167,16 +170,20 @@
     <Compile Include="Buffs\DashBuff.cs" />
     <Compile Include="Buffs\SprintBuff.cs" />
     <Compile Include="Abilities\Ability.cs" />
+    <Compile Include="GameObjects\Camera.cs" />
     <Compile Include="GameObjects\DamageInstance.cs" />
     <Compile Include="GameObjects\DamageText.cs" />
     <Compile Include="GameObjects\Knockback.cs" />
     <Compile Include="GameObjects\Level.cs" />
     <Compile Include="GameObjects\Map.cs" />
+    <Compile Include="GameObjects\MapSection.cs" />
     <Compile Include="GameObjects\PlayerSkills.cs" />
     <Compile Include="GameObjects\Stats.cs" />
     <Compile Include="Graphics\ZerdAnimationHelpers.cs" />
     <Compile Include="Graphics\ZerdAnimations.cs" />
     <Compile Include="Graphics\ZerdBodyPart.cs" />
+    <Compile Include="Input\InputDevice.cs" />
+    <Compile Include="Input\Keyboard.cs" />
     <Compile Include="Items\BootItem.cs" />
     <Compile Include="Items\LootHelper.cs" />
     <Compile Include="Items\PotentialItem.cs" />
@@ -232,7 +239,7 @@
     </Compile>
     <Compile Include="Graphics\AnimationList.cs" />
     <Compile Include="Missiles\WandMissile.cs" />
-    <Compile Include="Input\ControllerService.cs" />
+    <Compile Include="Input\InputService.cs" />
     <Compile Include="Data\SavedPlayer.cs" />
     <Compile Include="Data\XmlStorage.cs" />
     <Compile Include="ZerdGame.cs" />
@@ -549,6 +556,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Maps\DungeonTile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Maps\DungeonWallTile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Maps\Tiles.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missiles\arrow.png">

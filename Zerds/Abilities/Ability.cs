@@ -12,6 +12,8 @@ namespace Zerds.Abilities
         public Being Being { get; set; }
         public TimeSpan Cooldown { get; set; }
         public TimeSpan FullCooldown { get; set; }
+        public TimeSpan ChargeTime { get; set; }
+        public TimeSpan CastTime { get; set; }
         public AbilityTypes Type { get; set; }
         public Func<bool> Callback { get; set; }
         public bool Active { get; set; }
@@ -21,12 +23,13 @@ namespace Zerds.Abilities
         public Texture2D Texture { get; set; }
         public Texture2D DisabledTexture { get; set; }
 
-        protected Ability(AbilityTypes type, Being being, TimeSpan cooldown, float manaCost, string iconFile)
+        protected Ability(AbilityTypes type, Being being, TimeSpan cooldown, TimeSpan castTime, float manaCost, string iconFile)
         {
             Type = type;
             Being = being;
             FullCooldown = cooldown;
             ManaCost = manaCost;
+            CastTime = castTime;
             DrawIcon = iconFile != "";
             Texture = DrawIcon ? TextureCacheFactory.GetOnce($"Icons/{iconFile}.png") : null;
             DisabledTexture = DrawIcon ? TextureCacheFactory.GetOnce($"Icons/{iconFile}-grey.png") : null;
@@ -38,6 +41,23 @@ namespace Zerds.Abilities
             if (Being.GetCurrentAnimation().Name != AnimationTypes.Move && Being.GetCurrentAnimation().Name != AnimationTypes.Stand) return;
             (Being as Zerd).ZerdAnimations.Reset(animation);
             Active = true;
+        }
+
+        public double CastFactor()
+        {
+            return 1;
+        }
+
+        public virtual void StartCharge()
+        {
+            if (Cooldown > TimeSpan.Zero) return;
+            Being.Animations.ResetAll();
+            Execute();
+        }
+
+        public virtual void ReleaseCharge()
+        {
+            
         }
 
         public virtual void Cast()

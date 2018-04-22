@@ -12,7 +12,7 @@ namespace Zerds.Abilities
 {
     public class DragonBreath : Ability
     {
-        public DragonBreath(Zerd zerd) : base(AbilityTypes.DragonsBreath, zerd, AbilityConstants.DragonBreathCooldown, AbilityConstants.DragonBreathManaCost, "dragon-breath")
+        public DragonBreath(Zerd zerd) : base(AbilityTypes.DragonsBreath, zerd, AbilityConstants.DragonBreathCooldown, TimeSpan.Zero, AbilityConstants.DragonBreathManaCost, "dragon-breath")
         {
             ZerdAnimationHelpers.AddDragonsBreathAnimation(zerd, Casted, Execute, MakeMissile);
         }

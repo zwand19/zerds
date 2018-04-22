@@ -45,7 +45,7 @@ namespace Zerds.GameObjects
 
         public void Draw()
         {
-            Globals.SpriteDrawer.DrawText(((int) DamageInstance.Damage).ToString(), Position, DamageInstance.IsCritical ? 23f : 17f, color: _color);
+            ((int) DamageInstance.Damage).ToString().DrawGameText(Position, DamageInstance.IsCritical ? 23f : 17f, color: _color);
         }
     }
 }

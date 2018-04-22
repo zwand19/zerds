@@ -59,7 +59,7 @@ namespace Zerds.Menus
         {
             var pos = GetPosition(bounds);
             if (selected)
-                Globals.SpriteDrawer.DrawRect(new Rectangle(pos.X - Border, pos.Y - Border, Size + Border * 2, Size + Border * 2), Color.White);
+                new Rectangle(pos.X - Border, pos.Y - Border, Size + Border * 2, Size + Border * 2).Draw(Color.White);
             Globals.SpriteDrawer.Draw(Texture, new Rectangle(pos.X, pos.Y, Size, Size), Color.White * (available ? 1f : 0.5f));
         }
 

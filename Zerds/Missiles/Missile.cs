@@ -18,6 +18,8 @@ namespace Zerds.Missiles
         public Being Creator { get; set; }
         public abstract void OnHit(Being target);
 
+        protected bool HitWall { get; set; }
+
         protected Missile(string file) : base(file, true)
         {
             IsAlive = true;
@@ -31,21 +33,32 @@ namespace Zerds.Missiles
 
         public override void Update(GameTime gameTime)
         {
-            CheckHit();
-            if (Origin.DistanceBetween(Position) > Distance && IsAlive)
+            // TBD: is just using one hitbox fine?
+            if (Globals.Map.CollidesWithWall(this))
             {
-                Speed *= 0.75f;
-                IsAlive = false;
                 if (Creator is Zerd)
-                    ((Zerd) Creator).Stats.Missed();
+                    ((Zerd)Creator).Stats.Missed();
+                Speed = 0;
+                IsAlive = false;
+                HitWall = true;
+            }
+            if (IsAlive)
+            {
+                CheckHit();
+                if (Origin.DistanceBetween(Position) > Distance && IsAlive)
+                {
+                    Speed *= 0.75f;
+                    IsAlive = false;
+                    if (Creator is Zerd)
+                        ((Zerd)Creator).Stats.Missed();
+                }
             }
             base.Update(gameTime);
         }
 
         private void CheckHit()
         {
-            var creator = Creator as Zerd;
-            if (creator != null && IsAlive)
+            if (Creator is Zerd creator)
             {
                 foreach (var enemy in Creator.Enemies().Where(e => e.IsAlive))
                 {
@@ -55,7 +68,7 @@ namespace Zerds.Missiles
                     return;
                 }
             }
-            else if (IsAlive)
+            else
             {
                 foreach (var zerd in Globals.GameState.Friendlies.Where(e => e.IsAlive))
                 {
@@ -70,8 +83,7 @@ namespace Zerds.Missiles
         {
             var rect = GetCurrentAnimation().CurrentRectangle;
             var angle = -(float)Math.Atan2(Velocity.Y, Velocity.X) + SpriteRotation();
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
+            this.DrawGameObject(
                 sourceRectangle: rect,
                 color: Color.White * Opacity,
                 destinationRectangle: Helpers.CreateRect(X, Y, Width, Height),
@@ -79,7 +91,7 @@ namespace Zerds.Missiles
                 origin: new Vector2(rect.Width / 2f, rect.Height / 2f));
             if (Globals.ShowHitboxes)
             {
-                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Blue));
+                Hitbox().ForEach(r => Globals.WhiteTexture.Draw(r, Color.Blue));
             }
         }
 

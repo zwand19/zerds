@@ -6,6 +6,7 @@ using Zerds.Abilities;
 using Zerds.Constants;
 using Zerds.Factories;
 using Zerds.GameObjects;
+using Zerds.Input;
 
 namespace Zerds
 {
@@ -56,14 +57,14 @@ namespace Zerds
             const int border = 2;
             const int top = 30;
             var left = (float)Globals.ViewportBounds.Width / 2 - width / 2.0f;
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left, top, width, height));
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border, top + border, width - border * 2, height - border * 2), new Color(0.35f, 0.35f, 0.35f));
+            Helpers.CreateRect(left, top, width, height).Draw();
+            Helpers.CreateRect(left + border, top + border, width - border * 2, height - border * 2).Draw(new Color(0.35f, 0.35f, 0.35f));
             var barWidth = Level.TimeRemaining.TotalMilliseconds / GameplayConstants.LevelLength.TotalMilliseconds * (width - border * 2);
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border, top + border, barWidth, height - border * 2), new Color(104, 40, 96));
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 4.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + width / 2.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
-            Globals.SpriteDrawer.DrawRect(Helpers.CreateRect(left + border + 3 * width / 4.0f, top + border, 1, height - border * 2), new Color(Color.Black, 0.5f));
-            Globals.SpriteDrawer.DrawText($"LEVEL {Level.CurrentLevel}", new Vector2((float) Globals.ViewportBounds.Width / 2, top + height / 2.0f), 16f, color: Color.White);
+            Helpers.CreateRect(left + border, top + border, barWidth, height - border * 2).Draw(new Color(104, 40, 96));
+            Helpers.CreateRect(left + border + width / 4.0f, top + border, 1, height - border * 2).Draw(new Color(Color.Black, 0.5f));
+            Helpers.CreateRect(left + border + width / 2.0f, top + border, 1, height - border * 2).Draw(new Color(Color.Black, 0.5f));
+            Helpers.CreateRect(left + border + 3 * width / 4.0f, top + border, 1, height - border * 2).Draw(new Color(Color.Black, 0.5f));
+            $"LEVEL {Level.CurrentLevel}".Draw(new Vector2((float) Globals.ViewportBounds.Width / 2, top + height / 2.0f), 16f, color: Color.White);
         }
 
         private static void DrawLevelText()
@@ -72,7 +73,7 @@ namespace Zerds
             if (opacity > 0f)
             {
                 var position = Globals.ViewportBounds.Center.ToVector2() + new Vector2(0, (opacity - 1f) * 80);
-                Globals.SpriteDrawer.DrawText($"- Level {Level.CurrentLevel} -", position, 32f, color: new Color(Color.Black, opacity));
+                $"- Level {Level.CurrentLevel} -".Draw(position, 32f, color: new Color(Color.Black, opacity));
             }
         }
 
@@ -96,24 +97,13 @@ namespace Zerds
                     break;
             }
             // Player HUD
-            Globals.SpriteDrawer.DrawRect(new Rectangle(position.X, position.Y, PlayerHudWidth, PlayerHudHeight));
-            Globals.SpriteDrawer.Draw(_witchTexture,
-                new Rectangle(position.X + Border, position.Y + Border, PlayerImageHeight, PlayerImageHeight), Color.White);
-            Globals.SpriteDrawer.DrawRect(
-                new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border, PlayerHealthBarWidth, PlayerHealthBarHeight),
-                _healthBarBackColor);
-            Globals.SpriteDrawer.DrawRect(
-                new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border,
-                    (int) (PlayerHealthBarWidth * player.Zerd.HealthPercentage), PlayerHealthBarHeight), player.Zerd.HealthColor);
-            Globals.SpriteDrawer.DrawRect(
-                new Rectangle(position.X + PlayerImageHeight + Border * 2,
-                    position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator, PlayerHealthBarWidth, PlayerHealthBarHeight),
-                _healthBarBackColor);
-            Globals.SpriteDrawer.DrawRect(
-                new Rectangle(position.X + PlayerImageHeight + Border * 2,
-                    position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator,
-                    (int) (PlayerHealthBarWidth * player.Zerd.ManaPercentage), PlayerHealthBarHeight),
-                new Color(0.25f, 0.25f, 0.55f));
+            new Rectangle(position.X, position.Y, PlayerHudWidth, PlayerHudHeight).Draw();
+            Globals.SpriteDrawer.Draw(_witchTexture,new Rectangle(position.X + Border, position.Y + Border, PlayerImageHeight, PlayerImageHeight), Color.White);
+            new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border, PlayerHealthBarWidth, PlayerHealthBarHeight).Draw(_healthBarBackColor);
+            new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border, (int) (PlayerHealthBarWidth * player.Zerd.HealthPercentage), PlayerHealthBarHeight).Draw(player.Zerd.HealthColor);
+            new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator, PlayerHealthBarWidth, PlayerHealthBarHeight).Draw(_healthBarBackColor);
+            new Rectangle(position.X + PlayerImageHeight + Border * 2, position.Y + Border + PlayerHealthBarHeight + PlayerHudBarsSeparator, (int) (PlayerHealthBarWidth * player.Zerd.ManaPercentage), PlayerHealthBarHeight)
+                .Draw(new Color(0.25f, 0.25f, 0.55f));
             // Ability Icons
             DrawIcon<Wand>(player, position, 0, 0);
             DrawIcon<Fireball>(player, position, 40, 0);
@@ -126,10 +116,20 @@ namespace Zerds
             DrawIcon<Icicle>(player, position, 80, secondRowOffset);
             DrawIcon<LavaBlast>(player, position, 120, secondRowOffset);
             // Button icons
-            DrawButtonIcon<FrostPound>(_aBtnTexture, player, position, 0);
-            DrawButtonIcon<DragonBreath>(_xBtnTexture, player, position, 40);
-            DrawButtonIcon<Icicle>(_bBtnTexture, player, position, 80);
-            DrawButtonIcon<LavaBlast>(_yBtnTexture, player, position, 120);
+            if (InputService.InputDevices[player.PlayerIndex] is Controller)
+            {
+                DrawButtonIcon<FrostPound>(_aBtnTexture, player, position, 0);
+                DrawButtonIcon<DragonBreath>(_xBtnTexture, player, position, 40);
+                DrawButtonIcon<Icicle>(_bBtnTexture, player, position, 80);
+                DrawButtonIcon<LavaBlast>(_yBtnTexture, player, position, 120);
+            }
+            else
+            {
+                DrawButtonText("Q", player, position, 0);
+                DrawButtonText("W", player, position, 40);
+                DrawButtonText("E", player, position, 80);
+                DrawButtonText("R", player, position, 120);
+            }
             if (player.Zerd.Abilities.Any(a => a is Charm)) DrawButtonIcon(_rbBtnTexture, player, position, 160);
         }
 
@@ -146,6 +146,12 @@ namespace Zerds
             var abil = p.Zerd.Abilities.FirstOrDefault(i => i is T);
             var offset = abil == null ? secondRowOffset : secondRowOffset * 2;
             Globals.SpriteDrawer.Draw(t, Helpers.CreateRect(x + position.X, offset + position.Y + PlayerHudHeight + 8, 32, 32), Color.White * 0.75f);
+        }
+
+        private static void DrawButtonText(string t, Player p, Point position, int x)
+        {
+            var offset = p.PlayerIndex == PlayerIndex.One || p.PlayerIndex == PlayerIndex.Two ? 40 : -40;
+            t.Draw(new Vector2(x + position.X + 16, offset + position.Y + PlayerHudHeight + 8), 12f, Color.White);
         }
 
         private static void DrawButtonIcon(Texture2D t, Player p, Point position, int x)

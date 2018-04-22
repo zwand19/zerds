@@ -9,7 +9,7 @@ namespace Zerds.Abilities
 {
     public class Icicle : Ability
     {
-        public Icicle(Being being) : base(AbilityTypes.Icicle, being, AbilityConstants.IcicleCooldown, AbilityConstants.IcicleManaCost, "icicle")
+        public Icicle(Being being) : base(AbilityTypes.Icicle, being, AbilityConstants.IcicleCooldown, TimeSpan.Zero, AbilityConstants.IcicleManaCost, "icicle")
         {
         }
 

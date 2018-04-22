@@ -50,8 +50,8 @@ namespace Zerds
 
         public void Draw()
         {
-            Globals.Map.Draw();
             Globals.SpriteDrawer.Begin();
+            Globals.Map.Draw();
             Entities.ForEach(b => b.Draw());
             Enemies.ForEach(b => b.DrawHealthbar());
             Allies.ForEach(b => b.DrawHealthbar());
@@ -62,6 +62,7 @@ namespace Zerds
         public void Update(GameTime gameTime)
         {
             Level.Update(gameTime);
+            Globals.Camera.Update(gameTime);
             Beings.ForEach(b => b.Update(gameTime));
             Enemies = Enemies.Where(e => e.IsActive).ToList();
             Enemies.ForEach(e => e.GetAI().Run(gameTime));

@@ -25,6 +25,9 @@ namespace Zerds.Constants
         public static TimeSpan WaitTimeAfterLosing => TimeSpan.FromSeconds(3.75);
         public static TimeSpan DefaultEnemyWanderInterval => TimeSpan.FromSeconds(2);
 
+        public const double MinCastFactor = 0.35f;
+        public const double CastPower = 0.5f; // percentage of cast time raised to the power of this = damage factor
+
         public const int FloatingPointsPerLevel = 3;
         public const int SkillPointsPerLevel = 3;
         public const float AggroRangeBuffer = 15;

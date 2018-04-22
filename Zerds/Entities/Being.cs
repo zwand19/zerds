@@ -55,10 +55,15 @@ namespace Zerds.Entities
             var angle = -(float)Math.Atan2(Facing.Y, Facing.X) + SpriteRotation();
             var rect = GetCurrentAnimation().CurrentRectangle;
             var scale = Width / rect.Width;
-            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: rect, color: Color.White * Opacity, scale: new Vector2(scale), position: new Vector2(X, Y), rotation: angle, origin: GetCurrentAnimation().CurrentOrigin);
+            this.DrawGameObject(
+                sourceRectangle: rect,
+                color: Color.White * Opacity,
+                scale: new Vector2(scale),
+                rotation: angle,
+                origin: GetCurrentAnimation().CurrentOrigin);
             if (Globals.ShowHitboxes && IsAlive)
             {
-                Hitbox().ForEach(r => Globals.SpriteDrawer.Draw(Globals.WhiteTexture, r, Color.Green));
+                Hitbox().ForEach(r => Globals.WhiteTexture.Draw(r, Color.Green));
             }
         }
 
@@ -74,12 +79,16 @@ namespace Zerds.Entities
             var bord = DisplayConstants.HealthBarBorder;
             var left = (int)(X - Width * 0.25f);
             var top = (int)(Y - Height * 0.5f - height - 5f);
-            Globals.SpriteDrawer.Draw(Globals.WhiteTexture, new Rectangle(left, top, (int)(Width * 0.5f), height), Color.Black);
-            Globals.SpriteDrawer.Draw(Globals.WhiteTexture, new Rectangle(left + bord, top + bord, (int)(((Width * 0.5f) - bord * 2) * HealthPercentage), height - bord * 2), HealthColor);
+            Globals.WhiteTexture.Draw(new Rectangle(left, top, (int)(Width * 0.5f), height), Color.Black);
+            Globals.WhiteTexture.Draw(new Rectangle(left + bord, top + bord, (int)(((Width * 0.5f) - bord * 2) * HealthPercentage), height - bord * 2), HealthColor);
         }
 
         public override void Update(GameTime gameTime)
         {
+            var moved = false;
+            var origX = X;
+            var origY = Y;
+
             if (!IsAlive)
             {
                 Velocity = Vector2.Zero;
@@ -137,6 +146,7 @@ namespace Zerds.Entities
                     {
                         X += Velocity.X * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
                         Y -= Velocity.Y * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                        moved = true;
                     }
                 }
                 else
@@ -149,24 +159,37 @@ namespace Zerds.Entities
                         Y += (int) (Knockback.Direction.Y * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
                                     (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
                              Globals.GameState.GameSpeed;
+                        moved = true;
                     }
                     Knockback.Duration = Knockback.Duration.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                     if (Knockback.Duration < TimeSpan.Zero)
                         Knockback = null;
                 }
-
-                if (this is Zerd)
-                {
-                    X = MathHelper.Clamp(X, 32, Globals.ViewportBounds.Width - 32);
-                    Y = MathHelper.Clamp(Y, 32, Globals.ViewportBounds.Height - 32);
-                }
-                else
-                {
-                    X = MathHelper.Clamp(X, - 150, Globals.ViewportBounds.Width + 300);
-                    Y = MathHelper.Clamp(Y, - 150, Globals.ViewportBounds.Height + 300);
-                }
+                
                 Health = MathHelper.Clamp(Health, 0, MaxHealth);
                 Mana = MathHelper.Clamp(Mana, 0, MaxMana);
+            }
+
+            // If we tried to move make sure we aren't hitting anything, else reject the move (only reject one dimension if needed)
+            if (moved)
+            {
+                if (Globals.Map.CollidesWithWall(this))
+                {
+                    var newX = X;
+                    var newY = Y;
+                    X = origX;
+                    if (Globals.Map.CollidesWithWall(this))
+                    {
+                        // Try just moving the Y
+                        X = newX;
+                        Y = origY;
+                        if (Globals.Map.CollidesWithWall(this))
+                        {
+                            // Can't move either axis
+                            X = origX;
+                        }
+                    } 
+                }
             }
 
             GetCurrentAnimation().Update(gameTime);

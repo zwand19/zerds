@@ -87,7 +87,7 @@ namespace Zerds.Menus
             Globals.SpriteDrawer.Draw(Globals.WhiteTexture,
                 Helpers.CreateRect(0, Globals.ViewportBounds.Height / 2 - 3, Globals.ViewportBounds.Width, 6), Color.Black);
             _quadrants.ForEach(q => q.Draw(_quadrants.Any(p => p.IsJoining)));
-            Globals.SpriteDrawer.DrawText("PICK YOUR ZERD", Globals.ViewportBounds.Center.ToVector2(), 50f, Color.White);
+            "PICK YOUR ZERD".Draw(Globals.ViewportBounds.Center.ToVector2(), 50f, Color.White);
             Globals.SpriteDrawer.End();
         }
 
@@ -136,69 +136,70 @@ namespace Zerds.Menus
                 switch (_step)
                 {
                     case Stage.NotJoined:
-                        Globals.SpriteDrawer.DrawText("Press A to join.", _bounds.Center.ToVector2(), 20f, Color.White);
+                        "Press A to join.".Draw(_bounds.Center.ToVector2(), 20f, Color.White);
                         break;
                     case Stage.SelectingPlayer:
-                        Globals.SpriteDrawer.DrawText(Name, _bounds.Center.ToVector2(), 20f, Globals.ContinueColor);
-                        Globals.SpriteDrawer.DrawText("<", new Vector2(_bounds.Center.X - 200f, _bounds.Center.Y), 20f, Color.White);
-                        Globals.SpriteDrawer.DrawText(">", new Vector2(_bounds.Center.X + 200f, _bounds.Center.Y), 20f, Color.White);
+                        Name.Draw(_bounds.Center.ToVector2(), 20f, Globals.ContinueColor);
+                        "<".Draw(new Vector2(_bounds.Center.X - 200f, _bounds.Center.Y), 20f, Color.White);
+                        ">".Draw(new Vector2(_bounds.Center.X + 200f, _bounds.Center.Y), 20f, Color.White);
                         break;
                     case Stage.Waiting:
-                        Globals.SpriteDrawer.DrawText(playersAreJoining ? "Waiting for others" : "Press Start to Begin.", c.ToVector2(), 20f, Globals.ContinueColor);
+                        var text = playersAreJoining ? "Waiting for others" : "Press Start to Begin.";
+                        text.Draw(c.ToVector2(), 20f, Globals.ContinueColor);
                         break;
                     case Stage.CreatingPlayer:
-                        Globals.SpriteDrawer.DrawText("Create Your Name", new Vector2(_bounds.Center.X, _bounds.Top + 40f),  20f, Color.White);
-                        if (_nameSelectorIndex == 0 && _firstNameIndex > 0) Globals.SpriteDrawer.DrawTextRightAlign(_setup.FirstNames[_firstNameIndex - 1], new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
-                        Globals.SpriteDrawer.DrawTextRightAlign(_setup.FirstNames[_firstNameIndex], new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 0 ? 255 : 180));
-                        if (_nameSelectorIndex == 0 && _firstNameIndex < _setup.FirstNames.Count - 1) Globals.SpriteDrawer.DrawTextRightAlign(_setup.FirstNames[_firstNameIndex + 1], new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
-                        if (_nameSelectorIndex == 1 && _middleNameIndex > 0) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex - 1], new Vector2(_bounds.Center.X, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
-                        Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex], new Vector2(_bounds.Center.X, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 1 ? 255 : 180));
-                        if (_nameSelectorIndex == 1 && _middleNameIndex < _setup.MiddleNames.Count - 1) Globals.SpriteDrawer.DrawText(_setup.MiddleNames[_middleNameIndex + 1], new Vector2(_bounds.Center.X, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
-                        if (_nameSelectorIndex == 2 && _lastNameIndex > 0) Globals.SpriteDrawer.DrawTextLeftAlign(_setup.LastNames[_lastNameIndex - 1], new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
-                        Globals.SpriteDrawer.DrawTextLeftAlign(_setup.LastNames[_lastNameIndex], new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 2 ? 255 : 180));
-                        if (_nameSelectorIndex == 2 && _lastNameIndex < _setup.LastNames.Count - 1) Globals.SpriteDrawer.DrawTextLeftAlign(_setup.LastNames[_lastNameIndex + 1], new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
+                        "Create Your Name".Draw(new Vector2(_bounds.Center.X, _bounds.Top + 40f),  20f, Color.White);
+                        if (_nameSelectorIndex == 0 && _firstNameIndex > 0) _setup.FirstNames[_firstNameIndex - 1].DrawRightAlign(new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
+                        _setup.FirstNames[_firstNameIndex].DrawRightAlign(new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 0 ? 255 : 180));
+                        if (_nameSelectorIndex == 0 && _firstNameIndex < _setup.FirstNames.Count - 1) _setup.FirstNames[_firstNameIndex + 1].DrawRightAlign(new Vector2(_bounds.Center.X - 40f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
+                        if (_nameSelectorIndex == 1 && _middleNameIndex > 0) _setup.MiddleNames[_middleNameIndex - 1].Draw(new Vector2(_bounds.Center.X, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
+                        _setup.MiddleNames[_middleNameIndex].Draw(new Vector2(_bounds.Center.X, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 1 ? 255 : 180));
+                        if (_nameSelectorIndex == 1 && _middleNameIndex < _setup.MiddleNames.Count - 1) _setup.MiddleNames[_middleNameIndex + 1].Draw(new Vector2(_bounds.Center.X, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
+                        if (_nameSelectorIndex == 2 && _lastNameIndex > 0) _setup.LastNames[_lastNameIndex - 1].DrawLeftAlign(new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y - 40f), 16f, Color.White * 0.5f);
+                        _setup.LastNames[_lastNameIndex].DrawLeftAlign(new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y), 20f, new Color(Color.White, _nameSelectorIndex == 2 ? 255 : 180));
+                        if (_nameSelectorIndex == 2 && _lastNameIndex < _setup.LastNames.Count - 1) _setup.LastNames[_lastNameIndex + 1].DrawLeftAlign(new Vector2(_bounds.Center.X + 40f, _bounds.Center.Y + 40f), 16f, Color.White * 0.5f);
                         break;
                     case Stage.PickingGear:
-                        Globals.SpriteDrawer.DrawText("Pick Your Gear", new Vector2(_bounds.Center.X, _bounds.Top + 40f), 20f, Color.White);
+                        "Pick Your Gear".Draw(new Vector2(_bounds.Center.X, _bounds.Top + 40f), 20f, Color.White);
                         // Draw item info on the left
-                        Globals.SpriteDrawer.DrawRect(_selectedItemBounds.BorderRect(2), Color.White);
-                        Globals.SpriteDrawer.DrawRect(_selectedItemBounds, Color.Black);
-                        Globals.SpriteDrawer.DrawRect(_itemListBounds.BorderRect(2), Color.White);
-                        Globals.SpriteDrawer.DrawRect(_itemListBounds, Color.Black);
-                        Globals.SpriteDrawer.DrawText(_selectedItem.Name, new Vector2(_selectedItemBounds.Center.X, _selectedItemBounds.Top + 50f), 20f, _selectedItem.TextColor);
+                        _selectedItemBounds.BorderRect(2).Draw(Color.White);
+                        _selectedItemBounds.Draw(Color.Black);
+                        _itemListBounds.BorderRect(2).Draw(Color.White);
+                        _itemListBounds.Draw(Color.Black);
+                        _selectedItem.Name.Draw(new Vector2(_selectedItemBounds.Center.X, _selectedItemBounds.Top + 50f), 20f, _selectedItem.TextColor);
                         _selectedItem.Draw(_selectedItemBounds.Center.X, _selectedItemBounds.Center.Y - 60f, 70, 70);
                         var y = _selectedItemBounds.Center.Y;
                         foreach (var upgrade in _selectedItem.AbilityUpgrades)
                         {
-                            Globals.SpriteDrawer.DrawText(upgrade.ToString(), new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
+                            upgrade.ToString().Draw(new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
                             y += 22;
                         }
-                        Globals.SpriteDrawer.DrawText(_selectedItem.Description1(), new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
+                        _selectedItem.Description1().Draw(new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
                         y += 22;
-                        Globals.SpriteDrawer.DrawText(_selectedItem.Description2(), new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
+                        _selectedItem.Description2().Draw(new Vector2(_selectedItemBounds.Center.X, y), 14f, Color.White);
                         // Draw the item we are highlighting
                         var rect = new Rectangle(_itemListBounds.Left + 10, _itemListBounds.Center.Y - 40, _itemListBounds.Width - 20, 80);
-                        Globals.SpriteDrawer.DrawRect(rect, _selectedItem.TextColor * 0.25f);
+                        rect.Draw(_selectedItem.TextColor * 0.25f);
                         _selectedItem.Draw(rect.Left + 40, rect.Top + 40, 60, 60);
-                        Globals.SpriteDrawer.DrawTextLeftAlign(_selectedItem.Name, new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White);
+                        _selectedItem.Name.DrawLeftAlign(new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White);
                         // If there's an item before this in the list, draw it slightly faded above
                         const float fade = 0.4f;
                         if (ItemBefore != null)
                         {
                             rect = new Rectangle(_itemListBounds.Left + 10, _itemListBounds.Center.Y - 140, _itemListBounds.Width - 20, 80);
-                            Globals.SpriteDrawer.DrawRect(rect, ItemBefore.TextColor * 0.25f * fade);
+                            rect.Draw(ItemBefore.TextColor * 0.25f * fade);
                             ItemBefore.Draw(rect.Left + 40, rect.Top + 40, 60, 60, fade);
-                            Globals.SpriteDrawer.DrawTextLeftAlign(ItemBefore.Name, new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White * fade);
+                            ItemBefore.Name.DrawLeftAlign(new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White * fade);
                         }
                         // If there's an item after this in the list, draw it slightly faded below
                         if (ItemAfter != null)
                         {
                             rect = new Rectangle(_itemListBounds.Left + 10, _itemListBounds.Center.Y + 60, _itemListBounds.Width - 20, 80);
-                            Globals.SpriteDrawer.DrawRect(rect, ItemAfter.TextColor * 0.25f * fade);
+                            rect.Draw(ItemAfter.TextColor * 0.25f * fade);
                             ItemAfter.Draw(rect.Left + 40, rect.Top + 40, 60, 60, fade);
-                            Globals.SpriteDrawer.DrawTextLeftAlign(ItemAfter.Name, new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White * fade);
+                            ItemAfter.Name.DrawLeftAlign(new Vector2(rect.Left + 80, rect.Center.Y), 20f, Color.White * fade);
                         }
-                        Globals.SpriteDrawer.DrawText("Press A to Equip", new Vector2(_selectedItemBounds.Center.X, _selectedItemBounds.Bottom - 40f), 20f, Globals.ContinueColor);
+                        "Press A to Equip".Draw(new Vector2(_selectedItemBounds.Center.X, _selectedItemBounds.Bottom - 40f), 20f, Globals.ContinueColor);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -207,7 +208,7 @@ namespace Zerds.Menus
 
             public void Update()
             {
-                var buttonsPressed = ControllerService.Controllers[_playerIndex].ButtonsPressed;
+                var buttonsPressed = InputService.InputDevices[_playerIndex].ButtonsPressed;
                 if (buttonsPressed.Contains(Buttons.A))
                 {
                     switch (_step)

@@ -16,7 +16,7 @@ namespace Zerds.Abilities
         
         public float Damage => Helpers.RandomInRange(_minDamage, _maxDamage);
 
-        public RangeAttack(Enemy being, float minDamage, float maxDamage, MissileTypes missileType, TimeSpan? cooldown = null) : base(AbilityTypes.Melee, being, cooldown ?? TimeSpan.Zero, 0, "")
+        public RangeAttack(Enemy being, float minDamage, float maxDamage, MissileTypes missileType, TimeSpan? cooldown = null) : base(AbilityTypes.Melee, being, cooldown ?? TimeSpan.Zero, TimeSpan.Zero, 0, "")
         {
             _minDamage = minDamage;
             _maxDamage = maxDamage;

@@ -8,7 +8,7 @@ namespace Zerds.Abilities
 {
     public class Iceball : Ability
     {
-        public Iceball(Zerd zerd) : base(AbilityTypes.Iceball, zerd, AbilityConstants.IceballCooldown, AbilityConstants.IceballManaCost, "ice-bolt")
+        public Iceball(Zerd zerd) : base(AbilityTypes.Iceball, zerd, AbilityConstants.IceballCooldown, AbilityConstants.IceballCastTime, AbilityConstants.IceballManaCost, "ice-bolt")
         {
             zerd.AddCastingAnimation(AnimationTypes.FrostAttack, AbilityConstants.IceballCastTime, AbilityConstants.IceballFollowThroughTime, Execute, Casted);
         }

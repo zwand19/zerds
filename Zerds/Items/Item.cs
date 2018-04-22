@@ -50,10 +50,10 @@ namespace Zerds.Items
             }
             Texture = TextureCacheFactory.GetOnce($"Items/{folder}/{iconName}");
         }
-
+        
         public void Draw(float x, float y, float width, float height, float opacity = 1f)
         {
-            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(x - width / 2), (int)(y - height / 2), (int) width, (int) height), Color.White * opacity);
+            Globals.SpriteDrawer.Draw(Texture, new Rectangle((int)(x - width / 2), (int)(y - height / 2), (int)width, (int)height), Color.White);
         }
 
         public Color TextColor

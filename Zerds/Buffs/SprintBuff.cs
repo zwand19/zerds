@@ -27,8 +27,7 @@ namespace Zerds.Buffs
 
             var angle = -(float)Math.Atan2(Being.Facing.Y, Being.Facing.X) + (float)Math.PI / 2f;
 
-            Globals.SpriteDrawer.Draw(
-                texture: Texture,
+            Texture.Draw(
                 sourceRectangle: Animation.CurrentRectangle,
                 color: Color.White,
                 position: new Vector2(Being.X, Being.Y),

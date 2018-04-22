@@ -7,7 +7,7 @@ namespace Zerds.Abilities
 {
     public class Charm : Ability
     {
-        public Charm(Zerd zerd) : base(AbilityTypes.Charm, zerd, AbilityConstants.CharmCooldown, AbilityConstants.CharmManaCost, "chained-heart")
+        public Charm(Zerd zerd) : base(AbilityTypes.Charm, zerd, AbilityConstants.CharmCooldown, AbilityConstants.CharmCastTime, AbilityConstants.CharmManaCost, "chained-heart")
         {
             zerd.AddCastingAnimation(AnimationTypes.Charm, AbilityConstants.CharmCastTime, AbilityConstants.CharmFollowThroughTime, Execute, Casted);
         }

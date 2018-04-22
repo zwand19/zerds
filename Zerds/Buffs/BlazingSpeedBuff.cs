@@ -24,8 +24,11 @@ namespace Zerds.Buffs
         
         public override void Draw()
         {
-            Globals.SpriteDrawer.Draw(Texture, sourceRectangle: Animation.CurrentRectangle, color: new Color(Color.White, 0.2f),
-                destinationRectangle: new Rectangle((int) Being.X, (int) Being.Y, (int) Being.Width, (int) Being.Height), origin: new Vector2(Texture.Width / 2.0f, Texture.Height / 2.0f));
+            Texture.Draw(
+                sourceRectangle: Animation.CurrentRectangle,
+                color: new Color(Color.White, 0.2f),
+                destinationRectangle: new Rectangle((int) Being.X, (int) Being.Y, (int) Being.Width, (int) Being.Height),
+                origin: new Vector2(Texture.Width / 2.0f, Texture.Height / 2.0f));
         }
     }
 }
