@@ -1,9 +1,11 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2"
+    "Microsoft.Net.Compilers": "2.8.0",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "System.ValueTuple": "4.4.0"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10240": {}
   },
   "runtimes": {
     "win10-arm": {},

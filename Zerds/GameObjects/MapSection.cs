@@ -22,6 +22,7 @@ namespace Zerds.GameObjects
         public bool HasOpenTop { get; private set; }
         public bool HasOpenRight { get; private set; }
         public bool HasOpenBottom { get; private set; }
+        public bool ClosedIn => !HasOpenBottom && !HasOpenLeft && !HasOpenRight && !HasOpenTop;
 
         public List<Rectangle> Walls { get; private set; }
         private Rectangle _bounds;
@@ -158,6 +159,33 @@ namespace Zerds.GameObjects
                         return true;
 
             return false;
+        }
+
+        public void DestroyWall(CardinalDirection direction)
+        {
+            switch (direction)
+            {
+                case CardinalDirection.Down:
+                    HasOpenBottom = true;
+                    for (var x = 1; x < Tiles.GetLength(0) - 1; x++)
+                        Tiles[x, Tiles.GetLength(1) - 1] = TileTypes.Floor;
+                    break;
+                case CardinalDirection.Up:
+                    HasOpenTop = true;
+                    for (var x = 1; x < Tiles.GetLength(0) - 1; x++)
+                        Tiles[x, 0] = TileTypes.Floor;
+                    break;
+                case CardinalDirection.Left:
+                    HasOpenLeft = true;
+                    for (var y = 1; y < Tiles.GetLength(1) - 1; y++)
+                        Tiles[0, y] = TileTypes.Floor;
+                    break;
+                case CardinalDirection.Right:
+                    HasOpenRight = true;
+                    for (var y = 1; y < Tiles.GetLength(1) - 1; y++)
+                        Tiles[Tiles.GetLength(0) - 1, y] = TileTypes.Floor;
+                    break;
+            }
         }
 
         public void Draw(Dictionary<TileTypes, Rectangle> textureLocations, Texture2D texture)

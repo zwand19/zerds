@@ -137,6 +137,7 @@
     <Compile Include="Entities\Enemies\Archer.cs" />
     <Compile Include="Entities\Enemies\SkeletonKing.cs" />
     <Compile Include="Entities\GameObject.cs" />
+    <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\MapSectionTypes.cs" />
     <Compile Include="Enums\TileTypes.cs" />
     <Compile Include="Enums\ZerdBodyPartTypes.cs" />
