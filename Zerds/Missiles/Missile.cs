@@ -26,6 +26,9 @@ namespace Zerds.Missiles
             Opacity = 1;
         }
 
+        // Don't collide with walls as easily as entities
+        public Rectangle WallCollisionHitbox => Hitbox().First().Scale(0.65f);
+
         public override Animation GetCurrentAnimation()
         {
             return Animations.Get(AnimationTypes.Move);
@@ -34,7 +37,7 @@ namespace Zerds.Missiles
         public override void Update(GameTime gameTime)
         {
             // TBD: is just using one hitbox fine?
-            if (Globals.Map.CollidesWithWall(this))
+            if (Globals.Map.CollidesWithWall(WallCollisionHitbox))
             {
                 if (Creator is Zerd)
                     ((Zerd)Creator).Stats.Missed();

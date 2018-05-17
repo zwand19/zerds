@@ -5,6 +5,7 @@ using Zerds.Abilities;
 using Zerds.AI;
 using Zerds.Constants;
 using Zerds.Enums;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities.Enemies
 {
@@ -13,7 +14,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private RangeAI _ai;
 
-        public Archer() : base(EnemyTypes.Archer, EnemyConstants.GetArcherProperties(), "Entities/Archer.png", false)
+        public Archer(MapSection section) : base(EnemyTypes.Archer, EnemyConstants.GetArcherProperties(), "Entities/Archer.png", section)
         {
             _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.Arrow, EnemyConstants.ArcherArrowCooldown));
 

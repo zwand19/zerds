@@ -7,6 +7,7 @@ using Zerds.Graphics;
 using Zerds.Consumables;
 using Zerds.Enums;
 using Zerds.Items;
+using Microsoft.Xna.Framework;
 
 namespace Zerds.Entities
 {
@@ -21,8 +22,35 @@ namespace Zerds.Entities
         public float AttackDamage { get; set; }
         public bool Charmed => Buffs.Any(b => b is CharmBuff);
         public EnemyTypes Type { get; set; }
+        public bool IsSpawnedEnemy { get; set; } // Spawned enemies are constantly created and not created on initial map load
 
-        protected Enemy(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file, bool randomSpawn) : base(file, true)
+        protected Enemy(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file, MapSection mapSection) : base(file, true)
+        {
+            Initialize(type, properties, file);
+
+            if (mapSection == null)
+            {
+                // Find a random zerd to spawn near
+                var zerdTarget = Globals.GameState.Zerds.RandomElement();
+                mapSection = Globals.Map.GetSection(zerdTarget);
+                IsSpawnedEnemy = true;
+            }
+
+            var spawn = mapSection.GetSpawnSpot(this);
+            X = spawn.X;
+            Y = spawn.Y;
+        }
+
+        protected Enemy(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file, int x, int y, bool isSpawned) : base(file, true)
+        {
+            Initialize(type, properties, file);
+
+            X = x;
+            Y = y;
+            IsSpawnedEnemy = isSpawned;
+        }
+
+        private void Initialize(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file)
         {
             Type = type;
             MaxHealth = Helpers.RandomInRange(properties.MinHealth, properties.MaxHealth) * DifficultyConstants.HealthFactor *
@@ -34,35 +62,6 @@ namespace Zerds.Entities
             ManaRegen = properties.ManaRegen * DifficultyConstants.ManaFactor;
             BaseSpeed = Helpers.RandomInRange(properties.MinSpeed, properties.MaxSpeed) * DifficultyConstants.SpeedFactor;
             CriticalChance = properties.CritChance;
-            var random = Globals.Random;
-            if (randomSpawn)
-            {
-                X = random.Next(Globals.ViewportBounds.Width);
-                Y = random.Next(Globals.ViewportBounds.Height);
-            }
-            else
-            {
-                var side = random.Next(4);
-                switch (side)
-                {
-                    case 0:
-                        X = random.Next(Globals.ViewportBounds.Width);
-                        Y = -50;
-                        return;
-                    case 1:
-                        X = random.Next(Globals.ViewportBounds.Width);
-                        Y = Globals.ViewportBounds.Height + 50;
-                        return;
-                    case 2:
-                        X = -50;
-                        Y = random.Next(Globals.ViewportBounds.Height);
-                        return;
-                    case 3:
-                        X = Globals.ViewportBounds.Width + 50;
-                        Y = random.Next(Globals.ViewportBounds.Height);
-                        return;
-                }
-            }
         }
 
         protected bool OnDeath()

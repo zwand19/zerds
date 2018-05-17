@@ -42,9 +42,9 @@ namespace Zerds.Input
             // QWER = ABXY
             if (state.IsKeyDown(Keys.Q) && LastState.IsKeyUp(Keys.Q))
                 buttons.Add(Buttons.A);
-            if (state.IsKeyDown(Keys.W) && LastState.IsKeyUp(Keys.W))
-                buttons.Add(Buttons.B);
             if (state.IsKeyDown(Keys.E) && LastState.IsKeyUp(Keys.E))
+                buttons.Add(Buttons.B);
+            if (state.IsKeyDown(Keys.W) && LastState.IsKeyUp(Keys.W))
                 buttons.Add(Buttons.X);
             if (state.IsKeyDown(Keys.R) && LastState.IsKeyUp(Keys.R))
                 buttons.Add(Buttons.Y);

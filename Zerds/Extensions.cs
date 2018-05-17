@@ -141,6 +141,15 @@ namespace Zerds
             return t1.Add(TimeSpan.FromMilliseconds(t2.TotalMilliseconds * Globals.GameState.GameSpeed));
         }
 
+        public static T RandomElement<T>(this List<T> elements)
+        {
+            if (!elements.Any())
+                return default(T);
+
+            var index = Globals.Random.Next(elements.Count);
+            return elements[index];
+        }
+
         public static List<Being> Enemies(this Being b)
         {
             var enemies = Globals.GameState.Enemies.Select(e => e as Being).ToList();
@@ -198,15 +207,17 @@ namespace Zerds
 
         public static void DrawGameText(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
-            var font = Globals.Fonts[type];
-            var size = font.MeasureString(text);
-            var scale = fontSize / 50f;
-            var scaledX = (position - scale * size / 2).X;
-            var x = scaledX - Globals.Camera.X;
-            var y = position.Y - Globals.Camera.Y;
             // Only draw if on screen
-            if (x > Globals.Camera.LeftDrawBound && x < Globals.Camera.RightDrawBound && y > Globals.Camera.TopDrawBound && y < Globals.Camera.BottomDrawBound)
+            if (position.X > Globals.Camera.LeftDrawBound && position.X < Globals.Camera.RightDrawBound && position.Y > Globals.Camera.TopDrawBound && position.Y < Globals.Camera.BottomDrawBound)
+            {
+                var font = Globals.Fonts[type];
+                var size = font.MeasureString(text);
+                var scale = fontSize / 50f;
+                var scaledX = (position - scale * size / 2).X;
+                var x = scaledX - Globals.Camera.ScreenLeft;
+                var y = position.Y - Globals.Camera.ScreenTop;
                 text.DrawLeftAlign(new Vector2(x, y), fontSize, color, type);
+            }
         }
 
         public static void DrawGameObject(this GameObject obj, Rectangle sourceRectangle, Color color, Rectangle? destinationRectangle = null, Vector2? scale = null, float rotation = 0, Vector2? origin = null)

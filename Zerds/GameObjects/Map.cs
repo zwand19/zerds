@@ -104,7 +104,7 @@ namespace Zerds.GameObjects
 
                     if (adjacentCells.Any())
                     {
-                        var randomNeighbor = adjacentCells[new Random().Next(adjacentCells.Count)];
+                        var randomNeighbor = adjacentCells[Globals.Random.Next(adjacentCells.Count)];
                         switch (randomNeighbor.Direction)
                         {
                             case CardinalDirection.Up:
@@ -143,6 +143,18 @@ namespace Zerds.GameObjects
                     _sections[x, y].MapComplete();
         }
 
+        /// <summary>
+        /// Get the MapSection that a being is currently in
+        /// </summary>
+        /// <param name="being"></param>
+        /// <returns></returns>
+        public MapSection GetSection(Being being)
+        {
+            var x = (int)Math.Floor(being.X / _mapSectionWidth);
+            var y = (int)Math.Floor(being.Y / _mapSectionHeight);
+            return _sections[x, y];
+        }
+
         public void Draw()
         {
             // NOTE: if we want to use zoom then we need to recalculate these every step
@@ -176,12 +188,20 @@ namespace Zerds.GameObjects
         }
 
         /// <summary>
-        /// Gets all map sections that intersect with a given rectangle
+        /// Gets all map sections that intersect with the hitbox of a given entity
         /// </summary>
         public bool CollidesWithWall(Entity entity)
         {
             // TODO: is this okay?
             var hitbox = entity.Hitbox().First();
+            return CollidesWithWall(hitbox);
+        }
+
+        /// <summary>
+        /// Gets all map sections that intersect with a given rectangle
+        /// </summary>
+        public bool CollidesWithWall(Rectangle hitbox)
+        {
             foreach (var section in GetMapSections(hitbox))
             {
                 if (section.HasCollidingWallTile(hitbox))

@@ -5,6 +5,7 @@ using Zerds.Abilities;
 using Zerds.AI;
 using Zerds.Constants;
 using Zerds.Enums;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities.Enemies
 {
@@ -13,7 +14,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private RangeAI _ai;
 
-        public FrostDemon() : base(EnemyTypes.FrostDemon, EnemyConstants.GetFrostDemonProperties(), "Entities/FrostDemon.png", false)
+        public FrostDemon(MapSection section) : base(EnemyTypes.FrostDemon, EnemyConstants.GetFrostDemonProperties(), "Entities/FrostDemon.png", section)
         {
             _ai = new RangeAI(this, new RangeAttack(this, 14, 17, MissileTypes.FrostDemonMissile, EnemyConstants.FrostDemonMissileCooldown));
 

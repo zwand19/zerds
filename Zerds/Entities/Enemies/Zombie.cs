@@ -5,6 +5,7 @@ using Zerds.Abilities;
 using Zerds.Enums;
 using Zerds.AI;
 using Zerds.Constants;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities.Enemies
 {
@@ -13,7 +14,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private WanderAI _ai;
 
-        public Zombie() : base(EnemyTypes.Zombie, EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", true)
+        public Zombie(MapSection section) : base(EnemyTypes.Zombie, EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", section)
         {
             _ai = new WanderAI(this, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieAggroRange, EnemyConstants.ZombieWanderLength);
             

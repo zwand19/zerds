@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Zerds.Enums;
 using Microsoft.Xna.Framework;
 using Zerds.Constants;
+using Zerds.Entities;
+using System.Linq;
 
 namespace Zerds.GameObjects
 {
@@ -25,6 +27,9 @@ namespace Zerds.GameObjects
         public bool ClosedIn => !HasOpenBottom && !HasOpenLeft && !HasOpenRight && !HasOpenTop;
 
         public List<Rectangle> Walls { get; private set; }
+
+        public Point Center => _bounds.Center;
+
         private Rectangle _bounds;
 
         /// <summary>
@@ -196,6 +201,28 @@ namespace Zerds.GameObjects
                         destinationRectangle: GetTileRectangle(x, y),
                         sourceRectangle: textureLocations[Tiles[x, y]],
                         color: Color.White);
+        }
+
+        /// <summary>
+        /// Get a random point within the section to spawn an entity
+        /// </summary>
+        /// <returns></returns>
+        public Point GetSpawnSpot(Being b)
+        {
+            var x = _bounds.Left + Globals.Random.Next(_bounds.Width);
+            var y = _bounds.Top + Globals.Random.Next(_bounds.Height);
+            // TODO: is this okay?
+            var hitbox = b.Hitbox().First();
+            var tries = 0;
+            while (HasCollidingWallTile(new Rectangle(x, y, hitbox.Width, hitbox.Height)))
+            {
+                x = _bounds.Left + Globals.Random.Next(_bounds.Width);
+                y = _bounds.Top + Globals.Random.Next(_bounds.Height);
+                // Some ting wong?
+                if (tries++ > 50)
+                    throw new Exception("Tried to create an enemy but could not");
+            }
+            return new Point(x, y);
         }
 
         private bool TileIsWall(int x, int y) => Tiles[x, y] == TileTypes.Wall || Tiles[x, y] == TileTypes.SingleWall;

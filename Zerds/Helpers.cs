@@ -29,7 +29,7 @@ namespace Zerds
 
         public static int RandomIntInRange(int min, int max)
         {
-            return new Random().Next(min, max);
+            return Globals.Random.Next(min, max);
         }
 
         public static int SkillPoints(this Being being, SkillType type)

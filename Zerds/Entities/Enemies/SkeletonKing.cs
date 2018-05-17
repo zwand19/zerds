@@ -6,6 +6,7 @@ using Zerds.Enums;
 using Zerds.AI;
 using Zerds.Constants;
 using Zerds.Buffs;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities.Enemies
 {
@@ -13,7 +14,7 @@ namespace Zerds.Entities.Enemies
     {
         private readonly SkeletonKingAI _ai;
         
-        public SkeletonKing() : base(EnemyTypes.SkeletonKing, EnemyConstants.GetSkeletonKingProperties(), "Entities/Zomb-King.png", true)
+        public SkeletonKing(MapSection section) : base(EnemyTypes.SkeletonKing, EnemyConstants.GetSkeletonKingProperties(), "Entities/Zomb-King.png", section)
         {
             _ai = new SkeletonKingAI(this, new Melee(this, EnemyConstants.SkeletonKingMinDamage, EnemyConstants.SkeletonKingMaxDamage, null, EnemyConstants.SkeletonKingKnockback, EnemyConstants.SkeletonKingKnockbackMillis), new SkeletonKingBlast(this));
 
@@ -109,6 +110,10 @@ namespace Zerds.Entities.Enemies
             dieEnragedAnimation.AddFrame(6, 5, TimeSpan.FromSeconds(0.1), OnDeath);
             dieEnragedAnimation.AddFrame(7, 5, TimeSpan.FromSeconds(0.1), OnDeathFinished);
             Animations.Add(dieEnragedAnimation);
+
+            // Center the boss in the middle of the section
+            X = Globals.Map.GetSection(this).Center.X;
+            Y = Globals.Map.GetSection(this).Center.Y;
         }
 
         private bool Rotate()
@@ -146,19 +151,19 @@ namespace Zerds.Entities.Enemies
         {
             foreach (var zerd in Globals.GameState.Zerds)
             {
-                var z1 = new Zombie();
+                var z1 = new Zombie(null);
                 var v = new Vector2(50, 0).Rotate(Globals.Random.Next(360));
                 z1.X = zerd.X + v.X;
                 z1.Y = zerd.Y + v.Y;
                 z1.GetAI().Target = zerd;
-                var z2 = new Zombie();
+                var z2 = new Zombie(null);
                 v = new Vector2(50, 0).Rotate(Globals.Random.Next(360));
                 z2.X = zerd.X + v.X;
                 z2.Y = zerd.Y + v.Y;
                 z2.GetAI().Target = zerd;
-                var d1 = new Dog {X = X, Y = Y};
+                var d1 = new Dog(null) {X = X, Y = Y};
                 d1.GetAI().Target = zerd;
-                var d2 = new Dog {X = X, Y = Y};
+                var d2 = new Dog(null) { X = X, Y = Y};
                 d2.GetAI().Target = zerd;
                 Globals.GameState.Enemies.Add(d1);
                 Globals.GameState.Enemies.Add(d2);

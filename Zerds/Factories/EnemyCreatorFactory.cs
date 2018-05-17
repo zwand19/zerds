@@ -9,24 +9,28 @@ using Zerds.GameObjects;
 
 namespace Zerds.Factories
 {
+    /// <summary>
+    /// Creates randomly spawned enemies in the section that a player is in
+    /// </summary>
     public static class EnemyCreatorFactory
     {
         public static Enemy CreateEnemy(EnemyTypes type)
         {
+            // Pass a null section so that the enemy is created in the same map section as a random zerd
             switch (type)
             {
                 case EnemyTypes.Zombie:
-                    return new Zombie();
+                    return new Zombie(null);
                 case EnemyTypes.Dog:
-                    return new Dog();
+                    return new Dog(null);
                 case EnemyTypes.Demon:
-                    return new Demon();
+                    return new Demon(null);
                 case EnemyTypes.FrostDemon:
-                    return new FrostDemon();
+                    return new FrostDemon(null);
                 case EnemyTypes.Archer:
-                    return new Archer();
+                    return new Archer(null);
                 case EnemyTypes.SkeletonKing:
-                    return new SkeletonKing();
+                    return new SkeletonKing(null);
             }
             throw new ArgumentException("Unknown Enemy ItemType");
         }

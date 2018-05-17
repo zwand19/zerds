@@ -5,6 +5,7 @@ using Zerds.Abilities;
 using Zerds.AI;
 using Zerds.Constants;
 using Zerds.Enums;
+using Zerds.GameObjects;
 
 namespace Zerds.Entities.Enemies
 {
@@ -13,7 +14,7 @@ namespace Zerds.Entities.Enemies
         private const int TextureSize = 64;
         private MeleeAI _ai;
 
-        public Dog() : base(EnemyTypes.Dog, EnemyConstants.GetDogProperties(), "Entities/Dog.png", true)
+        public Dog(MapSection section) : base(EnemyTypes.Dog, EnemyConstants.GetDogProperties(), "Entities/Dog.png", section)
         {
             _ai = new MeleeAI(this, new Melee(this, 6, 8));
 
