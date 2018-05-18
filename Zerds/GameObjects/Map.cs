@@ -143,6 +143,13 @@ namespace Zerds.GameObjects
                     _sections[x, y].MapComplete();
         }
 
+        public void StartingGame()
+        {
+            for (var x = 0; x < _sections.GetLength(0); x++)
+                for (var y = 0; y < _sections.GetLength(1); y++)
+                    _sections[x, y].StartingGame();
+        }
+
         /// <summary>
         /// Get the MapSection that a being is currently in
         /// </summary>

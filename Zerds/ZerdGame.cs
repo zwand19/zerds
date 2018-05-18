@@ -102,6 +102,7 @@ namespace Zerds
                 _players[i].Items = players[i].Item4;
                 if (players[i].Item1) _players[i].JoinGame(players[i].Item3);
             }
+            Globals.Map.StartingGame();
             Level.StartLevel();
             return true;
         }

@@ -205,6 +205,14 @@ namespace Zerds
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Draw some text (or don't) relative to the camera
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="position"></param>
+        /// <param name="fontSize"></param>
+        /// <param name="color"></param>
+        /// <param name="type"></param>
         public static void DrawGameText(this string text, Vector2 position, float fontSize, Color? color = null, FontTypes type = FontTypes.Pericles)
         {
             // Only draw if on screen
@@ -220,6 +228,16 @@ namespace Zerds
             }
         }
 
+        /// <summary>
+        /// Draw a game object (or don't) relative to the camera
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="sourceRectangle"></param>
+        /// <param name="color"></param>
+        /// <param name="destinationRectangle"></param>
+        /// <param name="scale"></param>
+        /// <param name="rotation"></param>
+        /// <param name="origin"></param>
         public static void DrawGameObject(this GameObject obj, Rectangle sourceRectangle, Color color, Rectangle? destinationRectangle = null, Vector2? scale = null, float rotation = 0, Vector2? origin = null)
         {
             // Only draw if on screen

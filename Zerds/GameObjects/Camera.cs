@@ -32,9 +32,9 @@ namespace Zerds.GameObjects
         public Camera()
         {
             Zoom = 1;
-            // Arbitrarily start the camera here
-            X = Globals.ViewportBounds.Width / 2;
-            Y = Globals.ViewportBounds.Height / 2;
+            // Arbitrarily start the camera here, off map
+            X = -2000;
+            Y = -2000;
         }
 
         public void Update(GameTime gameTime)

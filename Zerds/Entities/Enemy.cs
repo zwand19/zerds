@@ -84,22 +84,26 @@ namespace Zerds.Entities
             return IsActive = false;
         }
 
+        /// <summary>
+        /// The minimum worth of an enemy we can create
+        /// </summary>
+        public static int MinWorth = 5;
         public int Worth()
         {
             switch (Type)
             {
                 case EnemyTypes.Zombie:
-                    return 5;
+                    return EnemyConstants.ZombieWorth;
                 case EnemyTypes.Dog:
-                    return 7;
+                    return EnemyConstants.DogWorth;
                 case EnemyTypes.Demon:
-                    return 17;
+                    return EnemyConstants.DemonWorth;
                 case EnemyTypes.SkeletonKing:
-                    return 50;
+                    return EnemyConstants.SkeletonKingWorth;
                 case EnemyTypes.FrostDemon:
-                    return 17;
+                    return EnemyConstants.FrostDemonWorth;
                 case EnemyTypes.Archer:
-                    return 8;
+                    return EnemyConstants.ArcherWorth;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

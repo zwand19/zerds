@@ -11,6 +11,13 @@ namespace Zerds.Constants
         private const float BaseSpeed = 150f;
         private static int GetHealth(float factor) => (int)(BaseHealth * factor);
 
+        public static int ZombieWorth = 5;
+        public static int DogWorth = 7;
+        public static int ArcherWorth = 8;
+        public static int DemonWorth = 17;
+        public static int FrostDemonWorth = 17;
+        public static int SkeletonKingWorth = 75;
+
         public class EnemyProperties
         {
             public int MinHealth { get; set; }

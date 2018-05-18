@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Zerds.Constants;
 using Zerds.Entities;
 using System.Linq;
+using Zerds.Factories;
 
 namespace Zerds.GameObjects
 {
@@ -19,6 +20,7 @@ namespace Zerds.GameObjects
         private const float RandomWallChance = 0.012f;
 
         public TileTypes[,] Tiles;
+
         // Flags determining whether a certain side of the section is open (not walled off)
         public bool HasOpenLeft { get; private set; }
         public bool HasOpenTop { get; private set; }
@@ -31,6 +33,7 @@ namespace Zerds.GameObjects
         public Point Center => _bounds.Center;
 
         private Rectangle _bounds;
+        private MapSectionTypes _type;
 
         /// <summary>
         /// Create a Map Section all containing one type of tile.
@@ -39,6 +42,7 @@ namespace Zerds.GameObjects
         public MapSection(MapSectionTypes type, Rectangle bounds)
         {
             _bounds = bounds;
+            _type = type;
             Tiles = new TileTypes[GameConstants.MapSectionSizeInTiles, GameConstants.MapSectionSizeInTiles];
 
             switch (type)
@@ -95,6 +99,15 @@ namespace Zerds.GameObjects
                 for (var y = 0; y < Tiles.GetLength(1); y++)
                     if (TileIsWall(x, y))
                         Walls.Add(GetTileRectangle(x, y));
+        }
+
+        /// <summary>
+        /// Called once the game is starting so we can create some enemies.
+        /// </summary>
+        public void StartingGame()
+        {
+            if (_type == MapSectionTypes.Floor || _type == MapSectionTypes.Walled)
+                EnemyCreatorFactory.CreateMapSectionEnemies(this);
         }
 
         #region Open Sides Methods
@@ -212,7 +225,7 @@ namespace Zerds.GameObjects
             var x = _bounds.Left + Globals.Random.Next(_bounds.Width);
             var y = _bounds.Top + Globals.Random.Next(_bounds.Height);
             // TODO: is this okay?
-            var hitbox = b.Hitbox().First();
+            var hitbox = b.Hitbox().First().Scale(1.35f);
             var tries = 0;
             while (HasCollidingWallTile(new Rectangle(x, y, hitbox.Width, hitbox.Height)))
             {
