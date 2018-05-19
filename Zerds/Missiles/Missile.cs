@@ -42,6 +42,7 @@ namespace Zerds.Missiles
                 if (Creator is Zerd)
                     ((Zerd)Creator).Stats.Missed();
                 Speed = 0;
+                Distance = 0; // Treat this missile as expired (gone past it's max distance)
                 IsAlive = false;
                 HitWall = true;
             }

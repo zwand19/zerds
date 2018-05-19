@@ -137,7 +137,7 @@ namespace Zerds
                     case GameStates.Game:
                         _players.ForEach(p => p.Update(gameTime));
                         Globals.GameState.Update(gameTime);
-                        if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any())
+                        if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any(e => e.IsSpawnedEnemy))
                         {
                             _state = GameStates.Intermission;
                             _intermissionScreen = new IntermissionScreen();

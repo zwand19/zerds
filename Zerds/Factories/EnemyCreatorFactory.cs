@@ -65,6 +65,12 @@ namespace Zerds.Factories
                     throw new ArgumentException(nameof(playerFactor));
             }
 
+            if (section.Type == MapSectionTypes.Boss)
+            {
+                Globals.GameState.Enemies.Add(new SkeletonKing(section));
+                return;
+            }
+
             // Calculate how hard this section should be
             var sectionPoints = (MinSectionDifficulty + Globals.Random.Next(SectionDifficultyRange)) * playerFactor;
             var currentWorth = 0;

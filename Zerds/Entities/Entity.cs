@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Zerds.Enums;
 using Zerds.Factories;
 using Zerds.Graphics;
+using System.Reflection;
+using Zerds.Missiles;
 
 namespace Zerds.Entities
 {
@@ -36,8 +37,37 @@ namespace Zerds.Entities
         public virtual void Update(GameTime gameTime)
         {
             if (Speed < 0) Speed = 0;
-            X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
-            Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+
+            var origX = X;
+            var origY = Y;
+            if (Velocity != Vector2.Zero && Speed > 0)
+            {
+                X += Velocity.X * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+                Y -= Velocity.Y * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
+
+                // Don't run this logic for missiles - let them hit walls and they can handle accordingly
+                if (!GetType().GetTypeInfo().IsSubclassOf(typeof(Missile)))
+                {
+                    if (Globals.Map.CollidesWithWall(this))
+                    {
+                        var newX = X;
+                        var newY = Y;
+                        X = origX;
+                        // Try just moving the Y
+                        if (Globals.Map.CollidesWithWall(this))
+                        {
+                            X = newX;
+                            Y = origY;
+                            // Try just moving the X
+                            if (Globals.Map.CollidesWithWall(this))
+                            {
+                                // Can't move either axis
+                                X = origX;
+                            }
+                        }
+                    }
+                }
+            }
 
             GetCurrentAnimation().Update(gameTime);
         }

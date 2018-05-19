@@ -5,6 +5,7 @@
         Start,
         Wall,
         Floor,
-        Walled
+        Walled,
+        Boss
     }
 }

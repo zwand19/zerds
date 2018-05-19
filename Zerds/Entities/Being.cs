@@ -7,6 +7,8 @@ using Zerds.GameObjects;
 using Zerds.Buffs;
 using Zerds.Enums;
 using Zerds.Factories;
+using System.Reflection;
+using Zerds.Missiles;
 
 namespace Zerds.Entities
 {
@@ -85,7 +87,6 @@ namespace Zerds.Entities
 
         public override void Update(GameTime gameTime)
         {
-            var moved = false;
             var origX = X;
             var origY = Y;
 
@@ -146,7 +147,6 @@ namespace Zerds.Entities
                     {
                         X += Velocity.X * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
                         Y -= Velocity.Y * Speed * (float) gameTime.ElapsedGameTime.TotalSeconds * Globals.GameState.GameSpeed;
-                        moved = true;
                     }
                 }
                 else
@@ -159,7 +159,6 @@ namespace Zerds.Entities
                         Y += (int) (Knockback.Direction.Y * Knockback.Speed * gameTime.ElapsedGameTime.TotalSeconds *
                                     (float) Math.Pow(Knockback.Duration.TotalMilliseconds / Knockback.MaxDuration.TotalMilliseconds, GameplayConstants.KnockbackDecay)) *
                              Globals.GameState.GameSpeed;
-                        moved = true;
                     }
                     Knockback.Duration = Knockback.Duration.SubtractWithGameSpeed(gameTime.ElapsedGameTime);
                     if (Knockback.Duration < TimeSpan.Zero)
@@ -169,20 +168,21 @@ namespace Zerds.Entities
                 Health = MathHelper.Clamp(Health, 0, MaxHealth);
                 Mana = MathHelper.Clamp(Mana, 0, MaxMana);
             }
-
+            
             // If we tried to move make sure we aren't hitting anything, else reject the move (only reject one dimension if needed)
-            if (moved)
+            if (X != origX || Y != origY)
             {
                 if (Globals.Map.CollidesWithWall(this))
                 {
                     var newX = X;
                     var newY = Y;
                     X = origX;
+                    // Try just moving the Y
                     if (Globals.Map.CollidesWithWall(this))
                     {
-                        // Try just moving the Y
                         X = newX;
                         Y = origY;
+                        // Try just moving the X
                         if (Globals.Map.CollidesWithWall(this))
                         {
                             // Can't move either axis

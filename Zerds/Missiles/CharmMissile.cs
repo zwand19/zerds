@@ -39,9 +39,8 @@ namespace Zerds.Missiles
         public override void Update(GameTime gameTime)
         {
             if (Origin.DistanceBetween(Position) > Distance && IsAlive)
-            {
                 IsActive = false;
-            }
+
             base.Update(gameTime);
         }
 

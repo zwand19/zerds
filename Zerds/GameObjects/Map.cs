@@ -12,8 +12,8 @@ namespace Zerds.GameObjects
 {
     public class Map
     {
-        private const int MapNumSectionsWide = 7; // need to account for the fact that there's an outer wall around the map too
-        private const int MapNumSectionsTall = 7;
+        private const int MapNumSectionsWide = 5; // need to account for the fact that there's an outer wall around the map too
+        private const int MapNumSectionsTall = 5;
         private int _mapSectionWidth;
         private int _mapSectionHeight;
         private Dictionary<TileTypes, Rectangle> _textureLocations;
@@ -48,38 +48,42 @@ namespace Zerds.GameObjects
             _mapSectionWidth = _textureLocations[TileTypes.Floor].Width * GameConstants.MapSectionSizeInTiles;
             _mapSectionHeight = _textureLocations[TileTypes.Floor].Height * GameConstants.MapSectionSizeInTiles;
 
+            MapSection startSection = null;
             _sections = new MapSection[MapNumSectionsWide, MapNumSectionsTall];
             if (type.HasValue)
             {
                 for (var x = 0; x < MapNumSectionsWide; x++)
                     for (var y = 0; y < MapNumSectionsTall; y++)
-                        _sections[x, y] = new MapSection(type.Value, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight));
+                        _sections[x, y] = new MapSection(type.Value, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight), x, y);
             }
             else
             {
                 // First surround the map in wall sections
                 for (var x = 0; x < MapNumSectionsWide; x++)
                 {
-                    _sections[x, 0] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * 0, _mapSectionWidth, _mapSectionHeight));
-                    _sections[x, MapNumSectionsTall - 1] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * (MapNumSectionsTall - 1), _mapSectionWidth, _mapSectionHeight));
+                    var bottomY = MapNumSectionsTall - 1;
+                    _sections[x, 0] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * 0, _mapSectionWidth, _mapSectionHeight), x, bottomY);
+                    _sections[x, bottomY] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * bottomY, _mapSectionWidth, _mapSectionHeight), x, bottomY);
                 }
                 for (var y = 1; y < MapNumSectionsTall - 1; y++)
                 {
-                    _sections[0, y] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * 0, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight));
-                    _sections[MapNumSectionsWide - 1, y] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * (MapNumSectionsWide - 1), _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight));
+                    var rightX = MapNumSectionsWide - 1;
+                    _sections[0, y] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * 0, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight), rightX, y);
+                    _sections[rightX, y] = new MapSection(MapSectionTypes.Wall, new Rectangle(_mapSectionWidth * (rightX), _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight), rightX, y);
                 }
                 // Create the start
                 var startingSectionX = Helpers.RandomIntInRange(1, MapNumSectionsWide - 2);
                 var startingSectionY = Helpers.RandomIntInRange(1, MapNumSectionsWide - 2);
                 StartingPosition = new Vector2(startingSectionX * _mapSectionWidth + _mapSectionHeight / 2, startingSectionY * _mapSectionHeight + _mapSectionHeight / 2);
-                _sections[startingSectionX, startingSectionY] = new MapSection(MapSectionTypes.Start, new Rectangle(_mapSectionWidth * startingSectionX, _mapSectionHeight * startingSectionY, _mapSectionWidth, _mapSectionHeight));
+                _sections[startingSectionX, startingSectionY] = new MapSection(MapSectionTypes.Start, new Rectangle(_mapSectionWidth * startingSectionX, _mapSectionHeight * startingSectionY, _mapSectionWidth, _mapSectionHeight), startingSectionX, startingSectionY);
+                startSection = _sections[startingSectionX, startingSectionY];
                 // Create all of the other middle tiles
                 for (var x = 1; x < MapNumSectionsWide - 1; x++)
                 {
                     for (var y = 1; y < MapNumSectionsTall - 1; y++)
                     {
                         if (_sections[x,y] == null)
-                            _sections[x, y] = new MapSection(MapSectionTypes.Walled, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight));
+                            _sections[x, y] = new MapSection(MapSectionTypes.Walled, new Rectangle(_mapSectionWidth * x, _mapSectionHeight * y, _mapSectionWidth, _mapSectionHeight), x, y);
                     }
                 }
                 // Create a maze
@@ -88,19 +92,7 @@ namespace Zerds.GameObjects
                 (int X, int Y) currentSection = (startingSectionX, startingSectionY);
                 while (numVisited < (MapNumSectionsTall - 2) * (MapNumSectionsWide - 2))
                 {
-                    var adjacentCells = new List<(int X, int Y, CardinalDirection Direction)>();
-
-                    if (currentSection.X > 1 && _sections[currentSection.X - 1, currentSection.Y].ClosedIn)
-                        adjacentCells.Add((currentSection.X - 1, currentSection.Y, CardinalDirection.Left));
-
-                    if (currentSection.X < MapNumSectionsWide - 2 && _sections[currentSection.X + 1, currentSection.Y].ClosedIn)
-                        adjacentCells.Add((currentSection.X + 1, currentSection.Y, CardinalDirection.Right));
-
-                    if (currentSection.Y > 1 && _sections[currentSection.X, currentSection.Y - 1].ClosedIn)
-                        adjacentCells.Add((currentSection.X, currentSection.Y - 1, CardinalDirection.Up));
-
-                    if (currentSection.Y < MapNumSectionsTall - 2 && _sections[currentSection.X, currentSection.Y + 1].ClosedIn)
-                        adjacentCells.Add((currentSection.X, currentSection.Y + 1, CardinalDirection.Down));
+                    var adjacentCells = GetAdjacentSections(currentSection.X, currentSection.Y, true);
 
                     if (adjacentCells.Any())
                     {
@@ -137,10 +129,80 @@ namespace Zerds.GameObjects
                 }
             }
 
+            // Find the furthest cell from the start and spawn the boss there (if this is a real map)
+            if (startSection != null)
+            {
+                var sectionsToVisit = new List<MapSection> { startSection };
+                var sections = new Dictionary<MapSection, int?>
+                {
+                    [startSection] = 0
+                };
+                var bossSection = startSection;
+                var maxDistance = 0;
+
+                while (sectionsToVisit.Any())
+                {
+                    // Pop one
+                    var section = sectionsToVisit.Last();
+                    sectionsToVisit.Remove(section);
+
+                    var adjacentCells = GetAdjacentSections(section.XPos, section.YPos, false);
+                    var distance = sections[section].Value + 1;
+                    foreach (var cell in adjacentCells)
+                    {
+                        var adjacentSection = _sections[cell.X, cell.Y];
+                        // If we've already gotten to this cell in the same or less distance then ignore
+                        if (sections.Keys.Contains(adjacentSection) && sections[adjacentSection] <= distance)
+                            continue;
+
+                        // Process this section if we haven't already
+                        if (!sectionsToVisit.Contains(adjacentSection))
+                            sectionsToVisit.Add(adjacentSection);
+
+                        sections[adjacentSection] = distance;
+
+                        if (distance > maxDistance)
+                        {
+                            maxDistance = distance;
+                            bossSection = adjacentSection;
+                        }
+                    }
+                }
+
+                bossSection.Type = MapSectionTypes.Boss;
+            }
+
             // Tell the sections we are done making the map
             for (var x = 0; x < MapNumSectionsWide; x++)
                 for (var y = 0; y < MapNumSectionsTall; y++)
                     _sections[x, y].MapComplete();
+        }
+
+        /// <summary>
+        /// Get the list of adjacent sections to a certain position.
+        /// Only include sections where there is no wall in between.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="includeWalledOffNeighbors">True if we are creating the map still and need to open up walls</param>
+        /// <returns></returns>
+        private List<(int X, int Y, CardinalDirection Direction)> GetAdjacentSections(int x, int y, bool includeWalledOffNeighbors)
+        {
+            var adjacentCells = new List<(int X, int Y, CardinalDirection Direction)>();
+
+            if (x > 1 && (!includeWalledOffNeighbors || _sections[x - 1, y].ClosedIn) && (includeWalledOffNeighbors || _sections[x, y].TraversableTo(_sections[x - 1, y])))
+                adjacentCells.Add((x - 1, y, CardinalDirection.Left));
+
+            if (x < MapNumSectionsWide - 2 && (!includeWalledOffNeighbors || _sections[x + 1, y].ClosedIn) && (includeWalledOffNeighbors || _sections[x, y].TraversableTo(_sections[x + 1, y])))
+                adjacentCells.Add((x + 1, y, CardinalDirection.Right));
+
+            if (y > 1 && (!includeWalledOffNeighbors || _sections[x, y - 1].ClosedIn) && (includeWalledOffNeighbors || _sections[x, y].TraversableTo(_sections[x, y - 1])))
+                adjacentCells.Add((x, y - 1, CardinalDirection.Up));
+
+            if (y < MapNumSectionsTall - 2 && (!includeWalledOffNeighbors || _sections[x, y + 1].ClosedIn) && (includeWalledOffNeighbors || _sections[x, y].TraversableTo(_sections[x, y + 1])))
+                adjacentCells.Add((x, y + 1, CardinalDirection.Down));
+
+            return adjacentCells;
         }
 
         public void StartingGame()
@@ -200,7 +262,10 @@ namespace Zerds.GameObjects
         public bool CollidesWithWall(Entity entity)
         {
             // TODO: is this okay?
-            var hitbox = entity.Hitbox().First();
+            var hitbox = entity.Hitbox().FirstOrDefault();
+            if (hitbox == null)
+                return false;
+
             return CollidesWithWall(hitbox);
         }
 

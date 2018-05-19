@@ -32,17 +32,22 @@ namespace Zerds.GameObjects
 
         public Point Center => _bounds.Center;
 
+        public int XPos { get; }
+        public int YPos { get; }
+        public MapSectionTypes Type { get; set; }
+
         private Rectangle _bounds;
-        private MapSectionTypes _type;
 
         /// <summary>
         /// Create a Map Section all containing one type of tile.
         /// </summary>
         /// 
-        public MapSection(MapSectionTypes type, Rectangle bounds)
+        public MapSection(MapSectionTypes type, Rectangle bounds, int xPos, int yPos)
         {
             _bounds = bounds;
-            _type = type;
+            Type = type;
+            XPos = xPos;
+            YPos = yPos;
             Tiles = new TileTypes[GameConstants.MapSectionSizeInTiles, GameConstants.MapSectionSizeInTiles];
 
             switch (type)
@@ -106,7 +111,7 @@ namespace Zerds.GameObjects
         /// </summary>
         public void StartingGame()
         {
-            if (_type == MapSectionTypes.Floor || _type == MapSectionTypes.Walled)
+            if (Type == MapSectionTypes.Floor || Type == MapSectionTypes.Walled || Type == MapSectionTypes.Boss)
                 EnemyCreatorFactory.CreateMapSectionEnemies(this);
         }
 
@@ -227,7 +232,7 @@ namespace Zerds.GameObjects
             // TODO: is this okay?
             var hitbox = b.Hitbox().First().Scale(1.35f);
             var tries = 0;
-            while (HasCollidingWallTile(new Rectangle(x, y, hitbox.Width, hitbox.Height)))
+            while (HasCollidingWallTile(new Rectangle(x - hitbox.Width / 2, y - hitbox.Height / 2, hitbox.Width, hitbox.Height)))
             {
                 x = _bounds.Left + Globals.Random.Next(_bounds.Width);
                 y = _bounds.Top + Globals.Random.Next(_bounds.Height);
@@ -247,6 +252,19 @@ namespace Zerds.GameObjects
                 _bounds.Top + y * DisplayConstants.TileHeight,
                 DisplayConstants.TileWidth,
                 DisplayConstants.TileHeight);
+        }
+
+        public bool TraversableTo(MapSection mapSection)
+        {
+            if (XPos == mapSection.XPos - 1 && YPos == mapSection.YPos && HasOpenRight && mapSection.HasOpenLeft)
+                return true;
+            if (XPos == mapSection.XPos + 1 && YPos == mapSection.YPos && HasOpenLeft && mapSection.HasOpenRight)
+                return true;
+            if (XPos == mapSection.XPos && YPos == mapSection.YPos - 1 && HasOpenBottom && mapSection.HasOpenTop)
+                return true;
+            if (XPos == mapSection.XPos && YPos == mapSection.YPos + 1 && HasOpenTop && mapSection.HasOpenBottom)
+                return true;
+            return false;
         }
     }
 }
