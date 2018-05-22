@@ -16,7 +16,7 @@ namespace Zerds.Entities.Enemies
 
         public Archer(MapSection section) : base(EnemyTypes.Archer, EnemyConstants.GetArcherProperties(), "Entities/Archer.png", section)
         {
-            _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.Arrow, EnemyConstants.ArcherArrowCooldown));
+            _ai = new RangeAI(this, EnemyConstants.ArcherAggroRange, EnemyConstants.ArcherWanderLength, new RangeAttack(this, 12, 18, MissileTypes.Arrow, EnemyConstants.ArcherArrowCooldown));
 
             HitboxSize = 0.93f;
             Width = 64;

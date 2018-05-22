@@ -111,7 +111,6 @@
     <Compile Include="Abilities\Wand.cs" />
     <Compile Include="AI\AI.cs" />
     <Compile Include="AI\Extensions.cs" />
-    <Compile Include="AI\WanderAI.cs" />
     <Compile Include="AI\SkeletonKingAI.cs" />
     <Compile Include="AI\MeleeAI.cs" />
     <Compile Include="AI\RangeAI.cs" />

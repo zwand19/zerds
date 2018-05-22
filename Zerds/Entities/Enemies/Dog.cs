@@ -16,7 +16,7 @@ namespace Zerds.Entities.Enemies
 
         public Dog(MapSection section) : base(EnemyTypes.Dog, EnemyConstants.GetDogProperties(), "Entities/Dog.png", section)
         {
-            _ai = new MeleeAI(this, new Melee(this, 6, 8));
+            _ai = new MeleeAI(this, EnemyConstants.DogAggroRange, new Melee(this, 6, 8), EnemyConstants.DogWanderLength);
 
             HitboxSize = 0.8f;
             Width = 64;

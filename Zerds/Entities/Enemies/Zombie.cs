@@ -12,11 +12,11 @@ namespace Zerds.Entities.Enemies
     public class Zombie : Enemy
     {
         private const int TextureSize = 64;
-        private WanderAI _ai;
+        private MeleeAI _ai;
 
         public Zombie(MapSection section) : base(EnemyTypes.Zombie, EnemyConstants.GetZombieProperties(), "Entities/Zombie.png", section)
         {
-            _ai = new WanderAI(this, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieAggroRange, EnemyConstants.ZombieWanderLength);
+            _ai = new MeleeAI(this, EnemyConstants.ZombieAggroRange, new Melee(this, EnemyConstants.ZombieMinDamage, EnemyConstants.ZombieMaxDamage), EnemyConstants.ZombieWanderLength);
             
             HitboxSize = 0.8f;
             Width = 64;

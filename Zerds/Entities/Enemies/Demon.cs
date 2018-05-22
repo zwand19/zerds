@@ -16,7 +16,7 @@ namespace Zerds.Entities.Enemies
 
         public Demon(MapSection section) : base(EnemyTypes.Demon, EnemyConstants.GetDemonProperties(), "Entities/Demon.png", section)
         {
-            _ai = new RangeAI(this, new RangeAttack(this, 12, 18, MissileTypes.DemonMissile, EnemyConstants.FrostDemonMissileCooldown));
+            _ai = new RangeAI(this, EnemyConstants.DemonAggroRange, EnemyConstants.DemonWanderLength, new RangeAttack(this, 12, 18, MissileTypes.DemonMissile, EnemyConstants.FrostDemonMissileCooldown));
 
             HitboxSize = 0.93f;
             Width = 64;

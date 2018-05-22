@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Zerds.Abilities;
 using Zerds.Constants;
@@ -12,7 +11,7 @@ namespace Zerds.AI
     {
         private readonly Melee _meleeAbility;
 
-        public MeleeAI(Enemy enemy, Melee melee) : base(enemy)
+        public MeleeAI(Enemy enemy, float aggroRange, Melee melee, TimeSpan wanderInterval) : base(enemy, aggroRange, wanderInterval, melee)
         {
             _meleeAbility = melee;
         }
@@ -23,37 +22,21 @@ namespace Zerds.AI
                 return;
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
-            var target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
+            Target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
             switch (State)
             {
                 case EnemyStates.Sitting:
-                    State = EnemyStates.Chasing;
+                    State = EnemyStates.Wandering;
                     return;
                 case EnemyStates.Dead:
                     Enemy.Velocity = Vector2.Zero;
                     Enemy.BaseSpeed = 0;
                     return;
                 case EnemyStates.Wandering:
-                    CurrentWanderTime = CurrentWanderTime.AddWithGameSpeed(gameTime.ElapsedGameTime);
-                    Enemy.BaseSpeed = WanderSpeed;
-                    if (CurrentWanderTime > (WanderIntervalTime ?? GameplayConstants.DefaultEnemyWanderInterval))
-                        SetWanderTarget();
-                    Enemy.Velocity = Enemy.Facing.Normalized();
+                    Wander(gameTime);
                     return;
                 case EnemyStates.Chasing:
-                    if (target == null)
-                    {
-                        State = EnemyStates.Wandering;
-                        return;
-                    }
-                    CurrentWanderTime = TimeSpan.Zero;
-                    if (Enemy.DistanceBetween(target) < Enemy.AttackRange)
-                    {
-                        Enemy.Velocity = Vector2.Zero;
-                        State = EnemyStates.Attacking;
-                    }
-                    Enemy.Face(target);
-                    Enemy.Velocity = Enemy.Facing.Normalized();
+                    Chase();
                     return;
                 case EnemyStates.Attacking:
                     Enemy.Velocity = Vector2.Zero;

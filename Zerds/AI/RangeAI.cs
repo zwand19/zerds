@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Zerds.Abilities;
 using Zerds.Entities;
 using Zerds.Enums;
+using Zerds.Constants;
 
 namespace Zerds.AI
 {
@@ -11,9 +12,10 @@ namespace Zerds.AI
     {
         private readonly RangeAttack _rangeAttack;
 
-        public RangeAI(Enemy enemy, RangeAttack range) : base(enemy)
+        public RangeAI(Enemy enemy, float aggroRange, TimeSpan wanderInterval, RangeAttack attack) : base(enemy, aggroRange, wanderInterval, attack)
         {
-            _rangeAttack = range;
+            _rangeAttack = attack;
+            AggroRange = aggroRange;
         }
 
         public override void Run(GameTime gameTime)
@@ -23,13 +25,7 @@ namespace Zerds.AI
                 return;
             if (!Enemy.IsAlive)
                 State = EnemyStates.Dead;
-            var target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
-            if (target == null)
-            {
-                Enemy.Velocity = Vector2.Zero;
-                State = EnemyStates.Sitting;
-                return;
-            }
+            Target = Target?.IsAlive == true ? Target : Enemy.GetNearestEnemy();
             switch (State)
             {
                 case EnemyStates.Dead:
@@ -37,23 +33,13 @@ namespace Zerds.AI
                     Enemy.BaseSpeed = 0;
                     return;
                 case EnemyStates.Sitting:
-                    Enemy.Velocity = Vector2.Zero;
-                    if (Enemy.Spawned && Enemy.Enemies().Any(z => z.IsAlive))
-                        State = EnemyStates.Chasing;
+                    State = EnemyStates.Wandering;
+                    return;
+                case EnemyStates.Wandering:
+                    Wander(gameTime);
                     return;
                 case EnemyStates.Chasing:
-                    if (!Enemy.Enemies().Any(z => z.IsAlive))
-                    {
-                        State = EnemyStates.Sitting;
-                        return;
-                    }
-                    if (_rangeAttack.Cooldown <= TimeSpan.Zero && Enemy.DistanceBetween(target) < Enemy.AttackRange)
-                    {
-                        Enemy.Velocity = Vector2.Zero;
-                        State = EnemyStates.Attacking;
-                    }
-                    Enemy.Face(target);
-                    Enemy.Velocity = Enemy.Facing.Normalized();
+                    Chase();
                     return;
                 case EnemyStates.Attacking:
                     Enemy.Velocity = Vector2.Zero;

@@ -4,6 +4,7 @@ using Zerds.Constants;
 using Zerds.Entities;
 using Zerds.Enums;
 using Zerds.Graphics;
+using Zerds.Abilities;
 
 namespace Zerds.AI
 {
@@ -15,14 +16,21 @@ namespace Zerds.AI
         protected TimeSpan CurrentWanderTime;
         protected float BaseSpeed;
         protected float WanderSpeed;
+        protected float AggroRange;
+        protected Ability AttackAbility;
+
         public Being Target { get; set; }
 
-        protected AI(Enemy enemy)
+        protected AI(Enemy enemy, float aggroRange, TimeSpan wanderIntervalTime, Ability attackAbility)
         {
             Enemy = enemy;
-            State = EnemyStates.Sitting;
+            AggroRange = aggroRange;
+            AttackAbility = attackAbility;
+            State = enemy.IsBoss ? EnemyStates.Sitting : EnemyStates.Wandering;
             BaseSpeed = enemy.BaseSpeed;
             WanderSpeed = enemy.BaseSpeed * GameplayConstants.WanderSpeedFactor;
+            SetWanderTarget();
+            WanderIntervalTime = wanderIntervalTime;
         }
 
         public abstract void Run(GameTime gameTime);
@@ -34,6 +42,36 @@ namespace Zerds.AI
             return !Enemy.Spawned
                 ? Enemy.Animations.Get(AnimationTypes.Spawn)
                 : Enemy.Animations.Get(State == EnemyStates.Attacking ? AnimationTypes.Attack : AnimationTypes.Move);
+        }
+
+        protected virtual void Chase()
+        {
+            if (Target == null)
+            {
+                State = EnemyStates.Wandering;
+                return;
+            }
+            if (Enemy.DistanceBetween(Target) > AggroRange + GameplayConstants.AggroRangeBuffer)
+                State = EnemyStates.Wandering;
+            CurrentWanderTime = TimeSpan.Zero;
+            if ((AttackAbility?.Cooldown ?? TimeSpan.Zero) <= TimeSpan.Zero && Enemy.DistanceBetween(Target) < Enemy.AttackRange)
+            {
+                Enemy.Velocity = Vector2.Zero;
+                State = EnemyStates.Attacking;
+            }
+            Enemy.Face(Target);
+            Enemy.Velocity = Enemy.Facing.Normalized();
+        }
+
+        protected virtual void Wander(GameTime gameTime)
+        {
+            CurrentWanderTime = CurrentWanderTime.AddWithGameSpeed(gameTime.ElapsedGameTime);
+            Enemy.BaseSpeed = WanderSpeed;
+            if (CurrentWanderTime > (WanderIntervalTime ?? GameplayConstants.DefaultEnemyWanderInterval))
+                SetWanderTarget();
+            if (Target != null && Enemy.DistanceBetween(Target) < AggroRange - GameplayConstants.AggroRangeBuffer)
+                State = EnemyStates.Chasing;
+            Enemy.Velocity = Enemy.Facing.Normalized();
         }
 
         protected virtual void SetWanderTarget()

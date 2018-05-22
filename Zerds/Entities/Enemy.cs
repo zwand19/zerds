@@ -23,6 +23,7 @@ namespace Zerds.Entities
         public bool Charmed => Buffs.Any(b => b is CharmBuff);
         public EnemyTypes Type { get; set; }
         public bool IsSpawnedEnemy { get; set; } // Spawned enemies are constantly created and not created on initial map load
+        public bool IsBoss => Type == EnemyTypes.SkeletonKing;
 
         protected Enemy(EnemyTypes type, EnemyConstants.EnemyProperties properties, string file, MapSection mapSection) : base(file, true)
         {

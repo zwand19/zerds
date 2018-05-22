@@ -81,6 +81,8 @@ namespace Zerds.Constants
             };    
         }
 
+        public const float ArcherAggroRange = 900f;
+        public static TimeSpan ArcherWanderLength = TimeSpan.FromSeconds(3);
         public static EnemyProperties GetArcherProperties()
         {
             return new EnemyProperties
@@ -94,6 +96,8 @@ namespace Zerds.Constants
             };
         }
 
+        public const float DogAggroRange = float.MaxValue;
+        public static TimeSpan DogWanderLength = TimeSpan.FromSeconds(1);
         public static EnemyProperties GetDogProperties()
         {
             return new EnemyProperties
@@ -112,6 +116,8 @@ namespace Zerds.Constants
         public static TimeSpan ArcherArrowKnockbackLength => TimeSpan.FromMilliseconds(300);
         public static TimeSpan ArcherArrowCooldown => TimeSpan.FromMilliseconds(2250);
 
+        public const float DemonAggroRange = 1200f;
+        public static TimeSpan DemonWanderLength = TimeSpan.FromSeconds(2.5);
         public static EnemyProperties GetDemonProperties()
         {
             return new EnemyProperties
@@ -132,6 +138,8 @@ namespace Zerds.Constants
         public static TimeSpan DemonMissileKnockbackLength => TimeSpan.FromMilliseconds(315);
         public static TimeSpan DemonMissileCooldown => TimeSpan.FromMilliseconds(2000);
 
+        public const float FrostDemonAggroRange = 1200f;
+        public static TimeSpan FrostDemonWanderLength = TimeSpan.FromSeconds(2.5);
         public static EnemyProperties GetFrostDemonProperties()
         {
             return new EnemyProperties

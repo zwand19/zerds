@@ -16,7 +16,7 @@ namespace Zerds.AI
         private readonly SkeletonKingBlast _blastAbility;
         private bool _enraged;
 
-        public SkeletonKingAI(SkeletonKing skeletonKing, Melee melee, SkeletonKingBlast blast) : base(skeletonKing)
+        public SkeletonKingAI(SkeletonKing skeletonKing, Melee melee, SkeletonKingBlast blast) : base(skeletonKing, float.MaxValue, TimeSpan.Zero, melee)
         {
             _meleeAbility = melee;
             _blastAbility = blast;
