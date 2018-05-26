@@ -105,7 +105,6 @@ namespace Zerds
         public void Draw()
         {
             Globals.SpriteDrawer.Begin(blendState: BlendState.AlphaBlend);
-            Globals.Map.Draw();
             _recapBounds.Draw(new Color(Color.Black, 0.75f));
             _treasureBounds.Draw(new Color(Color.Black, 0.75f));
             _treasureInfoBounds.Draw(new Color(Color.Black, 0.75f));

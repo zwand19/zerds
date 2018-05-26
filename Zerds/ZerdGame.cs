@@ -25,6 +25,7 @@ namespace Zerds
         private GameSetup _gameSetup;
         private IntermissionScreen _intermissionScreen;
         private PostGameScreen _postGameScreen;
+        private MainBackground _background;
 
         public ZerdGame()
         {
@@ -38,6 +39,7 @@ namespace Zerds
         public bool GameOverFunc()
         {
             _state = GameStates.PostGame;
+            _background = new MainBackground();
             _postGameScreen = new PostGameScreen();
             return true;
         }
@@ -60,6 +62,7 @@ namespace Zerds
             Level.GameOverFunc = GameOverFunc;
             Globals.Map = new Map(GraphicsDevice, MapTypes.Dungeon, Globals.ViewportBounds);
             _mainMenu = new MainMenu(SetupGameFunc);
+            _background = new MainBackground();
 
             base.Initialize();
         }
@@ -95,6 +98,7 @@ namespace Zerds
         private bool PlayGameFunc(List<Tuple<bool, string, List<Item>, List<Item>>> players)
         {
             _gameSetup = null;
+            _background = null;
             _state = GameStates.Game;
             for (var i = 0; i < players.Count; i++)
             {
@@ -126,6 +130,7 @@ namespace Zerds
             try
             {
                 InputService.Update(gameTime);
+                _background?.Update(gameTime);
                 switch (_state)
                 {
                     case GameStates.MainMenu:
@@ -140,6 +145,7 @@ namespace Zerds
                         if (Level.TimeRemaining <= TimeSpan.Zero && !Globals.GameState.Enemies.Any(e => e.IsSpawnedEnemy))
                         {
                             _state = GameStates.Intermission;
+                            _background = new MainBackground();
                             _intermissionScreen = new IntermissionScreen();
                             Level.LevelComplete();
                         }
@@ -149,6 +155,7 @@ namespace Zerds
                         if (_intermissionScreen.Ready)
                         {
                             _intermissionScreen = null;
+                            _background = null;
                             _state = GameStates.Game;
                             Level.StartLevel();
                         }
@@ -159,6 +166,7 @@ namespace Zerds
                         {
                             _postGameScreen = null;
                             _state = GameStates.MainMenu;
+                            _players.ForEach(p => p.GameOver());
                             Globals.GameState = new GameState(_players);
                             _mainMenu = new MainMenu(SetupGameFunc);
                         }
@@ -183,6 +191,7 @@ namespace Zerds
                 Globals.ViewportBounds = GraphicsDevice.Viewport.Bounds;
                 GraphicsDevice.Clear(Color.Black);
 
+                _background?.Draw();
                 switch (_state)
                 {
                     case GameStates.MainMenu:

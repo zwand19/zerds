@@ -190,6 +190,7 @@
     <Compile Include="Items\GloveItem.cs" />
     <Compile Include="Consumables\TreasureChest.cs" />
     <Compile Include="Items\WandItem.cs" />
+    <Compile Include="Menus\MainBackground.cs" />
     <Compile Include="Missiles\SkeletonKingMissile.cs" />
     <Compile Include="Missiles\DragonBreathMissile.cs" />
     <Compile Include="Missiles\IcicleMissile.cs" />
@@ -264,6 +265,15 @@
     <None Include="Zerds_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Backgrounds\sky-green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Backgrounds\sky-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Backgrounds\sky.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Buffs\burn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -285,11 +295,15 @@
     <Content Include="Content\Entities\archer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Entities\Demon.png" />
+    <Content Include="Content\Entities\Demon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Entities\Dog.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Entities\FrostDemon.png" />
+    <Content Include="Content\Entities\FrostDemon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Entities\Zomb-King.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

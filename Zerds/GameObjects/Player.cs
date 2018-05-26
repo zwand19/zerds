@@ -161,6 +161,11 @@ namespace Zerds.GameObjects
             Globals.GameState.Zerds.Add(Zerd);
         }
 
+        public void GameOver()
+        {
+            Zerd = null;
+        }
+
         public void SaveSyncronous()
         {
             Task.Run(async () =>

@@ -79,7 +79,6 @@ namespace Zerds.Menus
         public void Draw()
         {
             Globals.SpriteDrawer.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            Globals.Map.Draw();
             Globals.SpriteDrawer.Draw(Globals.WhiteTexture, Globals.ViewportBounds, new Color(0, 0, 0, 0.5f));
             //Crosshairs
             Globals.SpriteDrawer.Draw(Globals.WhiteTexture,
